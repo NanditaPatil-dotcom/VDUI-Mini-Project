@@ -6,10 +6,16 @@ Download the dataset first:
 https://www.kaggle.com/datasets/mysarahmadbhat/airline-passenger-satisfaction
 and place it next to this script as 'airline_satisfaction.csv'
 """
-
+import glob
 import pandas as pd
+import kagglehub
 
-df = pd.read_csv("airline_satisfaction.csv")
+# fetch the dataset straight from Kaggle
+# https://www.kaggle.com/datasets/mysarahmadbhat/airline-passenger-satisfaction
+dataset_dir = kagglehub.dataset_download("mysarahmadbhat/airline-passenger-satisfaction")
+csv_path = glob.glob(f"{dataset_dir}/*.csv")[0]
+
+df = pd.read_csv(csv_path)
 
 # clean
 df = df.drop(columns=[c for c in ["id", "Unnamed: 0"] if c in df.columns])
