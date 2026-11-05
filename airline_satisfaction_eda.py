@@ -1,26 +1,16 @@
-"""
-Beyond the Boarding Pass - basic EDA
-Team 11 - VDUI Mini Project
-"""
-import glob
 import pandas as pd
-import kagglehub
 
-# fetch the dataset straight from Kaggle
-dataset_dir = kagglehub.dataset_download("mysarahmadbhat/airline-passenger-satisfaction")
-csv_path = glob.glob(f"{dataset_dir}/*.csv")[0]
-
-df = pd.read_csv(csv_path)
+df = pd.read_csv("airline_satisfaction.csv")
 
 # clean
-df = df.drop(columns=[c for c in ["id", "Unnamed: 0"] if c in df.columns])
-df = df.dropna(subset=["Arrival Delay in Minutes"])
-df["satisfaction"] = df["satisfaction"].map({"satisfied": 1, "neutral or dissatisfied": 0})
+df = df.drop(columns=[c for c in ["ID", "Unnamed: 0"] if c in df.columns])
+df = df.dropna(subset=["Arrival Delay"])
+df["satisfaction"] = df["Satisfaction"].map({"Satisfied": 1, "Neutral or Dissatisfied": 0})
 
 # correlate service ratings & delay against satisfaction
 feature_cols = [
-    "Inflight wifi service", "Online boarding", "Seat comfort",
-    "Food and drink", "Class", "Arrival Delay in Minutes",
+    "In-flight Wifi Service", "Online Boarding", "Seat Comfort",
+    "Food and Drink", "Class", "Arrival Delay",
 ]
 feature_cols = [c for c in feature_cols if c in df.columns]
 corr = df[feature_cols + ["satisfaction"]].corr(numeric_only=True)["satisfaction"].drop("satisfaction")
@@ -30,4 +20,4 @@ print("Correlation with satisfaction:")
 print(corr)
 
 df.to_csv("airline_satisfaction_cleaned.csv", index=False)
-print("\nCleaned data saved to airline_satisfaction_cleaned.csv - ready for Power BI.")
+print("\nCleaned data saved to airline_satisfaction_cleaned.csv")
