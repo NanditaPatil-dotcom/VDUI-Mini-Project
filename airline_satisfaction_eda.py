@@ -1,17 +1,12 @@
 """
 Beyond the Boarding Pass - basic EDA
 Team 11 - VDUI Mini Project
-
-Download the dataset first:
-https://www.kaggle.com/datasets/mysarahmadbhat/airline-passenger-satisfaction
-and place it next to this script as 'airline_satisfaction.csv'
 """
 import glob
 import pandas as pd
 import kagglehub
 
 # fetch the dataset straight from Kaggle
-# https://www.kaggle.com/datasets/mysarahmadbhat/airline-passenger-satisfaction
 dataset_dir = kagglehub.dataset_download("mysarahmadbhat/airline-passenger-satisfaction")
 csv_path = glob.glob(f"{dataset_dir}/*.csv")[0]
 
