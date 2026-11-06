@@ -47,6 +47,17 @@ if shap_values.ndim == 3:  # (n_samples, n_features, n_classes) - newer shap ver
 mean_abs_shap = pd.Series(abs(shap_values).mean(axis=0), index=service_cols)
 mean_abs_shap = mean_abs_shap.sort_values(ascending=False)
 
+# Export SHAP feature importance for Power BI
+shap_importance = mean_abs_shap.reset_index()
+shap_importance.columns = ["Feature", "MeanAbsoluteSHAP"]
+
+shap_importance.to_csv(
+    "shap_importance.csv",
+    index=False
+)
+
+print("\nSHAP importance exported for Power BI.")
+
 print("Top features by SHAP importance:")
 print(mean_abs_shap)
 
