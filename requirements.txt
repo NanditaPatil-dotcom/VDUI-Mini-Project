@@ -3,3 +3,5 @@ numpy
 scikit-learn
 shap
 google-genai
+matplotlib
+xgboost==2.1.4

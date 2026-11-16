@@ -1,0 +1,42 @@
+TransformedFeature,OriginalFeature
+numeric__Age,Age
+numeric__Flight Distance,Flight Distance
+numeric__Departure Delay,Departure Delay
+numeric__Arrival Delay,Arrival Delay
+numeric__Departure and Arrival Time Convenience,Departure and Arrival Time Convenience
+numeric__Ease of Online Booking,Ease of Online Booking
+numeric__Check-in Service,Check-in Service
+numeric__Online Boarding,Online Boarding
+numeric__Gate Location,Gate Location
+numeric__On-board Service,On-board Service
+numeric__Seat Comfort,Seat Comfort
+numeric__Leg Room Service,Leg Room Service
+numeric__Cleanliness,Cleanliness
+numeric__Food and Drink,Food and Drink
+numeric__In-flight Service,In-flight Service
+numeric__In-flight Wifi Service,In-flight Wifi Service
+numeric__In-flight Entertainment,In-flight Entertainment
+numeric__Baggage Handling,Baggage Handling
+numeric__Departure and Arrival Time Convenience_not_applicable,Departure and Arrival Time Convenience
+numeric__Ease of Online Booking_not_applicable,Ease of Online Booking
+numeric__Check-in Service_not_applicable,Check-in Service
+numeric__Online Boarding_not_applicable,Online Boarding
+numeric__Gate Location_not_applicable,Gate Location
+numeric__On-board Service_not_applicable,On-board Service
+numeric__Seat Comfort_not_applicable,Seat Comfort
+numeric__Leg Room Service_not_applicable,Leg Room Service
+numeric__Cleanliness_not_applicable,Cleanliness
+numeric__Food and Drink_not_applicable,Food and Drink
+numeric__In-flight Service_not_applicable,In-flight Service
+numeric__In-flight Wifi Service_not_applicable,In-flight Wifi Service
+numeric__In-flight Entertainment_not_applicable,In-flight Entertainment
+numeric__Baggage Handling_not_applicable,Baggage Handling
+categorical__Gender_Female,Gender
+categorical__Gender_Male,Gender
+categorical__Customer Type_First-time,Customer Type
+categorical__Customer Type_Returning,Customer Type
+categorical__Type of Travel_Business,Type of Travel
+categorical__Type of Travel_Personal,Type of Travel
+categorical__Class_Business,Class
+categorical__Class_Economy,Class
+categorical__Class_Economy Plus,Class
