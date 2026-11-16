@@ -19,7 +19,7 @@
       10599
     ]
   ],
-  "training_runtime_seconds": 1.4941074848175049,
+  "training_runtime_seconds": 1.573685884475708,
   "preprocessing": {
     "service_rating_zero_handling": "replace zero with missing and add *_not_applicable indicator",
     "numeric_imputation": "median",

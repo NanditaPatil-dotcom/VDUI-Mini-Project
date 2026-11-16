@@ -17,5 +17,5 @@
   ],
   "mean_macro_f1": 0.958301714023861,
   "std_macro_f1": 0.0010187767165321547,
-  "cv_runtime_seconds": 6.374889850616455
+  "cv_runtime_seconds": 6.089913606643677
 }
