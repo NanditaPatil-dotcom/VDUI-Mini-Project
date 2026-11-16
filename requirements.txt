@@ -5,3 +5,4 @@ shap
 google-genai
 matplotlib
 xgboost==2.1.4
+streamlit>=1.40

@@ -1,0 +1,45 @@
+row_index,actual_class,predicted_class,predicted_class_probability,probability_satisfied,correct_prediction,feature,feature_value,shap_value,direction,rank_by_absolute_contribution
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Type of Travel,Personal,-0.2522151965742526,toward Neutral or Dissatisfied,1
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,In-flight Wifi Service,2,-0.15572592155263043,toward Neutral or Dissatisfied,2
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Class,Economy,-0.032590553177017915,toward Neutral or Dissatisfied,3
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Check-in Service,5,0.025148707817208505,toward Satisfied,4
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Baggage Handling,1,0.023082870320055272,toward Satisfied,5
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Ease of Online Booking,2,-0.017317865687063953,toward Neutral or Dissatisfied,6
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Age,21,-0.015840495290760922,toward Neutral or Dissatisfied,7
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Seat Comfort,3,-0.014464892895667165,toward Neutral or Dissatisfied,8
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Online Boarding,2,-0.01429107804830814,toward Neutral or Dissatisfied,9
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,In-flight Service,3,-0.010570763411299297,toward Neutral or Dissatisfied,10
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Customer Type,Returning,0.007752965894184613,toward Satisfied,11
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Leg Room Service,3,-0.006036998756161811,toward Neutral or Dissatisfied,12
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Arrival Delay,42.0,-0.005844640234286777,toward Neutral or Dissatisfied,13
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Gate Location,1,-0.004769939634558513,toward Neutral or Dissatisfied,14
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,On-board Service,1,0.00451821857360615,toward Satisfied,15
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Departure Delay,55,0.004151164703439775,toward Satisfied,16
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Cleanliness,3,-0.0023434791814754023,toward Neutral or Dissatisfied,17
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,In-flight Entertainment,3,0.002079346408444114,toward Satisfied,18
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Flight Distance,475,-0.002062864755149647,toward Neutral or Dissatisfied,19
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Food and Drink,3,-0.001903753226668797,toward Neutral or Dissatisfied,20
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Gender,Male,0.0017410012153140305,toward Satisfied,21
+2884,Neutral or Dissatisfied,Neutral or Dissatisfied,0.9987551228841767,0.0012448771158233285,True,Departure and Arrival Time Convenience,3,-0.0008617425198398282,toward Neutral or Dissatisfied,22
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Type of Travel,Business,0.12255779189233522,toward Satisfied,1
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,In-flight Wifi Service,4,0.0941712405244843,toward Satisfied,2
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Customer Type,Returning,0.06372281803257844,toward Satisfied,3
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Online Boarding,5,0.06227562739479544,toward Satisfied,4
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Cleanliness,5,0.045779451971464324,toward Satisfied,5
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Baggage Handling,5,0.029725285900346635,toward Satisfied,6
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Class,Business,0.026683999546876058,toward Satisfied,7
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,In-flight Service,5,0.023069187160574683,toward Satisfied,8
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Age,46,0.018199552934736695,toward Satisfied,9
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,In-flight Entertainment,5,-0.012638625438771972,toward Neutral or Dissatisfied,10
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Ease of Online Booking,4,0.012090140162768506,toward Satisfied,11
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,On-board Service,5,0.010163512769043847,toward Satisfied,12
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Leg Room Service,4,0.0073977049948441955,toward Satisfied,13
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Gate Location,4,0.006976795916089128,toward Satisfied,14
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Check-in Service,3,0.005533215261641643,toward Satisfied,15
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Departure and Arrival Time Convenience,4,0.004980888905459751,toward Satisfied,16
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Flight Distance,3396,0.004650255514910018,toward Satisfied,17
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Arrival Delay,5.0,0.0036560809375141973,toward Satisfied,18
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Food and Drink,2,0.0029712938590880683,toward Satisfied,19
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Departure Delay,0,-0.000969765621123251,toward Neutral or Dissatisfied,20
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Gender,Female,-0.0009509751870216917,toward Neutral or Dissatisfied,21
+76523,Satisfied,Satisfied,0.9994921684265137,0.9994921684265137,True,Seat Comfort,4,-0.00016403568762951806,toward Neutral or Dissatisfied,22

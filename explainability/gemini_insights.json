@@ -1,0 +1,131 @@
+{
+  "status": "complete",
+  "target": {
+    "name": "Satisfaction",
+    "class_0": "Neutral or Dissatisfied",
+    "class_1": "Satisfied",
+    "probability_output": "P(Satisfied)"
+  },
+  "model": "gemini-3.8-flash",
+  "source": "/home/nandita/Downloads/VDUI-Mini-Project/explainability/shap_local_explanations.csv",
+  "generated_at_utc": "2026-11-16T08:51:59.444724+00:00",
+  "explanations": [
+    {
+      "row_index": 2884,
+      "actual_class": "Neutral or Dissatisfied",
+      "predicted_class": "Neutral or Dissatisfied",
+      "predicted_class_probability": 0.9987551228841767,
+      "probability_satisfied": 0.0012448771158233285,
+      "correct_prediction": true,
+      "top_shap_contributions": [
+        {
+          "feature": "Type of Travel",
+          "feature_value": "Personal",
+          "shap_value": -0.2522151965742526,
+          "direction": "toward Neutral or Dissatisfied"
+        },
+        {
+          "feature": "In-flight Wifi Service",
+          "feature_value": "2",
+          "shap_value": -0.15572592155263043,
+          "direction": "toward Neutral or Dissatisfied"
+        },
+        {
+          "feature": "Class",
+          "feature_value": "Economy",
+          "shap_value": -0.032590553177017915,
+          "direction": "toward Neutral or Dissatisfied"
+        },
+        {
+          "feature": "Check-in Service",
+          "feature_value": "5",
+          "shap_value": 0.025148707817208505,
+          "direction": "toward Satisfied"
+        },
+        {
+          "feature": "Baggage Handling",
+          "feature_value": "1",
+          "shap_value": 0.023082870320055272,
+          "direction": "toward Satisfied"
+        }
+      ],
+      "explanation": "The model predicted that the passenger is neutral or dissatisfied. Features such as Type of Travel, In-flight Wifi Service, and Class lowered the estimated likelihood of satisfaction and pushed the prediction toward neutral or dissatisfied. Conversely, Check-in Service and Baggage Handling contributed positively toward satisfaction, but their influence was not strong enough to change the overall outcome.",
+      "evidence_features": [
+        "Type of Travel",
+        "In-flight Wifi Service",
+        "Class",
+        "Check-in Service",
+        "Baggage Handling"
+      ],
+      "service_improvement_suggestions": [
+        {
+          "evidence_feature": "In-flight Wifi Service",
+          "recommendation": "Review in-flight connectivity, network coverage, and onboard internet reliability for passengers.",
+          "reason": "In-flight Wifi Service contributed negatively in this prediction, driving the model output toward neutral or dissatisfied."
+        }
+      ],
+      "uncertainty_note": "SHAP values describe how the model weighted features for this specific prediction and do not establish causation or guarantee that modifying these services will change passenger satisfaction."
+    },
+    {
+      "row_index": 76523,
+      "actual_class": "Satisfied",
+      "predicted_class": "Satisfied",
+      "predicted_class_probability": 0.9994921684265137,
+      "probability_satisfied": 0.9994921684265137,
+      "correct_prediction": true,
+      "top_shap_contributions": [
+        {
+          "feature": "Type of Travel",
+          "feature_value": "Business",
+          "shap_value": 0.12255779189233522,
+          "direction": "toward Satisfied"
+        },
+        {
+          "feature": "In-flight Wifi Service",
+          "feature_value": "4",
+          "shap_value": 0.0941712405244843,
+          "direction": "toward Satisfied"
+        },
+        {
+          "feature": "Customer Type",
+          "feature_value": "Returning",
+          "shap_value": 0.06372281803257844,
+          "direction": "toward Satisfied"
+        },
+        {
+          "feature": "Online Boarding",
+          "feature_value": "5",
+          "shap_value": 0.06227562739479544,
+          "direction": "toward Satisfied"
+        },
+        {
+          "feature": "Cleanliness",
+          "feature_value": "5",
+          "shap_value": 0.045779451971464324,
+          "direction": "toward Satisfied"
+        }
+      ],
+      "explanation": "The model predicts that the passenger is satisfied with an extremely high probability. Several positive contributing factors pushed the prediction toward satisfaction, led most strongly by the passenger traveling for business rather than personal reasons, followed by high ratings for In-flight Wifi Service, Online Boarding, and Cleanliness, as well as their status as a returning customer.",
+      "evidence_features": [
+        "Type of Travel",
+        "In-flight Wifi Service",
+        "Customer Type",
+        "Online Boarding",
+        "Cleanliness"
+      ],
+      "service_improvement_suggestions": [
+        {
+          "evidence_feature": "In-flight Wifi Service",
+          "recommendation": "Review onboard connectivity infrastructure to see if high-speed wifi can be consistently maintained across flights.",
+          "reason": "In-flight Wifi Service had a strong positive contribution pushing the model toward a satisfied prediction, indicating this is an important area associated with favorable ratings."
+        },
+        {
+          "evidence_feature": "Online Boarding",
+          "recommendation": "Examine the digital check-in and boarding pass experience to ensure it remains smooth and reliable for passengers.",
+          "reason": "A high rating for Online Boarding contributed positively toward the predicted satisfaction outcome in the model."
+        }
+      ],
+      "uncertainty_note": "SHAP describes the internal associations used by this model prediction and does not establish causation or guarantee that changing a service will change satisfaction."
+    }
+  ]
+}
