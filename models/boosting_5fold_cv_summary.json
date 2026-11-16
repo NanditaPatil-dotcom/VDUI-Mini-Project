@@ -1,0 +1,21 @@
+{
+  "model": "XGBoost",
+  "cv_method": "5-fold StratifiedKFold",
+  "cv_scope": "training set only",
+  "n_splits": 5,
+  "shuffle": true,
+  "random_state": 42,
+  "scoring": "f1_macro",
+  "training_rows": 103589,
+  "held_out_test_rows_excluded_from_cv": 25898,
+  "fold_macro_f1": [
+    0.9621401297629784,
+    0.9631064444078072,
+    0.9627316902354318,
+    0.9641495012885615,
+    0.9657936571168807
+  ],
+  "mean_macro_f1": 0.9635842845623319,
+  "std_macro_f1": 0.0014354118238712364,
+  "cv_runtime_seconds": 9.88497805595398
+}

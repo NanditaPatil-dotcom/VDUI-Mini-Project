@@ -1,0 +1,31 @@
+{
+  "model": "XGBoost",
+  "train_rows": 103589,
+  "test_rows": 25898,
+  "train_indices_file": "train_indices.csv",
+  "test_indices_file": "test_indices.csv",
+  "accuracy": 0.9643215692331454,
+  "macro_precision": 0.9654572616674927,
+  "macro_recall": 0.9620110741987334,
+  "macro_f1": 0.9635699229460414,
+  "roc_auc": 0.9953112340256172,
+  "confusion_matrix": [
+    [
+      14347,
+      298
+    ],
+    [
+      626,
+      10627
+    ]
+  ],
+  "training_runtime_seconds": 1.5235424041748047,
+  "preprocessing": {
+    "service_rating_zero_handling": "replace zero with missing and add *_not_applicable indicator",
+    "numeric_imputation": "median",
+    "categorical_imputation": "most_frequent",
+    "categorical_encoding": "OneHotEncoder(handle_unknown=ignore)",
+    "preprocessing_inside_pipeline": true
+  },
+  "cross_validation": "Separate CV files; CV uses X_train,y_train only; held-out test set excluded."
+}
