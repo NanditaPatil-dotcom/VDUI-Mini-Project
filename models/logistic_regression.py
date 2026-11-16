@@ -214,6 +214,14 @@ cv_scores = cross_val_score(
     n_jobs=-1
 )
 
+pd.DataFrame({
+    "fold": range(1, len(cv_scores) + 1),
+    "macro_f1": cv_scores
+}).to_csv(
+    output_dir / "logistic_regression_5fold_cv_scores.csv",
+    index=False
+)
+
 
 # train model
 
