@@ -1,0 +1,42 @@
+Feature,Coefficient,Absolute Coefficient,Direction
+not_applicable__In-flight Wifi Service_not_applicable,8.590487436016234,8.590487436016234,Positive association with Satisfied
+not_applicable__In-flight Entertainment_not_applicable,-2.3509947929342894,2.3509947929342894,Negative association with Satisfied
+not_applicable__Cleanliness_not_applicable,-2.2693238974782086,2.2693238974782086,Negative association with Satisfied
+categorical__Type of Travel_Personal,-2.11947121678985,2.11947121678985,Negative association with Satisfied
+categorical__Customer Type_First-time,-1.8159183453122876,1.8159183453122876,Negative association with Satisfied
+not_applicable__Food and Drink_not_applicable,-1.4962647034954195,1.4962647034954195,Negative association with Satisfied
+categorical__Type of Travel_Business,1.2196947453560882,1.2196947453560882,Positive association with Satisfied
+numeric__Online Boarding,1.1366619952931822,1.1366619952931822,Positive association with Satisfied
+numeric__In-flight Wifi Service,1.070979558841758,1.070979558841758,Positive association with Satisfied
+categorical__Customer Type_Returning,0.9161418738785468,0.9161418738785468,Positive association with Satisfied
+categorical__Class_Economy Plus,-0.7672211736366611,0.7672211736366611,Negative association with Satisfied
+not_applicable__Ease of Online Booking_not_applicable,-0.5782846693733872,0.5782846693733872,Negative association with Satisfied
+numeric__Departure and Arrival Time Convenience,-0.5030146438266749,0.5030146438266749,Negative association with Satisfied
+categorical__Class_Economy,-0.48539516435105745,0.48539516435105745,Negative association with Satisfied
+categorical__Gender_Female,-0.4811583088406189,0.4811583088406189,Negative association with Satisfied
+numeric__Ease of Online Booking,0.4710610093239108,0.4710610093239108,Positive association with Satisfied
+numeric__Check-in Service,0.4605099822205101,0.4605099822205101,Positive association with Satisfied
+numeric__On-board Service,0.4603129449550955,0.4603129449550955,Positive association with Satisfied
+categorical__Gender_Male,-0.41861816259317675,0.41861816259317675,Negative association with Satisfied
+numeric__Leg Room Service,0.3941250423844242,0.3941250423844242,Positive association with Satisfied
+categorical__Class_Business,0.3528398665539545,0.3528398665539545,Positive association with Satisfied
+numeric__Cleanliness,0.3383892681840644,0.3383892681840644,Positive association with Satisfied
+numeric__Gate Location,-0.32040603790369254,0.32040603790369254,Negative association with Satisfied
+numeric__Arrival Delay,-0.2736383213518204,0.2736383213518204,Negative association with Satisfied
+not_applicable__Online Boarding_not_applicable,0.2488269587641689,0.2488269587641689,Positive association with Satisfied
+not_applicable__Departure and Arrival Time Convenience_not_applicable,0.23087223441732807,0.23087223441732807,Positive association with Satisfied
+numeric__In-flight Service,0.20741005390682543,0.20741005390682543,Positive association with Satisfied
+not_applicable__On-board Service_not_applicable,-0.1904333977741697,0.1904333977741697,Negative association with Satisfied
+not_applicable__In-flight Service_not_applicable,-0.1904333977741697,0.1904333977741697,Negative association with Satisfied
+not_applicable__Gate Location_not_applicable,0.18187863151691344,0.18187863151691344,Positive association with Satisfied
+numeric__Baggage Handling,0.17179502795198517,0.17179502795198517,Positive association with Satisfied
+numeric__Departure Delay,0.10916086728521622,0.10916086728521622,Positive association with Satisfied
+not_applicable__Check-in Service_not_applicable,-0.10876250231809517,0.10876250231809517,Negative association with Satisfied
+not_applicable__Seat Comfort_not_applicable,-0.10876250231809517,0.10876250231809517,Negative association with Satisfied
+numeric__In-flight Entertainment,0.09383390006444187,0.09383390006444187,Positive association with Satisfied
+numeric__Food and Drink,-0.08428509400946636,0.08428509400946636,Negative association with Satisfied
+not_applicable__Leg Room Service_not_applicable,0.06162545932725961,0.06162545932725961,Positive association with Satisfied
+numeric__Age,-0.04708760334600671,0.04708760334600671,Negative association with Satisfied
+numeric__Seat Comfort,0.04649842689350287,0.04649842689350287,Positive association with Satisfied
+numeric__Flight Distance,0.019475634097353412,0.019475634097353412,Positive association with Satisfied
+not_applicable__Baggage Handling_not_applicable,0.0,0.0,Negative association with Satisfied
