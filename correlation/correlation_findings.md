@@ -112,3 +112,22 @@ The segment-wise analysis provides descriptive comparisons. Further statistical 
 The analysis identifies Online Boarding, In-flight Entertainment, In-flight Wi-Fi Service and Seat Comfort as important service-related features associated with passenger satisfaction. Class and Type of Travel also demonstrate notable categorical associations.
 
 These results complement the predictive modelling stage by providing statistical evidence about relationships in the dataset. They also provide a basis for interpreting model-based feature importance and generating actionable insights through explainable AI.
+
+## 9. Comparison Between Correlation Analysis and Logistic Regression
+
+The statistical association results were compared with the coefficients obtained from the Logistic Regression model to examine whether the relationships identified through correlation analysis were also reflected in predictive modelling.
+
+Online Boarding exhibited the strongest Spearman association with passenger satisfaction (0.58971) and also had a positive Logistic Regression coefficient of 1.13666. Similarly, In-flight Wi-Fi Service showed a positive Spearman correlation of 0.37213 and a positive Logistic Regression coefficient of 1.07098.
+
+These consistent positive directions indicate that service attributes associated with satisfaction in the bivariate statistical analysis also contributed positively to the Logistic Regression model's predictions.
+
+For categorical attributes, Class and Type of Travel showed relatively strong associations with satisfaction, with Cramér's V values of 0.50346 and 0.44979, respectively. The Logistic Regression coefficients also indicated different contributions for their encoded categories. Business Travel had a positive coefficient of 1.21970, whereas Personal Travel had a negative coefficient of -2.11947.
+
+Some differences were also observed. Gender showed a negligible Cramér's V value of 0.01116, whereas the encoded Gender coefficient was non-zero. This illustrates that bivariate association measures and multivariable model coefficients capture different relationships. Correlation analysis evaluates an individual feature's association with the target, whereas Logistic Regression estimates conditional relationships while considering the other predictors.
+
+A particularly notable result was the coefficient of +8.59049 for the In-flight Wi-Fi Not Applicable indicator. Further investigation found that 3,908 passengers had Wi-Fi ratings marked as not applicable, of whom 99.74% were satisfied. Among these passengers, several other service attributes were also frequently marked as not applicable. This indicates a strong dataset-specific pattern associated with service-rating applicability. It should not be interpreted as evidence that unavailable Wi-Fi causes higher satisfaction.
+
+The comparison demonstrates that correlation analysis and Logistic Regression provide complementary perspectives. Correlation measures identify individual feature associations, whereas Logistic Regression captures conditional relationships within a predictive model. Their numerical values are not directly interchangeable because the features undergo different transformations and the measures represent different statistical quantities.
+
+Overall, Online Boarding and In-flight Wi-Fi Service showed consistent positive relationships across the statistical and Logistic Regression analyses. Further comparison with SHAP-based feature importance can help determine whether these patterns are also reflected in the selected ensemble model.
+
