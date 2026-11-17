@@ -3,7 +3,7 @@ import pandas as pd
 from pbir import *  # noqa
 
 MEAS = "_Measures"
-PAGES_ORDER = ["overview", "eda", "service", "drivers", "model", "subgroup", "explain", "conclusion"]
+PAGES_ORDER = ["overview", "eda", "model", "explain", "conclusion"]
 TITLES = {"overview": "OVERVIEW", "eda": "EDA & PASSENGER ANALYSIS", "service": "SERVICE QUALITY",
           "drivers": "KEY DRIVERS", "model": "MODEL PERFORMANCE", "subgroup": "SUBGROUP PERFORMANCE",
           "explain": "AI EXPLAINABILITY", "conclusion": "CONCLUSION"}
@@ -58,36 +58,30 @@ class Ctx:
 
 
 def chrome(p, ctx, key, with_passenger_slicers=False, extra_slicers=None):
-    """Dark header + navigator + title strip + footer (+ filter strip)."""
-    nav_x = 440
-    p.begin_group("Header", 0, 0, 1600, 68)
-    p.textbox(0, 0, 1600, 64, [[(" ", 4, False, WHITE)]], bg=HEADER_DARK, label="header bg")
-    p.textbox(0, 64, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="header accent")
-    p.textbox(20, 6, 420, 54, [[("✈  BEYOND THE BOARDING PASS", 14, True, WHITE)],
-                               [("Airline Passenger Satisfaction  |  Team 11", 9, False, "#9CC3F0")]], label="app title")
-    p.page_navigator(nav_x, 12, 1590 - nav_x, 40)
+    """Big blue banner (title + navigator) and an optional filter strip. No page-name strip, no footer."""
+    p.dy = 16
+    p.begin_group("Header", 0, 0, 1600, 88)
+    p.textbox(0, 0, 1600, 84, [[(" ", 4, False, WHITE)]], bg=NAVY, label="banner")
+    p.textbox(0, 84, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="banner accent")
+    p.textbox(20, 10, 330, 64, [[("\u2708  BEYOND THE BOARDING PASS", 16, True, WHITE)],
+                                [("Airline Passenger Satisfaction  |  Team 11", 9, False, "#BBD4F5")]], label="app title")
+    p.page_navigator(350, 22, 1240, 44)
     p.end_group()
-
-    # title strip
-    p.textbox(20, 76, 740 if (with_passenger_slicers or extra_slicers) else 1560, 52,
-              [[(TITLES[key], 15, True, NAVY)], [(QUESTIONS[key], 9.5, False, MUTED, True)]], label="page title")
     if with_passenger_slicers:
-        p.begin_group("Filters", 770, 72, 810, 56)
-        specs = [(c("DimPassengerProfile", "Gender"), "Gender"), (c("DimTravel", "Class"), "Class"),
-                 (c("DimPassengerProfile", "Customer Type"), "CustomerType"), (c("DimTravel", "Type of Travel"), "TypeOfTravel")]
-        names = ["Gender", "Travel Class", "Customer Type", "Type of Travel"]
-        for i, ((ref, sync), nm) in enumerate(zip(specs, names)):
-            p.slicer(770 + i * 205, 72, 195, 56, ref, sync=sync, title=nm, label=f"slicer {nm}")
+        p.begin_group("Filters", 20, 94, 1560, 50)
+        specs = [(c("DimPassengerProfile", "Gender"), "Gender", "Gender"), (c("DimTravel", "Class"), "Class", "Travel Class"),
+                 (c("DimPassengerProfile", "Customer Type"), "CustomerType", "Customer Type"),
+                 (c("DimTravel", "Type of Travel"), "TypeOfTravel", "Type of Travel")]
+        for i, (ref, sync, nm) in enumerate(specs):
+            p.slicer(20 + i * 390, 94, 380, 50, ref, sync=sync, title=nm, label=f"slicer {nm}")
         p.end_group()
     if extra_slicers:
-        p.begin_group("Filters", 770, 72, 810, 56)
+        p.begin_group("Filters", 20, 94, 1560, 50)
         n = len(extra_slicers)
-        w = int(800 / n) - 10
+        w = min(500, int((1560 - 10 * (n - 1)) / n))
         for i, (ref, nm, kw) in enumerate(extra_slicers):
-            p.slicer(780 + i * (w + 10), 72, w, 56, ref, title=nm, label=f"slicer {nm}", **kw)
+            p.slicer(20 + i * (w + 10), 94, w, 50, ref, title=nm, label=f"slicer {nm}", **kw)
         p.end_group()
-    # footer
-    p.textbox(20, 872, 1560, 22, [[(FOOT, 8, False, MUTED)]], label="footer")
 
 
 def kpi_row(p, specs, y=134, h=96, color_cycle=(NAVY, BLUE, TEAL, AMBER, NAVY)):
@@ -168,163 +162,103 @@ def build_pages(root, ctx_pages, F, bm):
                  label=f"story {bm}")
     p.end_group()
 
-    # ============================= 2 EDA =============================
+    # ============================= 2 EDA & PASSENGER ANALYSIS (incl. service quality) =============================
     p = new("eda")
     chrome(p, ctx, "eda", with_passenger_slicers=True)
-    kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("Avg Departure Delay", "AVG DEPARTURE DELAY (MIN)"),
-                ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)"), ("Avg Flight Distance", "AVG FLIGHT DISTANCE (MI)")])
-    sat_stack(p, 20, 242, 380, 300, "Satisfaction by Travel Class", c("DimTravel", "Class"), label="eda class")
-    sat_stack(p, 410, 242, 400, 300, "", c("FactPassenger", "Delay Bucket"), title_measure="Title - Delay Chart", label="eda delay")
-    sat_stack(p, 820, 242, 380, 300, "Satisfaction by Age Band", c("DimPassengerProfile", "Age Band"), label="eda age")
-    sat_stack(p, 1210, 242, 370, 300, "Satisfaction by Distance Band", c("FactPassenger", "Distance Band"), label="eda dist")
-    p.chart("clusteredBarChart", 20, 554, 560, 312, "Average Rating by Service Attribute (1-5, zeros excluded)",
-            category=c("DimServiceAttribute", "Service Attribute"), values=[m("Average Service Rating")],
-            sort=(m("Average Service Rating"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8,
-                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="eda avg rating")
-    sat_stack(p, 590, 554, 330, 312, "Returning Passenger Profile", c("DimPassengerProfile", "Customer Type"), kind="hundredPercentStackedBarChart",
-              label="eda customer")
-    sat_stack(p, 930, 554, 320, 312, "Reason for Travelling", c("DimTravel", "Type of Travel"), kind="hundredPercentStackedBarChart", label="eda travel")
-    insight_table(p, 1260, 554, 320, 312, "LIVE OBSERVATIONS", ["Who is happiest?", "Travel-type gap", "Customer-type gap", "Gender gap", "Delay effect"], size=9)
-
-    # ============================= 3 SERVICE QUALITY =============================
-    p = new("service")
-    chrome(p, ctx, "service", with_passenger_slicers=True)
-    kpi_row(p, [("Average Service Rating", "AVG SERVICE RATING (1-5)"), ("Good Rating Share", "GOOD RATINGS (4-5)"),
-                ("Poor Rating Share", "POOR RATINGS (1-2)"), ("Lowest Rated Attribute", "LOWEST-RATED SERVICE", 15),
-                ("Highest Rated Attribute", "HIGHEST-RATED SERVICE", 15)])
+    kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)"),
+                ("Average Service Rating", "AVG SERVICE RATING (1-5)"), ("Lowest Rated Attribute", "LOWEST-RATED SERVICE", 15)])
+    sat_stack(p, 20, 242, 380, 280, "Satisfaction by Travel Class", c("DimTravel", "Class"), label="eda class")
+    sat_stack(p, 410, 242, 380, 280, "", c("FactPassenger", "Delay Bucket"), title_measure="Title - Delay Chart", label="eda delay")
+    sat_stack(p, 800, 242, 380, 280, "Satisfaction by Age Band", c("DimPassengerProfile", "Age Band"), label="eda age")
+    sat_stack(p, 1190, 242, 390, 280, "Returning vs First-time Passengers", c("DimPassengerProfile", "Customer Type"),
+              kind="hundredPercentStackedBarChart", label="eda customer")
     cat = c("FactServiceRating", "Rating Category")
-    p.chart("hundredPercentStackedBarChart", 20, 242, 780, 624, "Satisfaction Survey: how passengers rated each service",
+    p.chart("hundredPercentStackedBarChart", 20, 534, 640, 332, "Satisfaction Survey: how passengers rated each service",
             category=c("DimServiceAttribute", "Service Attribute"), series=cat, values=[m("Rating Share")],
-            objects=chart_objects(legend="Top", labels=True, label_color=WHITE, val_axis=False, gridlines=False, cat_size=9,
+            objects=chart_objects(legend="Top", labels=True, label_color=WHITE, val_axis=False, gridlines=False, cat_size=8, label_size=8,
                                   datapoints=dp_colors("FactServiceRating", "Rating Category", RATING_COLORS)),
-            subtitle="Poor = 1-2, Average = 3, Good = 4-5, Not Rated = 0 (not applicable)", label="survey stacked")
-    p.chart("clusteredColumnChart", 810, 242, 770, 300, "Average Rating by Service Group: satisfied vs neutral/dissatisfied",
-            category=c("DimServiceAttribute", "Service Group"), values=[m("Avg Rating - Satisfied"), m("Avg Rating - Neutral or Dissatisfied")],
-            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd",
-                                  datapoints=dp_measures({"Avg Rating - Satisfied": BLUE, "Avg Rating - Neutral or Dissatisfied": AMBER})),
-            label="service group compare")
-    p.chart("clusteredBarChart", 810, 554, 770, 312, "Rating Gap by Attribute (satisfied minus neutral/dissatisfied)",
+            subtitle="Poor 1-2 | Average 3 | Good 4-5 | Not rated 0", label="survey stacked")
+    p.chart("clusteredBarChart", 670, 534, 470, 332, "Rating gap: satisfied minus neutral/dissatisfied",
             category=c("DimServiceAttribute", "Service Attribute"), values=[m("Rating Gap (Satisfied - Not)")],
             sort=(m("Rating Gap (Satisfied - Not)"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8,
-                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]),
-            subtitle="Bigger gap = service that separates happy from unhappy passengers", label="rating gap")
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
+                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]), label="rating gap")
+    insight_table(p, 1150, 534, 430, 332, "LIVE OBSERVATIONS", ["Who is happiest?", "Travel-type gap", "Customer-type gap", "Gender gap", "Delay effect", "Service gap"], size=9)
 
-    # ============================= 4 KEY DRIVERS =============================
-    p = new("drivers")
-    chrome(p, ctx, "drivers", extra_slicers=[(c("CorrelationRanking", "Method"), "Association method", {})])
-    kpi_row(p, [("Strongest Associated Feature", "STRONGEST ASSOCIATION", 16), ("Strongest Association Value", "EFFECT SIZE (MAX |r|)"),
-                ("Significant Features", "SIGNIFICANT FEATURES (adj p<0.05)"), ("Top Feature (SHAP)", "TOP MODEL DRIVER (SHAP)", 16),
-                ("Top 5 Share of SHAP", "TOP-5 SHARE OF |SHAP|")])
-    p.chart("clusteredBarChart", 20, 242, 780, 624, "Association with Satisfaction (Spearman / Point-biserial / Cramer's V)",
-            category=c("CorrelationRanking", "Feature"), series=c("CorrelationRanking", "Method"), values=[m("Effect Value")],
-            sort=(m("Absolute Effect"), "Descending"),
-            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, cat_size=9, label_pos="OutsideEnd",
-                                  datapoints=dp_colors("CorrelationRanking", "Method", {"Spearman": BLUE, "Point-Biserial": TEAL, "Cramer's V": AMBER})),
-            subtitle="Methods have different interpretations - compare within a method, not across", label="corr bars")
-    p.chart("clusteredBarChart", 810, 242, 770, 300, "Global Model Importance (mean |SHAP|, top 10)",
-            category=c("ShapImportance", "Feature"), values=[m("Top 10 SHAP")], sort=(m("Top 10 SHAP"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
-                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]),
-            tooltip_page=ctx_pages["tooltip"].id, label="shap top10")
-    p.table(810, 554, 480, 312, "Association table", [c("CorrelationRanking", "Feature"), c("CorrelationRanking", "Method"),
-                                                       m("Effect Value"), c("CorrelationRanking", "Adjusted P-value")],
-            sort=(m("Absolute Effect"), "Descending"), size=9, label="corr table")
-    guide = [
-        [("HOW TO READ THIS PAGE", 11, True, NAVY)],
-        [("• Correlation shows how a feature moves with satisfaction on its own.", 9, False, TEXT)],
-        [("• SHAP shows how much the trained model relies on a feature after accounting for the others.", 9, False, TEXT)],
-        [("• Agreement (Online Boarding, Wi-Fi, Entertainment) = a robust driver. Disagreement = overlap between features or non-linear effects.", 9, False, TEXT)],
-        [("• Association is not causation.", 9, False, TEXT, True)],
-    ]
-    p.textbox(1300, 554, 280, 312, guide, bg=WHITE, border=BORDER, radius=10, shadow=True, label="reading guide")
-
-    # ============================= 5 MODEL PERFORMANCE =============================
+    # ============================= 3 MODEL PERFORMANCE (comparison + CV + subgroups + drivers) =============================
     p = new("model")
-    chrome(p, ctx, "model", extra_slicers=[(c("DimModel", "Model"), "Model", {}), (c("MetricSelector", "Metric"), "Metric explorer", {})])
+    chrome(p, ctx, "model", extra_slicers=[(c("DimModel", "Model"), "Model", {}), (c("SubgroupPerformance", "Attribute"), "Passenger attribute (subgroups)", {})])
     kpi_row(p, [("Best Model", "BEST PERFORMING MODEL", 20), ("Best Macro F1", "BEST MACRO F1"), ("Best Macro Recall", "BEST MACRO RECALL"),
-                ("Best ROC-AUC", "BEST ROC-AUC"), ("Best Model CV Std", "CV STD-DEV (BEST MODEL)")])
-    p.chart("clusteredBarChart", 20, 242, 520, 300, "", category=c("DimModel", "Model"),
+                ("Best ROC-AUC", "BEST ROC-AUC"), ("Recall Gap (pts)", "SUBGROUP RECALL GAP (PTS)")])
+    p.chart("clusteredBarChart", 20, 242, 440, 290, "", category=c("DimModel", "Model"),
             values=[m("Model Accuracy"), m("Model Macro F1"), m("Model Macro Recall")], title_measure="Title - Model Chart",
-            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd",
+            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", label_size=8,
                                   datapoints=dp_measures({"Model Accuracy": TEAL, "Model Macro F1": NAVY, "Model Macro Recall": BLUE})),
             label="model compare")
-    p.chart("clusteredColumnChart", 550, 242, 300, 300, "Metric explorer (use the slicer)", category=c("DimModel", "Model"),
-            values=[m("Selected Model Metric")],
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd",
-                                  datapoints=dp_colors("DimModel", "Model", MODEL_COLORS)), label="metric explorer")
-    p.chart("lineChart", 860, 242, 350, 300, "Cross-Validation Stability (Macro F1 per fold)", category=c("CVScores", "Fold"),
+    p.chart("lineChart", 470, 242, 360, 290, "Cross-validation: Macro F1 per fold", category=c("CVScores", "Fold"),
             series=c("DimModel", "Model"), values=[m("Fold Macro F1")],
             objects=chart_objects(legend="Bottom", labels=False, val_axis=True, gridlines=True,
                                   datapoints=dp_colors("DimModel", "Model", MODEL_COLORS),
                                   extra={"markers": [{"properties": {"show": lit(True)}}]}), label="cv lines")
-    p.matrix(1220, 242, 360, 300, "CV Mean +/- Std-Dev", [c("DimModel", "Model")], [],
-             [m("CV Mean Macro F1"), m("CV Std Dev"), m("CV Min Macro F1"), m("CV Max Macro F1")], size=9, label="cv matrix")
-    p.chart("lineChart", 20, 554, 540, 312, "CV error bands: mean Macro F1 with +/- 1 std-dev across folds", category=c("DimModel", "Model"),
+    p.chart("lineChart", 840, 242, 370, 290, "CV error bands: mean +/- 1 std-dev", category=c("DimModel", "Model"),
             values=[m("CV Upper Band"), m("CV Mean Macro F1"), m("CV Lower Band")],
-            objects=chart_objects(legend="Top", labels=True, val_axis=True, gridlines=True,
+            objects=chart_objects(legend="Top", labels=False, val_axis=True, gridlines=True,
                                   datapoints=dp_measures({"CV Upper Band": TEAL, "CV Mean Macro F1": NAVY, "CV Lower Band": AMBER}),
                                   extra={"markers": [{"properties": {"show": lit(True)}}]}), label="cv error bands")
-    p.matrix(570, 554, 300, 312, "Confusion matrix counts (test set)", [c("DimModel", "Model")], [],
+    p.matrix(1220, 242, 360, 290, "Confusion matrix counts (test set)", [c("DimModel", "Model")], [],
              [m("Confusion TN"), m("Confusion FP"), m("Confusion FN"), m("Confusion TP")], size=9, label="confusion matrix")
-    insight_table(p, 880, 554, 700, 312, "MODEL EVALUATION CONCLUSION  |  calculated, not typed", ["Best model", "Stability", "Fairness check"], size=10)
+    p.chart("clusteredBarChart", 20, 544, 520, 322, "Recall by passenger group (use the attribute slicer)", category=c("SubgroupPerformance", "Group Label"),
+            series=c("DimModel", "Model"), values=[m("Subgroup Recall")],
+            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
+                                  datapoints=dp_colors("DimModel", "Model", MODEL_COLORS)), label="subgroup recall")
+    p.chart("clusteredBarChart", 550, 544, 500, 322, "Association vs model importance: top SHAP features (hover for details)",
+            category=c("ShapImportance", "Feature"), values=[m("Top 10 SHAP")], sort=(m("Top 10 SHAP"), "Descending"),
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
+                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]),
+            tooltip_page=ctx_pages["tooltip"].id, label="shap top10")
+    insight_table(p, 1060, 544, 520, 322, "EVALUATION CONCLUSION  |  calculated", ["Best model", "Stability", "Fairness check"], size=9)
 
-    # ============================= 6 SUBGROUP PERFORMANCE =============================
-    p = new("subgroup")
-    chrome(p, ctx, "subgroup", extra_slicers=[(c("DimModel", "Model"), "Model", {}), (c("SubgroupPerformance", "Attribute"), "Passenger attribute", {})])
-    kpi_row(p, [("Recall Gap (pts)", "RECALL GAP (MAX-MIN, PTS)", 26), ("Lowest Recall Group", "LOWEST-RECALL GROUP", 14),
-                ("Lowest Group Recall", "LOWEST GROUP RECALL"), ("FPR Gap (pts)", "FALSE-POSITIVE-RATE GAP (PTS)"),
-                ("Disparity Flag", "DISPARITY CHECK", 12)])
-    grp = c("SubgroupPerformance", "Group Label")
-    ser = c("DimModel", "Model")
-    for i, (meas, ttl) in enumerate([("Subgroup Recall", "Recall by Passenger Group"), ("Subgroup FPR", "False-Positive Rate by Group"),
-                                     ("Subgroup Macro F1", "Macro F1 by Group")]):
-        p.chart("clusteredBarChart", 20 + i * 530, 242, 520 if i < 2 else 500, 330, ttl, category=grp, series=ser, values=[m(meas)],
-                objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
-                                      datapoints=dp_colors("DimModel", "Model", MODEL_COLORS)), label=f"sub {meas}")
-    p.table(20, 584, 1000, 282, "Subgroup detail (held-out test set)",
-            [grp, ser, m("Subgroup Passengers"), m("Subgroup Precision"), m("Subgroup Recall"), m("Subgroup FPR"), m("Subgroup Macro F1")],
-            sort=(grp, "Ascending"), size=9, label="subgroup table")
-    note = [
-        [("HOW TO INTERPRET", 11, True, NAVY)],
-        [("• Recall = share of truly satisfied passengers the model finds. A low value means the model under-predicts satisfaction for that group.", 9, False, TEXT)],
-        [("• Differences may come from group size, class balance (e.g. Personal travellers are mostly dissatisfied), missing values or the decision threshold.", 9, False, TEXT)],
-        [("• This is performance investigation - NOT proof of discrimination. Check group sample sizes before drawing conclusions.", 9, False, TEXT, True)],
-    ]
-    p.textbox(1030, 584, 550, 282, note, bg=WHITE, border=BORDER, radius=10, shadow=True, label="interpretation")
-
-    # ============================= 7 AI EXPLAINABILITY =============================
+    # ============================= 7 AI EXPLAINABILITY (replicates AI_Explainability.pbix) =============================
     p = new("explain")
-    chrome(p, ctx, "explain", extra_slicers=[(c("GeminiInsights", "Passenger Label"), "Explained passenger", {"single": True, "default": F["first_label"]})])
-    kpi_row(p, [("Selected Predicted Class", "PREDICTED CLASS", 14), ("Selected P(Satisfied)", "P(SATISFIED)"),
-                ("Selected Prediction Confidence", "MODEL CONFIDENCE"), ("Selected Prediction Correct", "PREDICTION CORRECT?", 18),
-                ("Top Contributor (Selected Passenger)", "TOP CONTRIBUTOR", 14)])
-    p.chart("clusteredBarChart", 20, 242, 400, 300, "Top 5 Factors Influencing Satisfaction Predictions", category=c("ShapImportance", "Feature"),
-            values=[m("Top 5 SHAP")], sort=(m("Top 5 SHAP"), "Descending"),
+    chrome(p, ctx, "explain")
+    p.dy = 0
+    X, Y0, YS = 1600 / 1920.0, 96.0, (900 - 96 - 8) / 1081.0
+    R = lambda x, y, w, h: (x * X, Y0 + y * YS, w * X, h * YS)  # noqa: E731
+    def head(x, y, w, h, text):
+        p.textbox(*R(x, y, w, h), [{"runs": [(text, 13, True, NAVY)], "align": "center"}], label=f"head {text[:20]}")
+    head(41, 8, 673, 60, "Top 5 Factors Influencing Satisfaction Predictions")
+    p.chart("clusteredBarChart", *R(41, 76, 673, 325), "", category=c("ShapImportance", "Feature"), values=[m("Top 5 SHAP")],
+            sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]),
-            tooltip_page=ctx_pages["tooltip"].id, subtitle="hover a bar for the SHAP tooltip", label="top5 shap explain")
-    p.chart("clusteredBarChart", 430, 242, 370, 300, "Direction of influence (signed mean SHAP, top 10)", category=c("ShapImportance", "Feature"),
-            values=[m("Signed SHAP Top 10")], sort=(m("Top 10 SHAP"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, cat_size=8, label_size=8,
-                                  datapoints=[{"properties": {"fill": colr(TEAL)}}]),
-            subtitle="+ pushes toward Satisfied, - toward Neutral/Dissatisfied", tooltip_page=ctx_pages["tooltip"].id, label="signed shap")
-    p.chart("stackedBarChart", 810, 242, 770, 300, "Why this prediction? Top-10 SHAP contributions for the selected passenger",
-            category=c("ShapLocal", "Feature"), values=[m("SHAP toward Satisfied"), m("SHAP toward Neutral or Dissatisfied")],
+            tooltip_page=ctx_pages["tooltip"].id, label="top5 shap explain")
+    head(41, 418, 673, 49, "Gemini AI Explanation")
+    p.table(*R(41, 467, 673, 197), "", [m("Gemini Explanation")], size=10, label="gemini text")
+    head(751, 8, 809, 40, "Individual Passenger \u2014 SHAP Feature Contributions")
+    p.chart("clusteredBarChart", *R(751, 47, 809, 617), "", category=c("ShapLocal", "Feature"), values=[m("Net SHAP Value")],
             sort=(m("Net SHAP Value"), "Descending"),
-            objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, cat_size=9,
-                                  datapoints=dp_measures({"SHAP toward Satisfied": BLUE, "SHAP toward Neutral or Dissatisfied": AMBER})),
-            subtitle="Blue pushes toward Satisfied, amber toward Neutral/Dissatisfied", label="local shap")
-    p.table(20, 554, 700, 150, "GEMINI EXPLANATION (grounded in the SHAP values)", [m("Gemini Explanation")], size=10, label="gemini text")
-    p.table(20, 712, 700, 154, "GEMINI SERVICE-IMPROVEMENT SUGGESTIONS",
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, cat_size=9, label_size=8,
+                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]),
+            subtitle="Positive pushes toward Satisfied, negative toward Neutral/Dissatisfied", label="individual shap")
+    p.card(*R(1575, 47, 331, 156), "Selected Prediction Confidence", "PREDICTED CLASS PROBABILITY", color=NAVY, size=24)
+    p.slicer(*R(1575, 210, 331, 156), c("GeminiInsights", "Passenger Label"), title="Explained passenger", single=True,
+             default=F["first_label"], label="passenger list")
+    p.card(*R(1575, 373, 331, 138), "Selected Predicted Class", "PREDICTED CLASS", color=BLUE, size=15)
+    p.card(*R(1575, 518, 331, 138), "Selected Actual Class", "ACTUAL CLASS", color=TEAL, size=15)
+    p.table(*R(33, 683, 1887, 146), "Gemini service-improvement recommendations",
             [c("GeminiRecommendations", "Evidence Feature"), c("GeminiRecommendations", "Recommendation"), c("GeminiRecommendations", "Reason")],
-            size=9, label="gemini recs")
-    p.table(730, 554, 380, 312, "Feature contributions (selected passenger)",
-            [c("ShapLocal", "Feature"), c("ShapLocal", "Feature Value"), c("ShapLocal", "SHAP Value"), c("ShapLocal", "Direction")],
-            sort=(c("ShapLocal", "Contribution Rank"), "Ascending"), size=9, label="shap detail table")
-    insight_table(p, 1120, 554, 460, 160, "KEY EXPLAINABILITY FINDING", ["Explainability"], size=10)
-    insight_table(p, 1120, 722, 460, 144, "SERVICE AREA TO INVESTIGATE", ["Where to act"], size=10)
+            size=10, label="gemini recs")
+    head(33, 836, 1852, 36, "KEY EXPLAINABILITY FINDINGS")
+    left = [[("1. Dominant Features", 11, True, NAVY)],
+            [("In-flight WiFi Service and Type of Travel are the two most influential features in the global SHAP analysis.", 10, False, TEXT)],
+            [("2. Individual Prediction Behaviour", 11, True, NAVY)],
+            [("SHAP values reveal how individual features contribute positively or negatively to a passenger's prediction.", 10, False, TEXT)]]
+    right = [[("3. AI-Generated Interpretability", 11, True, NAVY)],
+             [("Gemini converts SHAP evidence into human-readable explanations, making model predictions easier to understand.", 10, False, TEXT)],
+             [("4. Actionable Insights", 11, True, NAVY)],
+             [("Gemini generates service improvement recommendations based on influential features and their contribution to individual predictions.", 10, False, TEXT)]]
+    p.textbox(*R(41, 872, 940, 205), left, bg=WHITE, border=BORDER, radius=8, label="findings left")
+    p.textbox(*R(1000, 872, 920, 205), right, bg=WHITE, border=BORDER, radius=8, label="findings right")
 
     # ============================= 8 CONCLUSION =============================
     p = new("conclusion")
@@ -354,16 +288,15 @@ def build_pages(root, ctx_pages, F, bm):
     # ============================= Drill-through: Passenger Segment Detail =============================
     p = ctx_pages["segment"]
     P["segment"] = p
-    p.begin_group("Header", 0, 0, 1600, 68)
-    p.textbox(0, 0, 1600, 64, [[(" ", 4, False, WHITE)]], bg=HEADER_DARK, label="header bg")
-    p.textbox(0, 64, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="header accent")
-    p.textbox(90, 6, 900, 54, [[("PASSENGER SEGMENT DETAIL", 14, True, WHITE)],
-                               [("Drill-through page: right-click a Class / Satisfaction Tier in the report -> Drill through", 9, False, "#9CC3F0")]],
+    p.dy = 16
+    p.begin_group("Header", 0, 0, 1600, 88)
+    p.textbox(0, 0, 1600, 84, [[(" ", 4, False, WHITE)]], bg=NAVY, label="banner")
+    p.textbox(0, 84, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="banner accent")
+    p.textbox(100, 10, 900, 64, [[("PASSENGER SEGMENT DETAIL", 18, True, WHITE)],
+                                 [("Drill-through page: right-click a Class / Satisfaction Tier anywhere in the report -> Drill through", 9, False, "#BBD4F5")]],
               label="segment title")
-    p.button(20, 14, 56, 36, "←", link_back(), fill="#24508F", hover=BLUE, size=14, label="back button")
+    p.button(20, 22, 60, 40, "\u2190", link_back(), fill="#24508F", hover=BLUE, size=16, label="back button")
     p.end_group()
-    p.textbox(20, 76, 1560, 52, [[("Segment profile", 15, True, NAVY)], [("Filtered by the drilled Class / Satisfaction Tier plus any slicer selections on the other pages.", 9.5, False, MUTED, True)]],
-              label="page title")
     kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("High Tier Rate", "HIGH-TIER RATE"),
                 ("Average Service Rating", "AVG SERVICE RATING"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)")])
     p.table(20, 242, 900, 624, "Segment breakdown",
@@ -375,7 +308,6 @@ def build_pages(root, ctx_pages, F, bm):
             sort=(m("Average Service Rating"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="segment ratings")
-    p.textbox(20, 872, 1560, 22, [[(FOOT, 8, False, MUTED)]], label="footer")
 
     # ============================= Tooltip: TT - SHAP Feature =============================
     p = ctx_pages["tooltip"]

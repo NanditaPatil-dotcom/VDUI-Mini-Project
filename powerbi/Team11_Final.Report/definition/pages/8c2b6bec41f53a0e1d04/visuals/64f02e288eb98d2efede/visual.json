@@ -2,10 +2,10 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "64f02e288eb98d2efede",
   "position": {
-    "x": 90.0,
-    "y": 6.0,
+    "x": 100.0,
+    "y": 10.0,
     "z": 4000,
-    "height": 54.0,
+    "height": 64.0,
     "width": 900.0,
     "tabOrder": 4000
   },
@@ -21,7 +21,7 @@
                   {
                     "value": "PASSENGER SEGMENT DETAIL",
                     "textStyle": {
-                      "fontSize": "14pt",
+                      "fontSize": "18pt",
                       "color": "#FFFFFF",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
@@ -33,10 +33,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Drill-through page: right-click a Class / Satisfaction Tier in the report -> Drill through",
+                    "value": "Drill-through page: right-click a Class / Satisfaction Tier anywhere in the report -> Drill through",
                     "textStyle": {
                       "fontSize": "9pt",
-                      "color": "#9CC3F0",
+                      "color": "#BBD4F5",
                       "fontFamily": "Segoe UI"
                     }
                   }

@@ -3,11 +3,11 @@
   "name": "85569cab7e52fce6b41d",
   "position": {
     "x": 20.0,
-    "y": 134.0,
-    "z": 8000,
+    "y": 150.0,
+    "z": 6000,
     "height": 96.0,
     "width": 1560.0,
-    "tabOrder": 8000
+    "tabOrder": 6000
   },
   "visualGroup": {
     "displayName": "KPI strip",

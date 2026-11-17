@@ -206,9 +206,12 @@ class Page:
         self.filters = None
         self.binding = None
         self.group = None
+        self.dy = 0
 
     # -- low level --
     def _pos(self, x, y, w, h):
+        if y >= 130:
+            y += self.dy
         self.z += 1000
         return {"x": float(x), "y": float(y), "z": self.z, "height": float(h), "width": float(w), "tabOrder": self.z}
 
@@ -236,6 +239,8 @@ class Page:
 
     def begin_group(self, label, x, y, w, h):
         gid = hid(self.key, "group", label)
+        if y >= 130:
+            y += self.dy
         self.z += 1000
         d = {"$schema": S_VISUAL, "name": gid,
              "position": {"x": float(x), "y": float(y), "z": self.z, "height": float(h), "width": float(w), "tabOrder": self.z},

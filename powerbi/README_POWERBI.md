@@ -21,18 +21,15 @@ If anything misbehaves, see *Troubleshooting* at the bottom.
 
 ## 2. What is inside
 
-| Page | Question it answers | Highlights |
-|---|---|---|
-| **OVERVIEW** (Hook) | What does the dataset say? | 5 KPI cards, satisfaction + tier donuts, Class mix (100%), Top-5 SHAP (with custom tooltip), data-driven Key Findings, model summary matrix, story buttons |
-| **EDA & PASSENGER ANALYSIS** (Build-up) | How do profile, class, delay, service relate to satisfaction? | 100 % stacked columns by Class / Delay Bucket / Age Band / Distance Band / Customer Type / Travel reason, avg rating by attribute, analyst notes |
-| **SERVICE QUALITY** | Which services delight or disappoint? | Survey-style 100 % bar (Poor/Average/Good/Not rated), satisfied-vs-not rating gap per attribute and per service group |
-| **KEY DRIVERS** | What is associated with satisfaction and does the model agree? | Correlation chart (method slicer), SHAP top-10, association table, reading guide |
-| **MODEL PERFORMANCE** | Which model is best and how stable? | KPI cards, clustered bar (Accuracy/Macro F1/Recall), metric explorer slicer, CV fold line chart, mean ± std matrix, error-band + confusion images, calculated conclusion |
-| **SUBGROUP PERFORMANCE** | Is performance equal for every passenger group? | Recall / FPR / Macro-F1 by Gender, Class, Customer Type, Type of Travel for all 3 models, recall-gap flag, interpretation note |
-| **AI EXPLAINABILITY** (Insight) | Why does the model predict what it predicts? | Top-5 SHAP, beeswarm, local SHAP bars for a single passenger slicer, Gemini explanation + suggestions, contribution table |
-| **CONCLUSION** | So what? | KPI recap, 9 data-driven findings, recommendations, limitations, story/navigation buttons |
-| *Passenger Segment Detail* (hidden) | Drill-through | Right-click a Class / Satisfaction Tier → Drill through. Back button included |
-| *TT - SHAP Feature* (hidden) | Tooltip | Hover a SHAP bar: mean \|SHAP\|, rank, correlation + method, avg service rating, Gemini note |
+| Page | What it covers |
+|---|---|
+| **OVERVIEW** (Hook) | KPI cards, satisfaction + tier donuts, Class mix, Top-5 SHAP (hover tooltip), live Key Findings, model summary, story buttons |
+| **EDA & PASSENGER ANALYSIS** (Build-up) | Class / delay / age / customer-type mix, survey-style service ratings, satisfied-vs-not rating gap, live observations |
+| **MODEL PERFORMANCE** | Model comparison, CV folds, CV error bands, confusion counts, subgroup recall (slicers), SHAP drivers, calculated conclusion |
+| **AI EXPLAINABILITY** (Insight) | Same layout as `AI_Explainability.pbix`: Top-5 SHAP, Gemini explanation, individual SHAP bars, passenger selector, recommendations, key findings |
+| **CONCLUSION** | KPI recap, data-driven findings and recommendations, limitations, story buttons |
+| *Passenger Segment Detail* (hidden) | Drill-through (right-click a Class / Tier) with Back button |
+| *TT - SHAP Feature* (hidden) | Hover tooltip on SHAP bars |
 
 **Story bookmarks** (View → Bookmarks): `1 Hook` → Overview, `2 Build-up` → EDA, `3 Insight` → AI Explainability, `4 Conclusion` → Conclusion.
 They are wired to the "Follow the story" buttons on the Overview page and a *Restart* button on the Conclusion page.

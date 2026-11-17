@@ -3,10 +3,10 @@
   "name": "a6a90a5500874b2bdf1f",
   "position": {
     "x": 20.0,
-    "y": 6.0,
+    "y": 10.0,
     "z": 4000,
-    "height": 54.0,
-    "width": 420.0,
+    "height": 64.0,
+    "width": 330.0,
     "tabOrder": 4000
   },
   "visual": {
@@ -21,7 +21,7 @@
                   {
                     "value": "✈  BEYOND THE BOARDING PASS",
                     "textStyle": {
-                      "fontSize": "14pt",
+                      "fontSize": "16pt",
                       "color": "#FFFFFF",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
@@ -36,7 +36,7 @@
                     "value": "Airline Passenger Satisfaction  |  Team 11",
                     "textStyle": {
                       "fontSize": "9pt",
-                      "color": "#9CC3F0",
+                      "color": "#BBD4F5",
                       "fontFamily": "Segoe UI"
                     }
                   }
