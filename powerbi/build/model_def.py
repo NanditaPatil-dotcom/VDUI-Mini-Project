@@ -114,6 +114,7 @@ def tables():
         col("Class"), col("Type of Travel")],
         dim_m(["Class", "Type of Travel"], ["Class", "Type of Travel"], "TravelKey"),
         desc="One row per Class x Type of Travel combination."))
+    T[-1] = T[-1].replace("\tpartition ", "\thierarchy 'Travel Hierarchy'\n\t\tlevel Class\n\t\t\tcolumn: Class\n\t\tlevel 'Type of Travel'\n\t\t\tcolumn: 'Type of Travel'\n\n\tpartition ", 1)
 
     T.append(tbl("DimPassengerProfile", [
         col("ProfileKey", "int64", hidden=True, fmt="0"),

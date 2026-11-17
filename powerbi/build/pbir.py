@@ -58,20 +58,25 @@ def Mea(c, t="_Measures"):
 
 
 def fld(ref):
-    """ref: ('c', table, name) or ('m', name)"""
+    """ref: ('c', table, name) | ('m', name) | ('h', table, hierarchy, level)"""
+    if ref[0] == "h":
+        return {"HierarchyLevel": {"Expression": {"Hierarchy": {"Expression": {"SourceRef": {"Entity": ref[1]}}, "Hierarchy": ref[2]}}, "Level": ref[3]}}
     return Col(ref[1], ref[2]) if ref[0] == "c" else Mea(ref[1])
 
 
 def proj(ref, display=None, active=True):
     f = fld(ref)
-    if ref[0] == "c":
+    if ref[0] == "h":
+        qr = f"{ref[1]}.{ref[2]}.{ref[3]}"
+        nq = ref[3]
+    elif ref[0] == "c":
         qr = f"{ref[1]}.{ref[2]}"
         nq = ref[2]
     else:
         qr = f"_Measures.{ref[1]}"
         nq = ref[1]
     d = {"field": f, "queryRef": qr, "nativeQueryRef": nq}
-    if ref[0] == "c" and active:
+    if ref[0] in ("c", "h") and active:
         d["active"] = True
     if display:
         d["displayName"] = display
@@ -79,6 +84,8 @@ def proj(ref, display=None, active=True):
 
 
 def qref(ref):
+    if ref[0] == "h":
+        return f"{ref[1]}.{ref[2]}.{ref[3]}"
     return f"{ref[1]}.{ref[2]}" if ref[0] == "c" else f"_Measures.{ref[1]}"
 
 
@@ -322,7 +329,8 @@ class Page:
 
     def chart(self, vtype, x, y, w, h, title, category=None, series=None, values=(), sort=None, objects=None, filters=None,
               title_measure=None, tooltip_page=None, subtitle=None, label=None):
-        b = {"Category": [category] if category else [], "Series": [series] if series else [], "Y": list(values)}
+        cats = list(category) if isinstance(category, list) else ([category] if category else [])
+        b = {"Category": cats, "Series": [series] if series else [], "Y": list(values)}
         return self.add(vtype, x, y, w, h, q=query(b, sort), objects=objects,
                         container=vco(title=title, title_measure=title_measure, tooltip_page=tooltip_page, subtitle=subtitle),
                         filters=filters, label=label or f"{vtype} {title}")

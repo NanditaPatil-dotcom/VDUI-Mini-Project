@@ -18,6 +18,12 @@ table DimTravel
 		summarizeBy: none
 		sourceColumn: Type of Travel
 
+	hierarchy 'Travel Hierarchy'
+		level Class
+			column: Class
+		level 'Type of Travel'
+			column: 'Type of Travel'
+
 	partition DimTravel = m
 		mode: import
 		source =
