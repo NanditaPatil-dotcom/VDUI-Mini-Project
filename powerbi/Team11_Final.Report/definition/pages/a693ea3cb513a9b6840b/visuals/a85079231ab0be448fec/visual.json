@@ -3,7 +3,7 @@
   "name": "a85079231ab0be448fec",
   "position": {
     "x": 590.0,
-    "y": 242.0,
+    "y": 246.0,
     "z": 20000,
     "height": 300.0,
     "width": 490.0,
@@ -420,7 +420,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Five-fold cross-validation: Macro F1 per fold'"
+                  "Value": "'Cross-validation stability: Macro F1 per fold'"
                 }
               }
             }
