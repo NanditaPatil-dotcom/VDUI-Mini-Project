@@ -498,7 +498,7 @@ def measure_list():
     add("Selected Passenger Index", "SELECTEDVALUE(GeminiInsights[Passenger Index], MINX(ALL(GeminiInsights), GeminiInsights[Passenger Index]))", "0", f7,
         "The passenger picked in the slicer; the first explained passenger when none is picked.")
     def pick(col):
-        return f"CALCULATE(MAX(GeminiInsights[{col}]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))"
+        return f"VAR idx = [Selected Passenger Index]\nRETURN CALCULATE(MAX(GeminiInsights[{col}]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))"
     add("Selected Passenger", pick("Passenger Label"), None, f7)
     add("Selected Predicted Class", pick("Predicted Class"), None, f7)
     add("Selected Actual Class", pick("Actual Class"), None, f7)
@@ -507,13 +507,13 @@ def measure_list():
     add("Selected Prediction Correct", pick("Correct Prediction"), None, f7)
     add("Gemini Explanation", pick("Explanation"), None, f7)
     add("Gemini Uncertainty Note", pick("Uncertainty Note"), None, f7)
-    add("SHAP toward Satisfied", "VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)", "+0.000;-0.000;0.000", f7,
+    add("SHAP toward Satisfied", "VAR idx = [Selected Passenger Index]\nVAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)", "+0.000;-0.000;0.000", f7,
         "Top-10 contributions only; positive values push the prediction toward Satisfied.")
-    add("SHAP toward Neutral or Dissatisfied", "VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)", "+0.000;-0.000;0.000", f7,
+    add("SHAP toward Neutral or Dissatisfied", "VAR idx = [Selected Passenger Index]\nVAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)", "+0.000;-0.000;0.000", f7,
         "Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.")
-    add("Net SHAP Value", "CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])", "+0.000;-0.000;0.000", f7)
+    add("Net SHAP Value", "VAR idx = [Selected Passenger Index]\nRETURN CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)", "+0.000;-0.000;0.000", f7)
     add("Top Contributor (Selected Passenger)",
-        "CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Passenger Index] = [Selected Passenger Index], ShapLocal[Contribution Rank] = 1)", None, f7)
+        "VAR idx = [Selected Passenger Index]\nRETURN CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Passenger Index] = idx, ShapLocal[Contribution Rank] = 1)", None, f7)
 
     f8 = "8 Narrative (data-driven text)"
     add("Insight - Headline",
