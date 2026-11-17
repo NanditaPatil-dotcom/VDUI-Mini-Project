@@ -17,42 +17,17 @@
           "projections": [
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "DimTravel"
-                        }
-                      },
-                      "Hierarchy": "Travel Hierarchy"
+                    "SourceRef": {
+                      "Entity": "DimTravel"
                     }
                   },
-                  "Level": "Class"
+                  "Property": "Class"
                 }
               },
-              "queryRef": "DimTravel.Travel Hierarchy.Class",
+              "queryRef": "DimTravel.Class",
               "nativeQueryRef": "Class",
-              "active": true
-            },
-            {
-              "field": {
-                "HierarchyLevel": {
-                  "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "DimTravel"
-                        }
-                      },
-                      "Hierarchy": "Travel Hierarchy"
-                    }
-                  },
-                  "Level": "Type of Travel"
-                }
-              },
-              "queryRef": "DimTravel.Travel Hierarchy.Type of Travel",
-              "nativeQueryRef": "Type of Travel",
               "active": true
             }
           ]

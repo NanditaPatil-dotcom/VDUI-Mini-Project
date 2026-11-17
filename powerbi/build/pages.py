@@ -139,7 +139,7 @@ def build_pages(root, ctx_pages, F, bm):
                 ("Best Macro F1", "BEST MODEL MACRO F1")])
     p.donut(20, 242, 300, 300, "Passenger Satisfaction", c("DimSatisfaction", "Satisfaction"), m("Total Passengers"), SAT_COLORS)
     p.donut(330, 242, 300, 300, "Satisfaction Tier Mix", c("DimSatisfaction", "Satisfaction Tier"), m("Total Passengers"), TIER_COLORS)
-    sat_stack(p, 640, 242, 480, 300, "", [("h", "DimTravel", "Travel Hierarchy", "Class"), ("h", "DimTravel", "Travel Hierarchy", "Type of Travel")], title_measure="Title - Class Chart", label="class mix")
+    sat_stack(p, 640, 242, 480, 300, "", c("DimTravel", "Class"), title_measure="Title - Class Chart", label="class mix")
     p.chart("clusteredBarChart", 1130, 242, 450, 300, "Top 5 Satisfaction Drivers (SHAP)", category=c("ShapImportance", "Feature"),
             values=[m("Top 5 SHAP")], sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd",
@@ -165,7 +165,7 @@ def build_pages(root, ctx_pages, F, bm):
     chrome(p, ctx, "eda", with_passenger_slicers=True)
     kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)"),
                 ("Average Service Rating", "AVG SERVICE RATING (1-5)"), ("Lowest Rated Attribute", "LOWEST-RATED SERVICE", 15)])
-    sat_stack(p, 20, 242, 380, 280, "Satisfaction by Travel Class (drill down: Class > Type of Travel)", [("h", "DimTravel", "Travel Hierarchy", "Class"), ("h", "DimTravel", "Travel Hierarchy", "Type of Travel")], label="eda class")
+    sat_stack(p, 20, 242, 380, 280, "Satisfaction by Travel Class (click a bar to filter the page)", c("DimTravel", "Class"), label="eda class")
     sat_stack(p, 410, 242, 380, 280, "", c("FactPassenger", "Delay Bucket"), title_measure="Title - Delay Chart", label="eda delay")
     sat_stack(p, 800, 242, 380, 280, "Satisfaction by Age Band", c("DimPassengerProfile", "Age Band"), label="eda age")
     sat_stack(p, 1190, 242, 390, 280, "Returning vs First-time Passengers", c("DimPassengerProfile", "Customer Type"),
