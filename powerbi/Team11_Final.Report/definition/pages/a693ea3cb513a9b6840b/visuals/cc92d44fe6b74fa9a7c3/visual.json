@@ -1,19 +1,19 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "f9c47c309fce04344d73",
+  "name": "cc92d44fe6b74fa9a7c3",
   "position": {
     "x": 20.0,
-    "y": 558.0,
-    "z": 17000,
-    "height": 322.0,
-    "width": 420.0,
-    "tabOrder": 17000
+    "y": 246.0,
+    "z": 13000,
+    "height": 310.0,
+    "width": 560.0,
+    "tabOrder": 13000
   },
   "visual": {
-    "visualType": "pivotTable",
+    "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
-        "Rows": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -32,7 +32,7 @@
             }
           ]
         },
-        "Values": {
+        "Y": {
           "projections": [
             {
               "field": {
@@ -42,11 +42,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Confusion TN"
+                  "Property": "Model Accuracy"
                 }
               },
-              "queryRef": "_Measures.Confusion TN",
-              "nativeQueryRef": "Confusion TN"
+              "queryRef": "_Measures.Model Accuracy",
+              "nativeQueryRef": "Model Accuracy"
             },
             {
               "field": {
@@ -56,11 +56,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Confusion FP"
+                  "Property": "Model Macro F1"
                 }
               },
-              "queryRef": "_Measures.Confusion FP",
-              "nativeQueryRef": "Confusion FP"
+              "queryRef": "_Measures.Model Macro F1",
+              "nativeQueryRef": "Model Macro F1"
             },
             {
               "field": {
@@ -70,91 +70,31 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Confusion FN"
+                  "Property": "Model Macro Recall"
                 }
               },
-              "queryRef": "_Measures.Confusion FN",
-              "nativeQueryRef": "Confusion FN"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Confusion TP"
-                }
-              },
-              "queryRef": "_Measures.Confusion TP",
-              "nativeQueryRef": "Confusion TP"
+              "queryRef": "_Measures.Model Macro Recall",
+              "nativeQueryRef": "Model Macro Recall"
             }
           ]
         }
       }
     },
     "objects": {
-      "columnHeaders": [
+      "legend": [
         {
           "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#FFFFFF'"
-                    }
-                  }
-                }
-              }
-            },
-            "backColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173D75'"
-                    }
-                  }
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "9.0D"
-                }
-              }
-            },
-            "bold": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "true"
                 }
               }
             },
-            "fontFamily": {
+            "position": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "rowHeaders": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#172334'"
-                    }
-                  }
+                  "Value": "'Top'"
                 }
               }
             },
@@ -165,17 +105,21 @@
                 }
               }
             },
-            "fontFamily": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Segoe UI'"
+            "labelColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#172334'"
+                    }
+                  }
                 }
               }
             }
           }
         }
       ],
-      "values": [
+      "categoryAxis": [
         {
           "properties": {
             "fontSize": {
@@ -185,7 +129,7 @@
                 }
               }
             },
-            "fontColor": {
+            "labelColor": {
               "solid": {
                 "color": {
                   "expr": {
@@ -196,42 +140,59 @@
                 }
               }
             },
-            "backColorPrimary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#FFFFFF'"
-                    }
-                  }
-                }
-              }
-            },
-            "backColorSecondary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#F3F7FC'"
-                    }
-                  }
-                }
-              }
-            },
-            "fontFamily": {
+            "showAxisTitle": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segoe UI'"
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ],
-      "grid": [
+      "valueAxis": [
         {
           "properties": {
-            "outlineColor": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9.0D"
+                }
+              }
+            },
+            "labelColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#5B6B82'"
+                    }
+                  }
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridlineShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "gridlineColor": {
               "solid": {
                 "color": {
                   "expr": {
@@ -241,14 +202,101 @@
                   }
                 }
               }
-            },
-            "rowPadding": {
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "4.0D"
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "8.0D"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#172334'"
+                    }
+                  }
+                }
+              }
+            },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'OutsideEnd'"
                 }
               }
             }
+          }
+        }
+      ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#65B7A3'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Model Accuracy"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173D75'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Model Macro F1"
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#2389ED'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_Measures.Model Macro Recall"
           }
         }
       ]
@@ -305,8 +353,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Confusion matrix counts (held-out test set)'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Title - Model Chart"
                 }
               }
             }

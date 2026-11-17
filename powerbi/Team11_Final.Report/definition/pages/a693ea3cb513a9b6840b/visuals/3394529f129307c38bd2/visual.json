@@ -1,19 +1,38 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "6c861bce5638dd0ec9f5",
+  "name": "3394529f129307c38bd2",
   "position": {
     "x": 20.0,
-    "y": 246.0,
-    "z": 14000,
-    "height": 300.0,
-    "width": 560.0,
-    "tabOrder": 14000
+    "y": 568.0,
+    "z": 16000,
+    "height": 312.0,
+    "width": 920.0,
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
         "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "SubgroupPerformance"
+                    }
+                  },
+                  "Property": "Group Label"
+                }
+              },
+              "queryRef": "SubgroupPerformance.Group Label",
+              "nativeQueryRef": "Group Label",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
           "projections": [
             {
               "field": {
@@ -42,39 +61,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Model Accuracy"
+                  "Property": "Subgroup Recall"
                 }
               },
-              "queryRef": "_Measures.Model Accuracy",
-              "nativeQueryRef": "Model Accuracy"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Model Macro F1"
-                }
-              },
-              "queryRef": "_Measures.Model Macro F1",
-              "nativeQueryRef": "Model Macro F1"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Model Macro Recall"
-                }
-              },
-              "queryRef": "_Measures.Model Macro Recall",
-              "nativeQueryRef": "Model Macro Recall"
+              "queryRef": "_Measures.Subgroup Recall",
+              "nativeQueryRef": "Subgroup Recall"
             }
           ]
         }
@@ -260,25 +251,30 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Model Accuracy"
-          }
-        },
-        {
-          "properties": {
-            "fill": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173D75'"
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "DimModel"
+                          }
+                        },
+                        "Property": "Model"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Logistic Regression'"
+                      }
                     }
                   }
                 }
               }
-            }
-          },
-          "selector": {
-            "metadata": "_Measures.Model Macro F1"
+            ]
           }
         },
         {
@@ -296,7 +292,71 @@
             }
           },
           "selector": {
-            "metadata": "_Measures.Model Macro Recall"
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "DimModel"
+                          }
+                        },
+                        "Property": "Model"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Random Forest'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173D75'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "DimModel"
+                          }
+                        },
+                        "Property": "Model"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'XGBoost'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           }
         }
       ]
@@ -353,13 +413,8 @@
             },
             "text": {
               "expr": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Title - Model Chart"
+                "Literal": {
+                  "Value": "'Subgroup performance: recall by passenger group (use the attribute slicer)'"
                 }
               }
             }

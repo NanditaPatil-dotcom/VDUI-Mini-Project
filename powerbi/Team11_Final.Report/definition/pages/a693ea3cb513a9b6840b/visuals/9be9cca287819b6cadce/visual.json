@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "da7956886045b46c821c",
+  "name": "9be9cca287819b6cadce",
   "position": {
-    "x": 1180.0,
-    "y": 558.0,
-    "z": 19000,
-    "height": 322.0,
-    "width": 400.0,
-    "tabOrder": 19000
+    "x": 950.0,
+    "y": 568.0,
+    "z": 17000,
+    "height": 312.0,
+    "width": 630.0,
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "textbox",
@@ -35,7 +35,7 @@
                   {
                     "value": "•  XGBoost performs best: Macro F1 96.4%, ROC-AUC 0.995, accuracy 96.4%.",
                     "textStyle": {
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -48,7 +48,7 @@
                   {
                     "value": "•  Stable across folds: CV Macro F1 0.9636 +/- 0.0014.",
                     "textStyle": {
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -61,7 +61,7 @@
                   {
                     "value": "•  Recall for the Satisfied class runs from 59.8% (Type of Travel: Personal) to 98.6% (Class: Business) - a performance gap to investigate, not proof of discrimination.",
                     "textStyle": {
-                      "fontSize": "10pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }

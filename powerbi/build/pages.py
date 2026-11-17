@@ -235,32 +235,30 @@ def build_pages(root, ctx_pages, F, bm):
     # ============================= 3 MODEL PERFORMANCE =============================
     p = new("model")
     chrome(p, ctx, "model", extra_slicers=[(c("DimModel", "Model"), "Model", {}), (c("SubgroupPerformance", "Attribute"), "Passenger attribute (subgroups)", {})])
-    kpi_row(p, [("Best Model", "BEST PERFORMING MODEL", 20), ("Best Macro F1", "BEST MACRO F1"), ("Best Macro Recall", "BEST MACRO RECALL"),
-                ("Best ROC-AUC", "BEST ROC-AUC"), ("Recall Gap (pts)", "SUBGROUP RECALL GAP (PTS)")])
-    p.chart("clusteredBarChart", 20, 246, 560, 300, "", category=c("DimModel", "Model"),
+    kpi_row(p, [("Best Model", "Best Performing Model"), ("Best Macro F1", "Best Macro F1"), ("Best Macro Recall", "Best Macro Recall"),
+                ("Best ROC-AUC", "Best ROC-AUC")])
+    p.chart("clusteredBarChart", 20, 246, 560, 310, "", category=c("DimModel", "Model"),
             values=[m("Model Accuracy"), m("Model Macro F1"), m("Model Macro Recall")], title_measure="Title - Model Chart",
             objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", label_size=8,
                                   datapoints=dp_measures({"Model Accuracy": TEAL, "Model Macro F1": NAVY, "Model Macro Recall": BLUE})),
             label="model compare")
-    p.chart("lineChart", 590, 246, 490, 300, "Cross-validation stability: Macro F1 per fold", category=c("CVScores", "Fold"),
+    p.chart("lineChart", 590, 246, 490, 310, "Cross-validation stability: Macro F1 per fold", category=c("CVScores", "Fold"),
             series=c("DimModel", "Model"), values=[m("Fold Macro F1")],
             objects=chart_objects(legend="Bottom", labels=False, val_axis=True, gridlines=True,
                                   datapoints=dp_colors("DimModel", "Model", MODEL_COLORS),
                                   extra={"markers": [{"properties": {"show": lit(True)}}]}), label="cv lines")
-    p.matrix(1090, 246, 490, 300, "Cross-validation results (5 folds)", [c("DimModel", "Model")], [],
-             [m("CV Mean Macro F1"), m("CV Std Dev"), m("CV Lower Band"), m("CV Upper Band"), m("CV Min Macro F1"), m("CV Max Macro F1")],
+    p.matrix(1090, 246, 490, 310, "Cross-validation results (5 folds)", [c("DimModel", "Model")], [],
+             [m("CV Mean Macro F1"), m("CV Std Dev"), m("CV Lower Band"), m("CV Upper Band")],
              size=9, label="cv results matrix")
-    p.matrix(20, 558, 420, 322, "Confusion matrix counts (held-out test set)", [c("DimModel", "Model")], [],
-             [m("Confusion TN"), m("Confusion FP"), m("Confusion FN"), m("Confusion TP")], size=9, label="confusion matrix")
-    p.chart("clusteredBarChart", 450, 558, 720, 322, "Subgroup performance: recall by passenger group (use the attribute slicer)",
+    p.chart("clusteredBarChart", 20, 568, 920, 312, "Subgroup performance: recall by passenger group (use the attribute slicer)",
             category=c("SubgroupPerformance", "Group Label"), series=c("DimModel", "Model"), values=[m("Subgroup Recall")],
             objects=chart_objects(legend="Top", labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9, label_size=8,
                                   datapoints=dp_colors("DimModel", "Model", MODEL_COLORS)), label="subgroup recall")
-    findings_box(p, 1180, 558, 400, 322, "KEY FINDINGS", [
+    findings_box(p, 950, 568, 630, 312, "KEY FINDINGS", [
         f"{F['best']} performs best: Macro F1 {pct(F['best_f1'], 1)}, ROC-AUC {F['best_auc']:.3f}, accuracy {pct(F['best_acc'], 1)}.",
         f"Stable across folds: CV Macro F1 {F['best_cv_mean']:.4f} +/- {F['best_cv_std']:.4f}.",
         f"Recall for the Satisfied class runs from {pct(F['sg_lo_r'], 1)} ({F['sg_lo']}) to {pct(F['sg_hi_r'], 1)} ({F['sg_hi']}) - a performance gap to investigate, not proof of discrimination.",
-    ], size=10, label="model key findings")
+    ], size=11, label="model key findings")
 
     # ============================= 4 AI EXPLAINABILITY: Nandita's page, copied verbatim =============================
     p = new("explain")

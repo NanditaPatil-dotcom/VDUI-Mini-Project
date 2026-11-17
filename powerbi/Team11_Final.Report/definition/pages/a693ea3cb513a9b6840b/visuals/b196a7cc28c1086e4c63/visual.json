@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "1df1efe2365165ffa1b0",
+  "name": "b196a7cc28c1086e4c63",
   "position": {
-    "x": 1276.0,
+    "x": 1197.5,
     "y": 148.0,
-    "z": 13000,
+    "z": 12000,
     "height": 88.0,
-    "width": 304.0,
-    "tabOrder": 13000
+    "width": 382.5,
+    "tabOrder": 12000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Recall Gap (pts)"
+                  "Property": "Best ROC-AUC"
                 }
               },
-              "queryRef": "_Measures.Recall Gap (pts)",
-              "nativeQueryRef": "Recall Gap (pts)",
-              "displayName": "Subgroup Recall Gap (Pts)"
+              "queryRef": "_Measures.Best ROC-AUC",
+              "nativeQueryRef": "Best ROC-AUC",
+              "displayName": "Best Roc-Auc"
             }
           ]
         }

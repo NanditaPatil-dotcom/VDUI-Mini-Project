@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "a884700add82ddf43006",
+  "name": "079bd0edd0912955aba2",
   "position": {
-    "x": 334.0,
+    "x": 20.0,
     "y": 148.0,
-    "z": 10000,
+    "z": 9000,
     "height": 88.0,
-    "width": 304.0,
-    "tabOrder": 10000
+    "width": 382.5,
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Best Macro F1"
+                  "Property": "Best Model"
                 }
               },
-              "queryRef": "_Measures.Best Macro F1",
-              "nativeQueryRef": "Best Macro F1",
-              "displayName": "Best Macro F1"
+              "queryRef": "_Measures.Best Model",
+              "nativeQueryRef": "Best Model",
+              "displayName": "Best Performing Model"
             }
           ]
         }
