@@ -1,64 +1,52 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "e3edd7891645661a0b70",
+  "name": "6157b0dbd8ce75b390a6",
   "position": {
-    "x": 20.0,
-    "y": 242.0,
-    "z": 18000,
-    "height": 624.0,
-    "width": 900.0,
-    "tabOrder": 18000
+    "x": 930.0,
+    "y": 558.0,
+    "z": 26000,
+    "height": 322.0,
+    "width": 650.0,
+    "tabOrder": 26000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "pivotTable",
     "query": {
       "queryState": {
-        "Values": {
+        "Rows": {
           "projections": [
             {
               "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimTravel"
+                      "Entity": "DimModel"
                     }
                   },
-                  "Property": "Class"
+                  "Property": "Model"
                 }
               },
-              "queryRef": "DimTravel.Class",
-              "nativeQueryRef": "Class",
+              "queryRef": "DimModel.Model",
+              "nativeQueryRef": "Model",
               "active": true
-            },
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimTravel"
+                      "Entity": "_Measures"
                     }
                   },
-                  "Property": "Type of Travel"
+                  "Property": "Model Accuracy"
                 }
               },
-              "queryRef": "DimTravel.Type of Travel",
-              "nativeQueryRef": "Type of Travel",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "DimPassengerProfile"
-                    }
-                  },
-                  "Property": "Customer Type"
-                }
-              },
-              "queryRef": "DimPassengerProfile.Customer Type",
-              "nativeQueryRef": "Customer Type",
-              "active": true
+              "queryRef": "_Measures.Model Accuracy",
+              "nativeQueryRef": "Model Accuracy"
             },
             {
               "field": {
@@ -68,11 +56,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Total Passengers"
+                  "Property": "Model Macro F1"
                 }
               },
-              "queryRef": "_Measures.Total Passengers",
-              "nativeQueryRef": "Total Passengers"
+              "queryRef": "_Measures.Model Macro F1",
+              "nativeQueryRef": "Model Macro F1"
             },
             {
               "field": {
@@ -82,11 +70,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Satisfaction Rate"
+                  "Property": "Model ROC-AUC"
                 }
               },
-              "queryRef": "_Measures.Satisfaction Rate",
-              "nativeQueryRef": "Satisfaction Rate"
+              "queryRef": "_Measures.Model ROC-AUC",
+              "nativeQueryRef": "Model ROC-AUC"
             },
             {
               "field": {
@@ -96,88 +84,14 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "High Tier Rate"
+                  "Property": "CV Mean Macro F1"
                 }
               },
-              "queryRef": "_Measures.High Tier Rate",
-              "nativeQueryRef": "High Tier Rate"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Avg Departure Delay"
-                }
-              },
-              "queryRef": "_Measures.Avg Departure Delay",
-              "nativeQueryRef": "Avg Departure Delay"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Avg Arrival Delay"
-                }
-              },
-              "queryRef": "_Measures.Avg Arrival Delay",
-              "nativeQueryRef": "Avg Arrival Delay"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Avg Flight Distance"
-                }
-              },
-              "queryRef": "_Measures.Avg Flight Distance",
-              "nativeQueryRef": "Avg Flight Distance"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_Measures"
-                    }
-                  },
-                  "Property": "Average Service Rating"
-                }
-              },
-              "queryRef": "_Measures.Average Service Rating",
-              "nativeQueryRef": "Average Service Rating"
+              "queryRef": "_Measures.CV Mean Macro F1",
+              "nativeQueryRef": "CV Mean Macro F1"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "_Measures"
-                  }
-                },
-                "Property": "Total Passengers"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": true
       }
     },
     "objects": {
@@ -209,7 +123,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -230,13 +144,44 @@
           }
         }
       ],
+      "rowHeaders": [
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#172334'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
+                }
+              }
+            },
+            "fontFamily": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
       "values": [
         {
           "properties": {
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -294,13 +239,6 @@
                       "Value": "'#E6EDF6'"
                     }
                   }
-                }
-              }
-            },
-            "gridVertical": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
                 }
               }
             },
@@ -368,7 +306,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Segment breakdown'"
+                  "Value": "'Model Performance Summary (held-out test)'"
                 }
               }
             }

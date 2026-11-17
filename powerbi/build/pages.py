@@ -82,8 +82,8 @@ NANDITA_PAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets"
 def load_nandita_page(p):
     """Copy every visual of AI_Explainability.pbix 'Page 1' unchanged (fields, filters, formatting, names), only re-positioning
     the 1920x1080 layout proportionally into the body area under the shared banner and scaling text-box font sizes to match."""
-    s = (900 - 74 - 6) / 1080.0
-    ox, oy = (1600 - 1920 * s) / 2.0, 74.0
+    s = (900 - 92 - 6) / 1080.0
+    ox, oy = (1600 - 1920 * s) / 2.0, 92.0
     for f in sorted(glob.glob(os.path.join(NANDITA_PAGE, "*", "visual.json"))):
         d = json.load(open(f, encoding="utf-8"))
         pos = d["position"]
@@ -106,32 +106,41 @@ class Ctx:
         self.bm = bookmarks       # name -> bookmark id
 
 
-def chrome(p, ctx, key, with_passenger_slicers=False, extra_slicers=None):
-    """Clean navy title bar (title only; pages are switched with the standard tabs at the bottom) + optional filter strip."""
+def chrome(p, ctx, key, with_passenger_slicers=False, extra_slicers=None, slicer_style="column"):
+    """Navy title bar (three centred white lines, as in the project title block) + optional filter slicers."""
     p.dy = 0
-    p.begin_group("Header", 0, 0, 1600, 64)
-    p.textbox(0, 0, 1600, 60, [[(" ", 4, False, WHITE)]], bg=NAVY, label="title bar")
-    p.textbox(0, 60, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="title bar accent")
-    p.textbox(24, 10, 900, 40, [[("BEYOND THE BOARDING PASS  |  TEAM 11", 18, True, WHITE)]], label="report title")
+    p.begin_group("Header", 0, 0, 1600, 84)
+    p.textbox(0, 0, 1600, 80, [[(" ", 4, False, WHITE)]], bg=NAVY, label="title bar")
+    p.textbox(0, 80, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="title bar accent")
+    p.textbox(0, 3, 1600, 76, [
+        {"runs": [("BEYOND THE BOARDING PASS", 17, True, WHITE)], "align": "center"},
+        {"runs": [("Uncovering the Key Drivers of Airline Passenger Satisfaction", 11, False, WHITE)], "align": "center"},
+        {"runs": [("TEAM 11  |  PASSENGER EXPERIENCE ANALYTICS", 11, False, WHITE)], "align": "center"}], label="report title")
     p.end_group()
-    if with_passenger_slicers:   # right-hand filter column (list slicers, synced across Overview and EDA)
-        p.begin_group("Filters", 1290, 84, 290, 480)
-        specs = [(c("DimPassengerProfile", "Gender"), "Gender", "Gender", 84, 104), (c("DimTravel", "Class"), "Class", "Travel Class", 198, 134),
-                 (c("DimPassengerProfile", "Customer Type"), "CustomerType", "Customer Type", 342, 104),
-                 (c("DimTravel", "Type of Travel"), "TypeOfTravel", "Type of Travel", 456, 104)]
-        for ref, sync, nm, yy, hh in specs:
-            p.slicer(1290, yy, 290, hh, ref, sync=sync, title=nm, label=f"slicer {nm}", mode="Basic")
-        p.end_group()
+    if with_passenger_slicers:
+        specs = [(c("DimPassengerProfile", "Gender"), "Gender", "Gender"), (c("DimTravel", "Class"), "Class", "Travel Class"),
+                 (c("DimPassengerProfile", "Customer Type"), "CustomerType", "Customer Type"),
+                 (c("DimTravel", "Type of Travel"), "TypeOfTravel", "Type of Travel")]
+        if slicer_style == "strip":      # dropdown row under the title bar
+            p.begin_group("Filters", 20, 90, 1560, 50)
+            for i, (ref, sync, nm) in enumerate(specs):
+                p.slicer(20 + i * 390, 90, 380, 50, ref, sync=sync, title=nm, label=f"slicer {nm}")
+            p.end_group()
+        else:                            # list slicers in a right-hand column
+            p.begin_group("Filters", 1290, 90, 290, 476)
+            for (ref, sync, nm), (yy, hh) in zip(specs, [(90, 104), (204, 134), (348, 104), (462, 104)]):
+                p.slicer(1290, yy, 290, hh, ref, sync=sync, title=nm, label=f"slicer {nm}", mode="Basic")
+            p.end_group()
     if extra_slicers:
-        p.begin_group("Filters", 20, 74, 1560, 50)
+        p.begin_group("Filters", 20, 90, 1560, 50)
         n = len(extra_slicers)
         w = min(500, int((1560 - 10 * (n - 1)) / n))
         for i, (ref, nm, kw) in enumerate(extra_slicers):
-            p.slicer(20 + i * (w + 10), 74, w, 50, ref, title=nm, label=f"slicer {nm}", **kw)
+            p.slicer(20 + i * (w + 10), 90, w, 50, ref, title=nm, label=f"slicer {nm}", **kw)
         p.end_group()
 
 
-def kpi_row(p, specs, y=134, h=96, color_cycle=(NAVY, BLUE, TEAL, AMBER, NAVY), x0=20, total_w=1560):
+def kpi_row(p, specs, y=148, h=88, color_cycle=(NAVY, BLUE, TEAL, AMBER, NAVY), x0=20, total_w=1560):
     n = len(specs)
     gap = 10
     w = (total_w - gap * (n - 1)) / n
@@ -179,26 +188,36 @@ def build_pages(root, ctx_pages, F, bm):
 
     pid = lambda k: ctx_pages[k].id if k in ctx_pages else None  # noqa
 
-    # ============================= 1 OVERVIEW (layout reference: KPI cards, donut, Top-5 SHAP, right-side slicers) =============================
+    # ============================= 1 OVERVIEW (detailed version) =============================
     p = new("overview")
-    chrome(p, ctx, "overview", with_passenger_slicers=True)
+    chrome(p, ctx, "overview", with_passenger_slicers=True, slicer_style="strip")
     kpi_row(p, [("Total Passengers", "TOTAL PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"),
-                ("Average Service Rating", "AVG SERVICE RATING (1-5)"), ("High Tier Passengers", "HIGH TIER COUNT")],
-            y=84, h=104, x0=20, total_w=1250)
-    p.donut(20, 200, 610, 680, "Passenger Satisfaction Distribution", c("DimSatisfaction", "Satisfaction"), m("Total Passengers"), SAT_COLORS)
-    p.chart("clusteredBarChart", 640, 200, 630, 680, "Top 5 Factors Influencing Satisfaction", category=c("ShapImportance", "Feature"),
+                ("High Tier Rate", "HIGH-TIER RATE"), ("Average Service Rating", "AVG SERVICE RATING (1-5)"),
+                ("Best Macro F1", "BEST MODEL MACRO F1")], y=148, h=88)
+    p.donut(20, 246, 375, 300, "Passenger Satisfaction", c("DimSatisfaction", "Satisfaction"), m("Total Passengers"), SAT_COLORS)
+    p.donut(405, 246, 375, 300, "Satisfaction Tier Mix", c("DimSatisfaction", "Satisfaction Tier"), m("Total Passengers"), TIER_COLORS)
+    sat_stack(p, 790, 246, 400, 300, "", c("DimTravel", "Class"), title_measure="Title - Class Chart", label="class mix")
+    p.chart("clusteredBarChart", 1200, 246, 380, 300, "Top 5 Satisfaction Drivers (SHAP)", category=c("ShapImportance", "Feature"),
             values=[m("Top 5 SHAP")], sort=(m("Top 5 SHAP"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=10,
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="top5 shap overview")
+    findings_box(p, 20, 558, 900, 322, "KEY FINDINGS", [
+        f"{pct(F['sat_rate'], 1)} of {F['n']:,} passengers are satisfied; {pct(F['high_tier'], 1)} reach the High satisfaction tier and {pct(F['low_tier'], 1)} fall in the Low tier.",
+        f"Business class passengers are {pct(F['by_class']['Business'])} satisfied versus {pct(F['by_class']['Economy'])} in Economy.",
+        f"Passengers arriving more than 15 minutes late are {pct(F['sat_late'])} satisfied versus {pct(F['sat_ontime'])} when on time ({pct(F['late_share'])} of passengers are delayed).",
+        f"Lowest-rated service: {list(F['avg_rating'])[0]} ({list(F['avg_rating'].values())[0]:.2f}/5); best: {list(F['avg_rating'])[-1]} ({list(F['avg_rating'].values())[-1]:.2f}/5).",
+    ], size=12, label="key findings")
+    p.matrix(930, 558, 650, 322, "Model Performance Summary (held-out test)", [c("DimModel", "Model")], [],
+             [m("Model Accuracy"), m("Model Macro F1"), m("Model ROC-AUC"), m("CV Mean Macro F1")], size=10, label="model summary matrix")
 
     # ============================= 2 EDA & PASSENGER ANALYSIS (incl. service quality) =============================
     p = new("eda")
-    chrome(p, ctx, "eda", with_passenger_slicers=True)
+    chrome(p, ctx, "eda", with_passenger_slicers=True, slicer_style="column")
     kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)"),
-                ("Average Service Rating", "AVG SERVICE RATING (1-5)")], y=84, h=104, x0=20, total_w=1250)
-    sat_stack(p, 20, 200, 620, 330, "Satisfaction by Travel Class  |  DRILL DOWN: Class > Type of Travel",
+                ("Average Service Rating", "AVG SERVICE RATING (1-5)")], y=90, h=104, x0=20, total_w=1250)
+    sat_stack(p, 20, 206, 620, 324, "Satisfaction by Travel Class",
               [("h", "DimTravel", "Travel Hierarchy", "Class"), ("h", "DimTravel", "Travel Hierarchy", "Type of Travel")], label="eda class drill")
-    sat_stack(p, 650, 200, 620, 330, "", c("FactPassenger", "Delay Bucket"), title_measure="Title - Delay Chart", label="eda delay")
+    sat_stack(p, 650, 206, 620, 324, "", c("FactPassenger", "Delay Bucket"), title_measure="Title - Delay Chart", label="eda delay")
     cat = c("FactServiceRating", "Rating Category")
     p.chart("hundredPercentStackedBarChart", 20, 542, 760, 338, "Satisfaction Survey: how passengers rated each service",
             category=c("DimServiceAttribute", "Service Attribute"), series=cat, values=[m("Rating Share")],
@@ -210,12 +229,6 @@ def build_pages(root, ctx_pages, F, bm):
             sort=(m("Rating Gap (Satisfied - Not)"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
                                   datapoints=[{"properties": {"fill": colr(NAVY)}}]), label="rating gap")
-    p.textbox(1290, 574, 290, 306, [[("HOW TO DRILL", 11, True, NAVY)],
-        [("1. Hover the class chart, click the single down-arrow (drill mode).", 9.5, False, TEXT)],
-        [("2. Click a bar: it splits by Type of Travel.", 9.5, False, TEXT)],
-        [("3. Click the up-arrow to drill back up.", 9.5, False, TEXT)],
-        [("4. Right-click a bar > Drill through > Passenger Segment Detail. Use Back to return.", 9.5, False, TEXT)]],
-        bg=WHITE, border=BORDER, radius=10, shadow=True, label="drill hint")
 
     # ============================= 3 MODEL PERFORMANCE =============================
     p = new("model")
@@ -293,20 +306,22 @@ def build_pages(root, ctx_pages, F, bm):
     p = ctx_pages["segment"]
     P["segment"] = p
     p.dy = 0
-    p.begin_group("Header", 0, 0, 1600, 64)
-    p.textbox(0, 0, 1600, 60, [[(" ", 4, False, WHITE)]], bg=NAVY, label="title bar")
-    p.textbox(0, 60, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="title bar accent")
-    p.textbox(150, 10, 1000, 40, [[("BEYOND THE BOARDING PASS  |  TEAM 11", 18, True, WHITE)]], label="report title")
-    p.button(20, 8, 110, 44, "\u2190  BACK", link_back(), fill=AMBER, color=NAVY, hover=WHITE, size=13, label="back button")
+    p.begin_group("Header", 0, 0, 1600, 84)
+    p.textbox(0, 0, 1600, 80, [[(" ", 4, False, WHITE)]], bg=NAVY, label="title bar")
+    p.textbox(0, 80, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="title bar accent")
+    p.textbox(0, 3, 1600, 76, [
+        {"runs": [("BEYOND THE BOARDING PASS", 17, True, WHITE)], "align": "center"},
+        {"runs": [("Uncovering the Key Drivers of Airline Passenger Satisfaction", 11, False, WHITE)], "align": "center"},
+        {"runs": [("TEAM 11  |  PASSENGER EXPERIENCE ANALYTICS", 11, False, WHITE)], "align": "center"}], label="report title")
+    p.button(20, 18, 120, 44, "\u2190  BACK", link_back(), fill=AMBER, color=NAVY, hover=WHITE, size=14, label="back button")
     p.end_group()
-    p.textbox(20, 74, 1560, 52, [[("Passenger Segment Detail", 15, True, NAVY)], [("Drill-through page: right-click a Class or Satisfaction Tier in the report and choose Drill through. Use Back to return with your filters kept.", 9.5, False, MUTED, True)]], label="segment heading")
+    p.textbox(20, 90, 1560, 50, [[("Passenger Segment Detail", 15, True, NAVY)], [("Drill-through page. Use the BACK button (top left) to return with your filters kept.", 9.5, False, MUTED, True)]], label="segment heading")
     kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("High Tier Rate", "HIGH-TIER RATE"),
                 ("Average Service Rating", "AVG SERVICE RATING"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)")])
-    p.table(20, 242, 900, 624, "Segment breakdown",
-            [c("DimTravel", "Class"), c("DimTravel", "Type of Travel"), c("DimPassengerProfile", "Customer Type"), m("Total Passengers"),
-             m("Satisfaction Rate"), m("High Tier Rate"), m("Avg Departure Delay"), m("Avg Arrival Delay"), m("Avg Flight Distance"),
-             m("Average Service Rating")], sort=(m("Total Passengers"), "Descending"), size=9, label="segment table")
-    p.chart("clusteredBarChart", 930, 242, 650, 624, "Average rating by service attribute (this segment)",
+    p.matrix(20, 242, 900, 638, "Segment breakdown", [c("DimTravel", "Class"), c("DimTravel", "Type of Travel"), c("DimPassengerProfile", "Customer Type")], [],
+             [m("Total Passengers"), m("Satisfaction Rate"), m("High Tier Rate"), m("Avg Departure Delay"), m("Avg Arrival Delay"),
+              m("Avg Flight Distance"), m("Average Service Rating")], size=10, label="segment matrix")
+    p.chart("clusteredBarChart", 930, 242, 650, 638, "Average rating by service attribute (this segment)",
             category=c("DimServiceAttribute", "Service Attribute"), values=[m("Average Service Rating")],
             sort=(m("Average Service Rating"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,

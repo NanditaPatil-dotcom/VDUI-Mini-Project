@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "f57cbb27109860e9b87b",
   "position": {
-    "x": 102.36717160719235,
-    "y": 391.2490140352249,
+    "x": 117.68106296215642,
+    "y": 402.2850112881101,
     "z": 10000,
-    "height": 37.50727259529752,
-    "width": 511.03658911092873,
+    "height": 36.683942221254405,
+    "width": 499.8187127645912,
     "tabOrder": 10000
   },
   "visual": {
@@ -22,7 +22,7 @@
                     "value": "                               Gemini AI Explanation",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "13.7pt",
+                      "fontSize": "13.4pt",
                       "color": "#ffffff"
                     }
                   }

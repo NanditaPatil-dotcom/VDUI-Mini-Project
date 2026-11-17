@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "36184dcd9ad332d4d8d4",
+  "name": "6b1570b983b15c64e36e",
   "position": {
-    "x": 640.0,
-    "y": 200.0,
-    "z": 20000,
-    "height": 680.0,
-    "width": 630.0,
-    "tabOrder": 20000
+    "x": 1200.0,
+    "y": 246.0,
+    "z": 24000,
+    "height": 300.0,
+    "width": 380.0,
+    "tabOrder": 24000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -90,7 +90,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10.0D"
+                  "Value": "9.0D"
                 }
               }
             },
@@ -280,7 +280,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Top 5 Factors Influencing Satisfaction'"
+                  "Value": "'Top 5 Satisfaction Drivers (SHAP)'"
                 }
               }
             }

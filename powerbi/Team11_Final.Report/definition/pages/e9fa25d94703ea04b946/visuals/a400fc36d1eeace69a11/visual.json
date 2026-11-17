@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "f16285b1fb342eedb10b",
+  "name": "a400fc36d1eeace69a11",
   "position": {
-    "x": 965.0,
-    "y": 84.0,
+    "x": 962.0,
+    "y": 148.0,
     "z": 18000,
-    "height": 104.0,
-    "width": 305.0,
+    "height": 88.0,
+    "width": 304.0,
     "tabOrder": 18000
   },
   "visual": {
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "High Tier Passengers"
+                  "Property": "Average Service Rating"
                 }
               },
-              "queryRef": "_Measures.High Tier Passengers",
-              "nativeQueryRef": "High Tier Passengers",
-              "displayName": "HIGH TIER COUNT"
+              "queryRef": "_Measures.Average Service Rating",
+              "nativeQueryRef": "Average Service Rating",
+              "displayName": "AVG SERVICE RATING (1-5)"
             }
           ]
         }

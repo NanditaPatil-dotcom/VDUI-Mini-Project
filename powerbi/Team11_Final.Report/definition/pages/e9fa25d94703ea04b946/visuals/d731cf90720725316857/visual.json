@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "c40d7c25b8f67a97aea3",
+  "name": "d731cf90720725316857",
   "position": {
-    "x": 650.0,
-    "y": 84.0,
+    "x": 648.0,
+    "y": 148.0,
     "z": 16000,
-    "height": 104.0,
-    "width": 305.0,
+    "height": 88.0,
+    "width": 304.0,
     "tabOrder": 16000
   },
   "visual": {
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Average Service Rating"
+                  "Property": "High Tier Rate"
                 }
               },
-              "queryRef": "_Measures.Average Service Rating",
-              "nativeQueryRef": "Average Service Rating",
-              "displayName": "AVG SERVICE RATING (1-5)"
+              "queryRef": "_Measures.High Tier Rate",
+              "nativeQueryRef": "High Tier Rate",
+              "displayName": "HIGH-TIER RATE"
             }
           ]
         }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "e7cc23aed1c95e787e66",
   "position": {
-    "x": 24.0,
-    "y": 10.0,
+    "x": 0.0,
+    "y": 3.0,
     "z": 4000,
-    "height": 40.0,
-    "width": 900.0,
+    "height": 76.0,
+    "width": 1600.0,
     "tabOrder": 4000
   },
   "visual": {
@@ -19,16 +19,42 @@
               {
                 "textRuns": [
                   {
-                    "value": "BEYOND THE BOARDING PASS  |  TEAM 11",
+                    "value": "BEYOND THE BOARDING PASS",
                     "textStyle": {
-                      "fontSize": "18pt",
+                      "fontSize": "17pt",
                       "color": "#FFFFFF",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
                     }
                   }
                 ],
-                "horizontalTextAlignment": "left"
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Uncovering the Key Drivers of Airline Passenger Satisfaction",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#FFFFFF",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "TEAM 11  |  PASSENGER EXPERIENCE ANALYTICS",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#FFFFFF",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
               }
             ]
           }

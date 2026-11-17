@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "d9102b00906e68030042",
   "position": {
-    "x": 102.36717160719235,
-    "y": 733.5028764673148,
+    "x": 117.68106296215642,
+    "y": 737.0259840570566,
     "z": 17000,
-    "height": 160.96871155481855,
-    "width": 740.768633757126,
+    "height": 157.43525203288348,
+    "width": 724.5078588697745,
     "tabOrder": 17000
   },
   "visual": {
@@ -29,7 +29,7 @@
                     "value": "1. Dominant Features",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "12.1pt"
+                      "fontSize": "11.9pt"
                     }
                   }
                 ]
@@ -39,7 +39,7 @@
                   {
                     "value": "In-flight WiFi Service and Type of Travel are the two most influential features in the global SHAP analysis.",
                     "textStyle": {
-                      "fontSize": "12.1pt"
+                      "fontSize": "11.9pt"
                     }
                   }
                 ]
@@ -50,7 +50,7 @@
                     "value": "2. Individual Prediction Behaviour",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "12.1pt"
+                      "fontSize": "11.9pt"
                     }
                   }
                 ]
@@ -60,7 +60,7 @@
                   {
                     "value": "SHAP values reveal how individual features contribute positively or negatively to a passenger's prediction.",
                     "textStyle": {
-                      "fontSize": "12.1pt"
+                      "fontSize": "11.9pt"
                     }
                   }
                 ]

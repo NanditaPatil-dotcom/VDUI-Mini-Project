@@ -8,7 +8,7 @@ any line that fails (screenshot or the red error text). **Do not treat any item 
 - [ ] `RepoRoot` parameter = your repo folder. Close & Apply finishes with no red errors (10–15 min the first time).
 - [ ] Model view: relationships include `shap_local_explanations → shap_importance` (Nandita's) and `shap_local_explanations → PassengerSelectorTable` (added so her slicer drives her cards/bars).
 
-Demo steps with exact clicks are in `DEMO_GUIDE.md`.
+Demo steps with exact clicks: `DRILL_DOWN_STEPS.md`, `DRILL_THROUGH_STEPS.md`, `DEMO_GUIDE.md`.
 
 ## 1. AI EXPLAINABILITY (copied from AI_Explainability.pbix)
 - [ ] Page shows: Top-5 SHAP chart, Gemini explanation, individual SHAP bars, probability / predicted-class / actual-class cards, passenger list slicer, recommendations table, Key Explainability Findings text.
@@ -16,12 +16,13 @@ Demo steps with exact clicks are in `DEMO_GUIDE.md`.
 - [ ] Compare side by side with `AI_Explainability.pbix` (unchanged in the repo): same fields, same text.
 
 ## 2. Navigation, slicers, interactions
-- [ ] Every page has the same navy title bar with only "BEYOND THE BOARDING PASS | TEAM 11" (no header buttons). The standard page tabs at the bottom switch pages.
+- [ ] Every page has the same navy title bar with the three centred white lines (BEYOND THE BOARDING PASS / Uncovering the Key Drivers of Airline Passenger Satisfaction / TEAM 11 | PASSENGER EXPERIENCE ANALYTICS) and no header buttons. The standard page tabs at the bottom switch pages.
 - [ ] Overview "Follow the story" buttons open Overview / EDA / AI Explainability / Conclusion.
 - [ ] Conclusion buttons open Overview, EDA, AI Explainability and Passenger Segment Detail (hidden drill-through page; the button just opens it unfiltered).
 - [ ] Slicers Gender / Class / Customer Type / Type of Travel on Overview: KPI cards, donut, class chart, findings table update.
 - [ ] Go to EDA: the same slicer selections are still applied (View > Sync slicers shows the four groups on Overview and EDA).
 - [ ] Click a bar in the class chart: other visuals on the page cross-filter. Click again to clear.
+- [ ] Passenger Segment Detail: the matrix shows Total Passengers, Satisfaction Rate, High Tier Rate, delays, distance and service rating (no "Something went wrong").
 - [ ] EDA class chart: use the drill arrows (down arrow, "expand to next level"): Class → Type of Travel; up arrow drills back.
 - [ ] Right-click a class bar → Drill through → Passenger Segment Detail opens with that class; the **← Back** button returns to the page you came from with your filters intact.
 - [ ] Model page: Model slicer and Passenger-attribute slicer change the charts.

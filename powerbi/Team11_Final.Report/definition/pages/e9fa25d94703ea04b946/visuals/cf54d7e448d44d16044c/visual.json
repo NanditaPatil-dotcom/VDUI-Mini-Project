@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "bcb919236f45baff29c9",
+  "name": "cf54d7e448d44d16044c",
   "position": {
-    "x": 20.0,
-    "y": 200.0,
-    "z": 19000,
-    "height": 680.0,
-    "width": 610.0,
-    "tabOrder": 19000
+    "x": 405.0,
+    "y": 246.0,
+    "z": 22000,
+    "height": 300.0,
+    "width": 375.0,
+    "tabOrder": 22000
   },
   "visual": {
     "visualType": "donutChart",
@@ -23,11 +23,11 @@
                       "Entity": "DimSatisfaction"
                     }
                   },
-                  "Property": "Satisfaction"
+                  "Property": "Satisfaction Tier"
                 }
               },
-              "queryRef": "DimSatisfaction.Satisfaction",
-              "nativeQueryRef": "Satisfaction",
+              "queryRef": "DimSatisfaction.Satisfaction Tier",
+              "nativeQueryRef": "Satisfaction Tier",
               "active": true
             }
           ]
@@ -150,7 +150,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#2389ED'"
+                      "Value": "'#173D75'"
                     }
                   }
                 }
@@ -170,12 +170,53 @@
                             "Entity": "DimSatisfaction"
                           }
                         },
-                        "Property": "Satisfaction"
+                        "Property": "Satisfaction Tier"
                       }
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'Satisfied'"
+                        "Value": "'High'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#65B7A3'"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "DimSatisfaction"
+                          }
+                        },
+                        "Property": "Satisfaction Tier"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Average'"
                       }
                     }
                   }
@@ -211,12 +252,12 @@
                             "Entity": "DimSatisfaction"
                           }
                         },
-                        "Property": "Satisfaction"
+                        "Property": "Satisfaction Tier"
                       }
                     },
                     "Right": {
                       "Literal": {
-                        "Value": "'Neutral or Dissatisfied'"
+                        "Value": "'Low'"
                       }
                     }
                   }
@@ -280,7 +321,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Passenger Satisfaction Distribution'"
+                  "Value": "'Satisfaction Tier Mix'"
                 }
               }
             }

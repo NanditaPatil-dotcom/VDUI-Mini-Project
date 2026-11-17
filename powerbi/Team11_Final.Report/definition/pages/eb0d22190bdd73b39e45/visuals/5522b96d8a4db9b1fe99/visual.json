@@ -3,9 +3,9 @@
   "name": "5522b96d8a4db9b1fe99",
   "position": {
     "x": 20.0,
-    "y": 200.0,
+    "y": 206.0,
     "z": 19000,
-    "height": 330.0,
+    "height": 324.0,
     "width": 620.0,
     "tabOrder": 19000
   },
@@ -390,7 +390,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Satisfaction by Travel Class  |  DRILL DOWN: Class > Type of Travel'"
+                  "Value": "'Satisfaction by Travel Class'"
                 }
               }
             }

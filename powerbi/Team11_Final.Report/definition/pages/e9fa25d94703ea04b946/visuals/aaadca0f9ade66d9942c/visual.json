@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "5db737720031969bbf14",
+  "name": "aaadca0f9ade66d9942c",
   "position": {
-    "x": 1290.0,
-    "y": 574.0,
-    "z": 23000,
-    "height": 306.0,
-    "width": 290.0,
-    "tabOrder": 23000
+    "x": 20.0,
+    "y": 558.0,
+    "z": 25000,
+    "height": 322.0,
+    "width": 900.0,
+    "tabOrder": 25000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "HOW TO DRILL",
+                    "value": "KEY FINDINGS",
                     "textStyle": {
-                      "fontSize": "11pt",
+                      "fontSize": "12pt",
                       "color": "#173D75",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
@@ -33,9 +33,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "1. Hover the class chart, click the single down-arrow (drill mode).",
+                    "value": "•  43.4% of 129,487 passengers are satisfied; 33.0% reach the High satisfaction tier and 34.3% fall in the Low tier.",
                     "textStyle": {
-                      "fontSize": "9.5pt",
+                      "fontSize": "12pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -46,9 +46,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "2. Click a bar: it splits by Type of Travel.",
+                    "value": "•  Business class passengers are 69% satisfied versus 19% in Economy.",
                     "textStyle": {
-                      "fontSize": "9.5pt",
+                      "fontSize": "12pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -59,9 +59,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "3. Click the up-arrow to drill back up.",
+                    "value": "•  Passengers arriving more than 15 minutes late are 36% satisfied versus 46% when on time (23% of passengers are delayed).",
                     "textStyle": {
-                      "fontSize": "9.5pt",
+                      "fontSize": "12pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -72,11 +72,25 @@
               {
                 "textRuns": [
                   {
-                    "value": "4. Right-click a bar > Drill through > Passenger Segment Detail. Use Back to return.",
+                    "value": "•  Lowest-rated service: In-flight Wifi Service (2.81/5); best: In-flight Service (3.64/5).",
                     "textStyle": {
-                      "fontSize": "9.5pt",
+                      "fontSize": "12pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Computed from the project CSV outputs when the report was generated (full data set, not affected by slicers).",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5B6B82",
+                      "fontFamily": "Segoe UI",
+                      "fontStyle": "italic"
                     }
                   }
                 ],
