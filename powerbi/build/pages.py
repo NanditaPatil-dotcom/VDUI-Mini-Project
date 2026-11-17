@@ -104,7 +104,7 @@ def insights_filter(topics):
 
 def insight_table(p, x, y, w, h, title, topics, size=11):
     return p.table(x, y, w, h, title, [c("Insights", "Topic"), m("Insight Text")], filters=insights_filter(topics), size=size,
-                   sort=(c("Insights", "Order"), "Ascending"), label=f"insights {title}",
+                   label=f"insights {title}",
                    objects_extra={"columnHeaders": [{"properties": {"fontColor": colr(WHITE), "backColor": colr(NAVY), "fontSize": num(size),
                                                                     "bold": lit(True)}}]})
 
