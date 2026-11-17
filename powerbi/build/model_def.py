@@ -78,10 +78,9 @@ def expressions_tmdl():
     DelaySort = Table.AddColumn(DelayBucket, "Delay Bucket Sort", each if [#"Arrival Delay in Minutes"] <= 0 then 1 else if [#"Arrival Delay in Minutes"] <= 15 then 2 else if [#"Arrival Delay in Minutes"] <= 60 then 3 else if [#"Arrival Delay in Minutes"] <= 120 then 4 else 5, Int64.Type),
     DistBand = Table.AddColumn(DelaySort, "Distance Band", each if [Flight Distance] < 500 then "Short (<500 mi)" else if [Flight Distance] < 1500 then "Medium (500-1,499 mi)" else if [Flight Distance] < 2500 then "Long (1,500-2,499 mi)" else "Ultra-long (2,500+ mi)", type text),
     DistSort = Table.AddColumn(DistBand, "Distance Band Sort", each if [Flight Distance] < 500 then 1 else if [Flight Distance] < 1500 then 2 else if [Flight Distance] < 2500 then 3 else 4, Int64.Type),
-    TierSort = Table.AddColumn(DistSort, "Tier Sort", each if [Satisfaction Tier] = "Low" then 1 else if [Satisfaction Tier] = "Average" then 2 else 3, Int64.Type),
-    Buffered = Table.Buffer(TierSort)
+    TierSort = Table.AddColumn(DistSort, "Tier Sort", each if [Satisfaction Tier] = "Low" then 1 else if [Satisfaction Tier] = "Average" then 2 else 3, Int64.Type)
 in
-    Buffered'''
+    TierSort'''
     out = [expression("RepoRoot", '"C:\\Users\\Nandika Gupta\\Downloads\\VDUI-Mini-Project-main\\VDUI-Mini-Project-main"', parameter=True),
            expression("Root", 'if Text.EndsWith(Text.Trim(RepoRoot), "\\") then Text.Trim(RepoRoot) else Text.Trim(RepoRoot) & "\\"', result="Text"),
            expression("stgPassenger", stg)]
