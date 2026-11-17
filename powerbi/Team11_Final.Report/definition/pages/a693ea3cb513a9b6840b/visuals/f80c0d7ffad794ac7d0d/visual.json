@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "f80c0d7ffad794ac7d0d",
   "position": {
-    "x": 1220.0,
-    "y": 258.0,
+    "x": 20.0,
+    "y": 570.0,
     "z": 23000,
-    "height": 290.0,
-    "width": 360.0,
+    "height": 312.0,
+    "width": 560.0,
     "tabOrder": 23000
   },
   "visual": {
@@ -123,7 +123,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -161,7 +161,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -181,7 +181,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -306,7 +306,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Confusion matrix counts (test set)'"
+                  "Value": "'Confusion matrix counts (held-out test set)'"
                 }
               }
             }

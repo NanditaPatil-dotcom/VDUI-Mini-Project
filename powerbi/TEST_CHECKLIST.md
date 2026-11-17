@@ -1,0 +1,37 @@
+# Manual test checklist (Power BI Desktop) – nothing below has been run by me
+
+I generated and statically checked the project, but I cannot run Power BI Desktop here. Tick each line yourself and send me
+any line that fails (screenshot or the red error text). **Do not treat any item as "fixed" until you have ticked it.**
+
+## 0. Open
+- [ ] Delete old `Team11_Final.*` items in `powerbi/`, unzip `Team11_Final_pbip.zip`, open `Team11_Final.pbip`.
+- [ ] `RepoRoot` parameter = your repo folder. Close & Apply finishes with no red errors (10–15 min the first time).
+- [ ] Model view: relationships include `shap_local_explanations → shap_importance` (Nandita's) and `shap_local_explanations → PassengerSelectorTable` (added so her slicer drives her cards/bars).
+
+## 1. AI EXPLAINABILITY (copied from AI_Explainability.pbix)
+- [ ] Page shows: Top-5 SHAP chart, Gemini explanation, individual SHAP bars, probability / predicted-class / actual-class cards, passenger list slicer, recommendations table, Key Explainability Findings text.
+- [ ] Slicer starts on 76523. Pick 2884 → explanation, cards and SHAP bars change. Pick 76523 again → they change back.
+- [ ] Compare side by side with `AI_Explainability.pbix` (unchanged in the repo): same fields, same text.
+
+## 2. Navigation, slicers, interactions
+- [ ] Banner navigator: each tab opens its page (Overview, EDA, Model Performance, AI Explainability, Conclusion). Ctrl+Click in Desktop.
+- [ ] Overview "Follow the story" buttons open Overview / EDA / AI Explainability / Conclusion.
+- [ ] Conclusion buttons open Overview, EDA, AI Explainability and Passenger Segment Detail.
+- [ ] Slicers Gender / Class / Customer Type / Type of Travel on Overview: KPI cards, donut, class chart, findings table update.
+- [ ] Go to EDA: the same slicer selections are still applied (View > Sync slicers shows the four groups on Overview and EDA).
+- [ ] Click a bar in the class chart: other visuals on the page cross-filter. Click again to clear.
+- [ ] EDA class chart: use the drill arrows (down arrow, "expand to next level"): Class → Type of Travel; up arrow drills back.
+- [ ] Right-click a class bar → Drill through → Passenger Segment Detail opens with that class; the **← Back** button returns to the page you came from with your filters intact.
+- [ ] Model page: Model slicer and Passenger-attribute slicer change the charts.
+
+## 3. Narrative / rendering
+- [ ] Overview "Key findings" and EDA "Live observations" show the sentence column (not just Topic) and change with slicers.
+- [ ] Conclusion page shows both tables with sentences. If any sentence column is blank, run `DAX_diagnostics.dax` (DAX query view) and send me the column name that errors.
+
+## 4. Numbers
+- [ ] Overview cards equal `expected_values.csv` (129,487 passengers, 43.4 % satisfied, XGBoost best Macro F1 96.4 %).
+- [ ] `validation_report.md` shows 37/37 checks passed (models, 5-fold CV, error bands, confusion matrices, subgroups, SHAP vs correlation).
+
+## 5. Layout
+- [ ] No visual overlaps or is cut off on any page (View > Selection pane to inspect). Each page has at most 5 charts/tables.
+- [ ] Bookmarks (View > Bookmarks): the four story bookmarks exist; they are optional (the buttons use page navigation).

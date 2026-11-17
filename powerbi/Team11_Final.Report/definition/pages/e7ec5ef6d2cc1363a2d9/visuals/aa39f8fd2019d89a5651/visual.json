@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "aa39f8fd2019d89a5651",
+  "position": {
+    "x": 1254.1354014863455,
+    "y": 371.27822353249917,
+    "z": 16000,
+    "height": 101.89856893191958,
+    "width": 167.29615794792767,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "shap_local_explanations"
+                        }
+                      },
+                      "Property": "predicted_class"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(shap_local_explanations.predicted_class)",
+              "nativeQueryRef": "First predicted_class"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7b0208afbc2059dcb8a0",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "shap_local_explanations"
+                  }
+                },
+                "Property": "predicted_class"
+              }
+            },
+            "Function": 3
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

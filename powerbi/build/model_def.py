@@ -318,6 +318,7 @@ in
     Source = #table(type table [Order = Int64.Type, Topic = text, Page = text], {{{rows}}})
 in
     Source''', desc="Helper table: each row renders one data-driven sentence through [Insight Text]."))
+    T.extend(nandita_tables())
     return T
 
 
@@ -331,11 +332,98 @@ def _top_bottom(table_expr, key_col, value_measure, kind):
             f"VAR who = MINX(FILTER(t, [@v] = best), {key_col})\n")
 
 
+def nandita_tables():
+    """Tables copied from AI_Explainability.pbix (names, columns, Power Query steps and measure kept as authored).
+    Only the hard-coded C:\\Users\\nandi\\Downloads\\ file paths are swapped for the shared Root parameter."""
+    import os, re
+    base = os.path.join(os.path.dirname(__file__), "assets", "nandita")
+    def m_of(name):
+        txt = open(os.path.join(base, name + ".m"), encoding="utf-8").read()
+        return re.sub(r'File\.Contents\("C:\\Users\\nandi\\Downloads\\([^"]+)"\)', r'File.Contents(Root & "explainability\\\1")', txt)
+    out = []
+    out.append(tbl("shap_importance", [
+        col("Rank", "int64", fmt="0"), col("Feature"), col("MeanAbsoluteSHAP", "double"), col("MeanSHAP", "double"),
+        col("ExplainedOutput"), col("SampleSize", "int64", fmt="0")], m_of("shap_importance")))
+    out.append(tbl("shap_local_explanations", [
+        col("row_index", "int64", fmt="0"), col("actual_class"), col("predicted_class"),
+        col("predicted_class_probability", "double", fmt="0.0%"), col("probability_satisfied", "double", fmt="0.0%"),
+        col("correct_prediction", "boolean"), col("feature"), col("feature_value"), col("shap_value", "double"),
+        col("direction"), col("rank_by_absolute_contribution", "int64", fmt="0")], m_of("shap_local_explanations")))
+    gi_cols = [col("status"), col("target.name"), col("target.class_0"), col("target.class_1"), col("target.probability_output"),
+               col("model"), col("source"), col("generated_at_utc", "dateTime", fmt="General Date"),
+               col("explanations.row_index", "int64", fmt="0"), col("explanations.actual_class"), col("explanations.predicted_class"),
+               col("explanations.predicted_class_probability", "double"), col("explanations.probability_satisfied", "double"),
+               col("explanations.correct_prediction", "boolean"), col("explanations.explanation")]
+    gi_cols += [col(f"explanations.evidence_features.{i}") for i in range(5)]
+    gi_cols += [col("evidence_feature"), col("recommendation"), col("reason"), col("explanations.uncertainty_note")]
+    disp = ms("Gemini Explanation Display", """VAR SelectedPassenger =
+    SELECTEDVALUE(PassengerSelectorTable[row_index])
+
+RETURN
+IF(
+    ISBLANK(SelectedPassenger),
+    "Select a passenger",
+    CALCULATE(
+        MAX(gemini_insights[explanations.explanation]),
+        FILTER(
+            ALL(gemini_insights),
+            gemini_insights[explanations.row_index]
+                = SelectedPassenger
+        )
+    )
+)""")
+    out.append(tbl("gemini_insights", gi_cols, m_of("gemini_insights"), measures=[disp]))
+    pst = ("table PassengerSelectorTable\n\n\tcolumn row_index\n\t\tdataType: int64\n\t\tsummarizeBy: none\n\t\tsourceColumn: row_index\n\n"
+           "\tpartition PassengerSelectorTable = calculated\n\t\tmode: import\n\t\tsource =\n"
+           "\t\t\t\tDISTINCT(\n\t\t\t\t\tSELECTCOLUMNS(\n\t\t\t\t\t\tgemini_insights,\n\t\t\t\t\t\t\"row_index\",\n"
+           "\t\t\t\t\t\tgemini_insights[explanations.row_index]\n\t\t\t\t\t)\n\t\t\t\t)\n")
+    out.append(pst)
+    return out
+
+
+def _gap(dim, noun_pl, sentence_tail=""):
+    return (f"VAR hi = MAXX(VALUES({dim}), [Satisfaction Rate])\n"
+            f"VAR lo = MINX(VALUES({dim}), [Satisfaction Rate])\n"
+            f"VAR hiName = CONCATENATEX(TOPN(1, VALUES({dim}), [Satisfaction Rate], DESC), {dim}, \", \")\n"
+            f"VAR loName = CONCATENATEX(TOPN(1, VALUES({dim}), [Satisfaction Rate], ASC), {dim}, \", \")\n"
+            f"RETURN IF(COUNTROWS(VALUES({dim})) < 2, \"Select more than one {noun_pl} to compare.\", "
+            f"hiName & \" is most satisfied (\" & FORMAT(hi, \"0.0%\") & \") vs \" & loName & \" (\" & FORMAT(lo, \"0.0%\") & \") - a \" & FORMAT((hi - lo) * 100, \"0.0\") & \"-pt gap by {noun_pl}.\")")
+
+
+_SA = "DimServiceAttribute[Service Attribute]"
+_GL = "SubgroupPerformance[Group Label]"
+OVERRIDES = {
+    "Lowest Rated Attribute": f'CONCATENATEX(TOPN(1, VALUES({_SA}), [Average Service Rating], ASC), {_SA}, ", ")',
+    "Lowest Attribute Rating": f"MINX(VALUES({_SA}), [Average Service Rating])",
+    "Highest Rated Attribute": f'CONCATENATEX(TOPN(1, VALUES({_SA}), [Average Service Rating], DESC), {_SA}, ", ")',
+    "Highest Attribute Rating": f"MAXX(VALUES({_SA}), [Average Service Rating])",
+    "Recall Gap (pts)": f"(MAXX(VALUES({_GL}), [Subgroup Recall]) - MINX(VALUES({_GL}), [Subgroup Recall])) * 100",
+    "FPR Gap (pts)": f"(MAXX(VALUES({_GL}), [Subgroup FPR]) - MINX(VALUES({_GL}), [Subgroup FPR])) * 100",
+    "Lowest Recall Group": f'CONCATENATEX(TOPN(1, VALUES({_GL}), [Subgroup Recall], ASC), {_GL}, ", ")',
+    "Lowest Group Recall": f"MINX(VALUES({_GL}), [Subgroup Recall])",
+    "Strongest Associated Feature": 'CONCATENATEX(TOPN(1, VALUES(CorrelationRanking[Feature]), [Absolute Effect], DESC), CorrelationRanking[Feature], ", ")',
+    "Strongest Association Value": "MAXX(VALUES(CorrelationRanking[Feature]), [Absolute Effect])",
+    "Insight - Class Gap": _gap("DimTravel[Class]", "travel class"),
+    "Insight - Travel-type gap": _gap("DimTravel[Type of Travel]", "travel type"),
+    "Insight - Customer-type gap": _gap("DimPassengerProfile[Customer Type]", "customer type"),
+    "Insight - Gender gap": _gap("DimPassengerProfile[Gender]", "gender"),
+    "Insight - Target segments": ('VAR lo = MINX(VALUES(DimTravel[Class]), [Satisfaction Rate])\n'
+                                  'VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], ASC), DimTravel[Class], ", ")\n'
+                                  'RETURN "Target " & loName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."'),
+    "Insight - Fairness": ('VAR bm = [Best Model]\n'
+                           f'VAR lo = MINX(ALL({_GL}), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))\n'
+                           f'VAR hi = MAXX(ALL({_GL}), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))\n'
+                           f'VAR loName = CONCATENATEX(TOPN(1, ALL({_GL}), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm), ASC), {_GL}, ", ")\n'
+                           'RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loName & ") to " & FORMAT(hi, "0.0%") '
+                           '& ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."'),
+}
+
+
 def measure_list():
     M = []
 
     def add(name, dax, fmt=None, folder=None, desc=None, hidden=False):
-        M.append(ms(name, dax, fmt, folder, desc, hidden))
+        M.append(ms(name, OVERRIDES.get(name, dax), fmt, folder, desc, hidden))
 
     f1 = "1 Passenger KPIs"
     add("Total Passengers", "DISTINCTCOUNT(FactPassenger[Passenger ID])", "#,0", f1, "One row per passenger record.")
@@ -613,10 +701,13 @@ def relationships_tmdl():
         rel(t, "Model", "DimModel", "Model")
     rel("ShapLocal", "Passenger Index", "GeminiInsights", "Passenger Index")
     rel("GeminiRecommendations", "Passenger Index", "GeminiInsights", "Passenger Index")
+    # AI_Explainability.pbix tables: her original relationship + the link that lets her passenger slicer drive her cards/bars
+    rel("shap_local_explanations", "feature", "shap_importance", "Feature")
+    rel("shap_local_explanations", "row_index", "PassengerSelectorTable", "row_index")
     return "\n".join(R)
 
 
 ALL_TABLE_NAMES = ["DimTravel", "DimPassengerProfile", "DimSatisfaction", "FactPassenger", "FactServiceRating",
                    "DimServiceAttribute", "DimModel", "ModelComparison", "CVScores", "SubgroupPerformance",
                    "MetricSelector", "ShapImportance", "ShapLocal", "GeminiInsights", "GeminiRecommendations",
-                   "CorrelationRanking", "Insights", "_Measures"]
+                   "CorrelationRanking", "Insights", "shap_importance", "shap_local_explanations", "gemini_insights", "PassengerSelectorTable", "_Measures"]

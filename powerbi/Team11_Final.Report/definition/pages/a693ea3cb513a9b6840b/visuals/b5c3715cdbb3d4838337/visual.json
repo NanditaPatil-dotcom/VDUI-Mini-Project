@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "b5c3715cdbb3d4838337",
   "position": {
-    "x": 470.0,
+    "x": 590.0,
     "y": 258.0,
     "z": 21000,
-    "height": 290.0,
-    "width": 360.0,
+    "height": 300.0,
+    "width": 490.0,
     "tabOrder": 21000
   },
   "visual": {
@@ -420,7 +420,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Cross-validation: Macro F1 per fold'"
+                  "Value": "'Five-fold cross-validation: Macro F1 per fold'"
                 }
               }
             }

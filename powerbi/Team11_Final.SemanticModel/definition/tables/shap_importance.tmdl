@@ -1,0 +1,43 @@
+table shap_importance
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Rank
+
+	column Feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Feature
+
+	column MeanAbsoluteSHAP
+		dataType: double
+		summarizeBy: none
+		sourceColumn: MeanAbsoluteSHAP
+
+	column MeanSHAP
+		dataType: double
+		summarizeBy: none
+		sourceColumn: MeanSHAP
+
+	column ExplainedOutput
+		dataType: string
+		summarizeBy: none
+		sourceColumn: ExplainedOutput
+
+	column SampleSize
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: SampleSize
+
+	partition shap_importance = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(Root & "explainability\shap_importance.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Rank", Int64.Type}, {"Feature", type text}, {"MeanAbsoluteSHAP", type number}, {"MeanSHAP", type number}, {"ExplainedOutput", type text}, {"SampleSize", Int64.Type}})
+				in
+					#"Changed Type"

@@ -98,7 +98,15 @@ def m(n):
 
 
 def query(buckets, sort=None):
-    qs = {k: {"projections": [proj(r) if not isinstance(r, dict) else r for r in v]} for k, v in buckets.items() if v}
+    qs = {}
+    for k, v in buckets.items():
+        if not v:
+            continue
+        pl = [proj(r) if not isinstance(r, dict) else r for r in v]
+        for i, r in enumerate(v):
+            if i > 0 and not isinstance(r, dict) and r[0] == "h":
+                pl[i].pop("active", None)   # only the top hierarchy level is active; the rest are drill levels
+        qs[k] = {"projections": pl}
     q = {"queryState": qs}
     if sort:
         ref, direction = sort

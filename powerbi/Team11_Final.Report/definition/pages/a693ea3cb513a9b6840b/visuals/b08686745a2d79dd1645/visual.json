@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "b08686745a2d79dd1645",
   "position": {
-    "x": 20.0,
-    "y": 560.0,
+    "x": 590.0,
+    "y": 570.0,
     "z": 24000,
-    "height": 322.0,
-    "width": 520.0,
+    "height": 312.0,
+    "width": 990.0,
     "tabOrder": 24000
   },
   "visual": {
@@ -116,7 +116,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "8.0D"
+                  "Value": "9.0D"
                 }
               }
             },
@@ -414,7 +414,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Recall by passenger group (use the attribute slicer)'"
+                  "Value": "'Subgroup performance: recall by passenger group (use the attribute slicer)'"
                 }
               }
             }

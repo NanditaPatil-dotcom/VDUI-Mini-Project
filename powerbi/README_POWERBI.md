@@ -26,7 +26,7 @@ If anything misbehaves, see *Troubleshooting* at the bottom.
 | **OVERVIEW** (Hook) | KPI cards, satisfaction + tier donuts, Class mix, Top-5 SHAP (hover tooltip), live Key Findings, model summary, story buttons |
 | **EDA & PASSENGER ANALYSIS** (Build-up) | Class / delay / age / customer-type mix, survey-style service ratings, satisfied-vs-not rating gap, live observations |
 | **MODEL PERFORMANCE** | Model comparison, CV folds, CV error bands, confusion counts, subgroup recall (slicers), SHAP drivers, calculated conclusion |
-| **AI EXPLAINABILITY** (Insight) | Same layout as `AI_Explainability.pbix`: Top-5 SHAP, Gemini explanation, individual SHAP bars, passenger selector, recommendations, key findings |
+| **AI EXPLAINABILITY** (Insight) | The page from `AI_Explainability.pbix` copied verbatim (same 17 visuals, fields, filters, static findings text); only repositioned proportionally under the shared banner |
 | **CONCLUSION** | KPI recap, data-driven findings and recommendations, limitations, story buttons |
 | *Passenger Segment Detail* (hidden) | Drill-through (right-click a Class / Tier) with Back button |
 | *TT - SHAP Feature* (hidden) | Hover tooltip on SHAP bars |
@@ -73,3 +73,10 @@ Edit `build/model_def.py` (M queries, DAX) or `build/pages.py` (layout) and re-r
 * **A visual shows "Can't display"** → right-click → *Reset to default*; the field list is intact (all field references are checked against the model by the build script).
 * **Slow refresh** → in Power Query make `FactServiceRating` load only the columns you need, or drop `Distinct` repeats by enabling *Fast Data Load*.
 * The report was generated programmatically and could not be opened in Desktop inside the build sandbox – please open it once, check the pages, then Save as .pbix.
+
+## 7. Audit status (this version)
+* Copied Nandita's page + tables + measure unchanged (tables `shap_importance`, `shap_local_explanations`, `gemini_insights`, `PassengerSelectorTable`; her broken measure *Selected Gemini Explanation* – it points to a table that does not exist – was left out). One relationship was **added** so her passenger slicer also drives her cards and bars.
+* All story/navigation buttons now use page navigation; bookmarks remain as extras.
+* Narrative measures rewritten with standard DAX patterns; diagnostic query in `DAX_diagnostics.dax`.
+* Max 5 charts/tables per page. Model outputs validated: `validation_report.md` (37/37).
+* **Not tested in Power BI Desktop** – follow `TEST_CHECKLIST.md`.

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "9d43886df7b709f9c72e",
   "position": {
-    "x": 840.0,
+    "x": 1090.0,
     "y": 258.0,
     "z": 22000,
-    "height": 290.0,
-    "width": 370.0,
+    "height": 300.0,
+    "width": 490.0,
     "tabOrder": 22000
   },
   "visual": {
@@ -360,7 +360,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'CV error bands: mean +/- 1 std-dev'"
+                  "Value": "'Error bands: mean Macro F1 +/- 1 std-dev'"
                 }
               }
             }

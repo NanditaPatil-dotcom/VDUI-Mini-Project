@@ -1,0 +1,17 @@
+table PassengerSelectorTable
+
+	column row_index
+		dataType: int64
+		summarizeBy: none
+		sourceColumn: row_index
+
+	partition PassengerSelectorTable = calculated
+		mode: import
+		source =
+				DISTINCT(
+					SELECTCOLUMNS(
+						gemini_insights,
+						"row_index",
+						gemini_insights[explanations.row_index]
+					)
+				)

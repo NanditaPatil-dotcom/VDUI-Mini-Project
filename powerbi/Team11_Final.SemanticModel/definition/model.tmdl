@@ -20,6 +20,10 @@ ref table GeminiInsights
 ref table GeminiRecommendations
 ref table CorrelationRanking
 ref table Insights
+ref table shap_importance
+ref table shap_local_explanations
+ref table gemini_insights
+ref table PassengerSelectorTable
 ref table _Measures
 
 ref expression RepoRoot

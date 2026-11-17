@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "383e4a31950d860d2eb9",
+  "position": {
+    "x": 1254.1354014863455,
+    "y": 473.1767924644187,
+    "z": 17000,
+    "height": 104.94031725824554,
+    "width": 167.29615794792767,
+    "tabOrder": 17000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "shap_local_explanations"
+                        }
+                      },
+                      "Property": "actual_class"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(shap_local_explanations.actual_class)",
+              "nativeQueryRef": "First actual_class"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

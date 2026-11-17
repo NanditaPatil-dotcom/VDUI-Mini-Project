@@ -149,25 +149,17 @@
 		formatString: +0.00;-0.00;0.00
 		displayFolder: 3 Service Ratings
 
-	measure 'Lowest Rated Attribute' =
-			VAR t = ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating])
-			VAR best = MINX(t, [@v])
-			VAR who = MINX(FILTER(t, [@v] = best), DimServiceAttribute[Service Attribute])
-			RETURN who
+	measure 'Lowest Rated Attribute' = CONCATENATEX(TOPN(1, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], ASC), DimServiceAttribute[Service Attribute], ", ")
 		displayFolder: 3 Service Ratings
 
-	measure 'Lowest Attribute Rating' = MINX(ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating]), [@v])
+	measure 'Lowest Attribute Rating' = MINX(VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating])
 		formatString: 0.00
 		displayFolder: 3 Service Ratings
 
-	measure 'Highest Rated Attribute' =
-			VAR t = ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating])
-			VAR best = MAXX(t, [@v])
-			VAR who = MINX(FILTER(t, [@v] = best), DimServiceAttribute[Service Attribute])
-			RETURN who
+	measure 'Highest Rated Attribute' = CONCATENATEX(TOPN(1, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], DESC), DimServiceAttribute[Service Attribute], ", ")
 		displayFolder: 3 Service Ratings
 
-	measure 'Highest Attribute Rating' = MAXX(ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating]), [@v])
+	measure 'Highest Attribute Rating' = MAXX(VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating])
 		formatString: 0.00
 		displayFolder: 3 Service Ratings
 
@@ -290,26 +282,18 @@
 		displayFolder: 5 Subgroup Analysis
 
 	/// Max minus min recall across the groups in context.
-	measure 'Recall Gap (pts)' =
-			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall])
-			RETURN (MAXX(t, [@v]) - MINX(t, [@v])) * 100
+	measure 'Recall Gap (pts)' = (MAXX(VALUES(SubgroupPerformance[Group Label]), [Subgroup Recall]) - MINX(VALUES(SubgroupPerformance[Group Label]), [Subgroup Recall])) * 100
 		formatString: 0.0
 		displayFolder: 5 Subgroup Analysis
 
-	measure 'FPR Gap (pts)' =
-			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup FPR])
-			RETURN (MAXX(t, [@v]) - MINX(t, [@v])) * 100
+	measure 'FPR Gap (pts)' = (MAXX(VALUES(SubgroupPerformance[Group Label]), [Subgroup FPR]) - MINX(VALUES(SubgroupPerformance[Group Label]), [Subgroup FPR])) * 100
 		formatString: 0.0
 		displayFolder: 5 Subgroup Analysis
 
-	measure 'Lowest Recall Group' =
-			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall])
-			VAR best = MINX(t, [@v])
-			VAR who = MINX(FILTER(t, [@v] = best), SubgroupPerformance[Group Label])
-			RETURN who
+	measure 'Lowest Recall Group' = CONCATENATEX(TOPN(1, VALUES(SubgroupPerformance[Group Label]), [Subgroup Recall], ASC), SubgroupPerformance[Group Label], ", ")
 		displayFolder: 5 Subgroup Analysis
 
-	measure 'Lowest Group Recall' = MINX(ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall]), [@v])
+	measure 'Lowest Group Recall' = MINX(VALUES(SubgroupPerformance[Group Label]), [Subgroup Recall])
 		formatString: 0.0%
 		displayFolder: 5 Subgroup Analysis
 
@@ -383,14 +367,10 @@
 		formatString: 0.000
 		displayFolder: 6 SHAP & Correlation
 
-	measure 'Strongest Associated Feature' =
-			VAR t = ADDCOLUMNS(VALUES(CorrelationRanking[Feature]), "@v", [Absolute Effect])
-			VAR best = MAXX(t, [@v])
-			VAR who = MINX(FILTER(t, [@v] = best), CorrelationRanking[Feature])
-			RETURN who
+	measure 'Strongest Associated Feature' = CONCATENATEX(TOPN(1, VALUES(CorrelationRanking[Feature]), [Absolute Effect], DESC), CorrelationRanking[Feature], ", ")
 		displayFolder: 6 SHAP & Correlation
 
-	measure 'Strongest Association Value' = MAXX(ADDCOLUMNS(VALUES(CorrelationRanking[Feature]), "@v", [Absolute Effect]), [@v])
+	measure 'Strongest Association Value' = MAXX(VALUES(CorrelationRanking[Feature]), [Absolute Effect])
 		formatString: 0.000
 		displayFolder: 6 SHAP & Correlation
 
@@ -495,12 +475,11 @@
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Class Gap' =
-			VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])
-			VAR hi = MAXX(t, [@v])
-			VAR lo = MINX(t, [@v])
-			VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Class])
-			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
-			RETURN topName & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & botName & " (" & FORMAT(lo, "0%") & ") - a " & FORMAT((hi - lo) * 100, "0") & "-point gap by travel class."
+			VAR hi = MAXX(VALUES(DimTravel[Class]), [Satisfaction Rate])
+			VAR lo = MINX(VALUES(DimTravel[Class]), [Satisfaction Rate])
+			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], DESC), DimTravel[Class], ", ")
+			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], ASC), DimTravel[Class], ", ")
+			RETURN IF(COUNTROWS(VALUES(DimTravel[Class])) < 2, "Select more than one travel class to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by travel class.")
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Delay' = "Passengers arriving >15 min late are " & FORMAT([Satisfaction Rate - Delayed], "0%") & " satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0%") & " when on time (" & FORMAT([Delay Satisfaction Penalty (pts)], "+0.0;-0.0") & " pts); " & FORMAT([Delayed Share], "0%") & " of passengers are delayed."
@@ -517,11 +496,10 @@
 
 	measure 'Insight - Fairness' =
 			VAR bm = [Best Model]
-			VAR t = ADDCOLUMNS(ALL(SubgroupPerformance[Group Label]), "@v", CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
-			VAR lo = MINX(t, [@v])
-			VAR hi = MAXX(t, [@v])
-			VAR lowGroup = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])
-			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & lowGroup & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
+			VAR lo = MINX(ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
+			VAR hi = MAXX(ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
+			VAR loName = CONCATENATEX(TOPN(1, ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm), ASC), SubgroupPerformance[Group Label], ", ")
+			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loName & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Explainability' = "Top global SHAP drivers: " & [Top 3 SHAP Features] & ". The top five features carry " & FORMAT([Top 5 Share of SHAP], "0%") & " of total mean |SHAP|."
@@ -531,30 +509,27 @@
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Travel-type gap' =
-			VAR t = ADDCOLUMNS(VALUES(DimTravel[Type of Travel]), "@v", [Satisfaction Rate])
-			VAR hi = MAXX(t, [@v])
-			VAR lo = MINX(t, [@v])
-			VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Type of Travel])
-			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Type of Travel])
-			RETURN IF(COUNTROWS(t) < 2, "Select more than one travel type to compare.", topName & " " & "travel types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+			VAR hi = MAXX(VALUES(DimTravel[Type of Travel]), [Satisfaction Rate])
+			VAR lo = MINX(VALUES(DimTravel[Type of Travel]), [Satisfaction Rate])
+			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Type of Travel]), [Satisfaction Rate], DESC), DimTravel[Type of Travel], ", ")
+			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Type of Travel]), [Satisfaction Rate], ASC), DimTravel[Type of Travel], ", ")
+			RETURN IF(COUNTROWS(VALUES(DimTravel[Type of Travel])) < 2, "Select more than one travel type to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by travel type.")
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Customer-type gap' =
-			VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Customer Type]), "@v", [Satisfaction Rate])
-			VAR hi = MAXX(t, [@v])
-			VAR lo = MINX(t, [@v])
-			VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Customer Type])
-			VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Customer Type])
-			RETURN IF(COUNTROWS(t) < 2, "Select more than one customer type to compare.", topName & " " & "customer types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+			VAR hi = MAXX(VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate])
+			VAR lo = MINX(VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate])
+			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate], DESC), DimPassengerProfile[Customer Type], ", ")
+			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate], ASC), DimPassengerProfile[Customer Type], ", ")
+			RETURN IF(COUNTROWS(VALUES(DimPassengerProfile[Customer Type])) < 2, "Select more than one customer type to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by customer type.")
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Gender gap' =
-			VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Gender]), "@v", [Satisfaction Rate])
-			VAR hi = MAXX(t, [@v])
-			VAR lo = MINX(t, [@v])
-			VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Gender])
-			VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Gender])
-			RETURN IF(COUNTROWS(t) < 2, "Select more than one gender to compare.", topName & " " & "genders are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+			VAR hi = MAXX(VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate])
+			VAR lo = MINX(VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate])
+			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate], DESC), DimPassengerProfile[Gender], ", ")
+			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate], ASC), DimPassengerProfile[Gender], ", ")
+			RETURN IF(COUNTROWS(VALUES(DimPassengerProfile[Gender])) < 2, "Select more than one gender to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by gender.")
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Fix first' = "Fix the weakest touch-points first: " & CONCATENATEX(TOPN(3, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], ASC), DimServiceAttribute[Service Attribute] & " (" & FORMAT([Average Service Rating], "0.00") & "/5)", ", ", [Average Service Rating], ASC) & "."
@@ -564,10 +539,9 @@
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Target segments' =
-			VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])
-			VAR lo = MINX(t, [@v])
-			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
-			RETURN "Target " & botName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."
+			VAR lo = MINX(VALUES(DimTravel[Class]), [Satisfaction Rate])
+			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], ASC), DimTravel[Class], ", ")
+			RETURN "Target " & loName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Manage delays' = "Delayed arrivals (>15 min) are " & FORMAT([Delayed Share], "0%") & " of passengers and only " & FORMAT([Satisfaction Rate - Delayed], "0.0%") & " are satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0.0%") & " on time - invest in delay communication and recovery."
