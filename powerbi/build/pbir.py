@@ -264,7 +264,7 @@ class Page:
                 if bold:
                     ts["fontWeight"] = "bold"
                 if len(r) > 4 and r[4]:
-                    ts["italic"] = True
+                    ts["fontStyle"] = "italic"
                 tr.append({"value": txt, "textStyle": ts})
             ps.append({"textRuns": tr, "horizontalTextAlignment": align})
         cont = vco(bg=bg, border=border, radius=radius, shadow=shadow, link=link)
@@ -371,7 +371,6 @@ class Page:
                      for sel, f, _ in states],
             "outline": [{"properties": {"show": lit(False)}, "selector": {"id": sel}} for sel, _, _ in states],
             "shape": [{"properties": {"roundEdge": num(6)}}],
-            "layout": [{"properties": {"orientation": lit("Horizontal")}}],
         }
         return self.add("pageNavigator", x, y, w, h, objects=o, container=vco(bg=None, border=None, shadow=False), label="page navigator")
 

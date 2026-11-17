@@ -64,7 +64,7 @@
                       "fontSize": "9pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI",
-                      "italic": true
+                      "fontStyle": "italic"
                     }
                   }
                 ],

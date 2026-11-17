@@ -285,19 +285,6 @@
             }
           }
         }
-      ],
-      "layout": [
-        {
-          "properties": {
-            "orientation": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Horizontal'"
-                }
-              }
-            }
-          }
-        }
       ]
     },
     "visualContainerObjects": {
