@@ -190,17 +190,6 @@ table _Measures
 		formatString: 0.000
 		displayFolder: 4 Model Performance
 
-	/// Driven by the MetricSelector slicer.
-	measure 'Selected Model Metric' =
-			SWITCH(SELECTEDVALUE(MetricSelector[Metric], "Macro F1"),
-				"Accuracy", [Model Accuracy],
-				"Macro Precision", [Model Macro Precision],
-				"Macro Recall", [Model Macro Recall],
-				"Macro F1", [Model Macro F1],
-				"ROC-AUC", [Model ROC-AUC])
-		formatString: 0.0%
-		displayFolder: 4 Model Performance
-
 	measure 'Best Macro F1' = MAXX(ALL(ModelComparison), ModelComparison[Macro F1])
 		formatString: 0.0%
 		displayFolder: 4 Model Performance
@@ -345,13 +334,6 @@ table _Measures
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 6 SHAP & Correlation
 
-	measure 'Tooltip Feature' = SELECTEDVALUE(ShapImportance[Feature], "All features")
-		displayFolder: 6 SHAP & Correlation
-
-	measure 'Feature Rank' = MAX(ShapImportance[Rank])
-		formatString: 0
-		displayFolder: 6 SHAP & Correlation
-
 	measure 'SHAP Share' = DIVIDE([Mean Abs SHAP], CALCULATE([Mean Abs SHAP], REMOVEFILTERS(ShapImportance)), 0)
 		formatString: 0.0%
 		displayFolder: 6 SHAP & Correlation
@@ -385,210 +367,10 @@ table _Measures
 		formatString: 0
 		displayFolder: 6 SHAP & Correlation
 
-	measure 'Feature Correlation (tooltip)' = CALCULATE(AVERAGE(CorrelationRanking[Effect Value]), TREATAS(VALUES(ShapImportance[Feature]), CorrelationRanking[Feature]))
-		formatString: 0.000
-		displayFolder: 6 SHAP & Correlation
-
-	measure 'Feature Corr Method (tooltip)' = CALCULATE(MAX(CorrelationRanking[Method]), TREATAS(VALUES(ShapImportance[Feature]), CorrelationRanking[Feature]))
-		displayFolder: 6 SHAP & Correlation
-
-	measure 'Feature Avg Rating (tooltip)' = CALCULATE([Average Service Rating], TREATAS(VALUES(ShapImportance[Feature]), DimServiceAttribute[Service Attribute]))
-		formatString: 0.00
-		displayFolder: 6 SHAP & Correlation
-
-	measure 'Feature Gemini Note (tooltip)' =
-			VAR f = SELECTEDVALUE(ShapImportance[Feature])
-			VAR note = CALCULATE(MAX(GeminiRecommendations[Recommendation]), FILTER(ALL(GeminiRecommendations), GeminiRecommendations[Evidence Feature] = f))
-			RETURN IF(ISBLANK(note), "No Gemini recommendation was generated for this feature in the explained passengers.", note)
-		displayFolder: 6 SHAP & Correlation
-
-	/// The passenger picked in the slicer; the first explained passenger when none is picked.
-	measure 'Selected Passenger Index' = SELECTEDVALUE(GeminiInsights[Passenger Index], MINX(ALL(GeminiInsights), GeminiInsights[Passenger Index]))
-		formatString: 0
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected Passenger' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Passenger Label]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected Predicted Class' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Predicted Class]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected Actual Class' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Actual Class]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected P(Satisfied)' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Probability Satisfied]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		formatString: 0.0%
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected Prediction Confidence' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Predicted Probability]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		formatString: 0.0%
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Selected Prediction Correct' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Correct Prediction]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Gemini Explanation' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Explanation]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Gemini Uncertainty Note' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(GeminiInsights[Uncertainty Note]), GeminiInsights[Passenger Index] = idx, REMOVEFILTERS(GeminiInsights[Predicted Class]), REMOVEFILTERS(GeminiInsights[Passenger Label]))
-		displayFolder: 7 Passenger Explanation
-
-	/// Top-10 contributions only; positive values push the prediction toward Satisfied.
-	measure 'SHAP toward Satisfied' =
-			VAR idx = [Selected Passenger Index]
-			VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)
-			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)
-		formatString: +0.000;-0.000;0.000
-		displayFolder: 7 Passenger Explanation
-
-	/// Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.
-	measure 'SHAP toward Neutral or Dissatisfied' =
-			VAR idx = [Selected Passenger Index]
-			VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)
-			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)
-		formatString: +0.000;-0.000;0.000
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Net SHAP Value' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = idx)
-		formatString: +0.000;-0.000;0.000
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Top Contributor (Selected Passenger)' =
-			VAR idx = [Selected Passenger Index]
-			RETURN CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Passenger Index] = idx, ShapLocal[Contribution Rank] = 1)
-		displayFolder: 7 Passenger Explanation
-
-	measure 'Insight - Headline' =
-			FORMAT([Satisfaction Rate], "0.0%") & " of the " & FORMAT([Total Passengers], "#,0") & " passengers in view are satisfied; "
-				& FORMAT([High Tier Rate], "0.0%") & " reach the High satisfaction tier and " & FORMAT([Low Tier Rate], "0.0%") & " fall in the Low tier."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Class Gap' =
-			VAR hi = MAXX(VALUES(DimTravel[Class]), [Satisfaction Rate])
-			VAR lo = MINX(VALUES(DimTravel[Class]), [Satisfaction Rate])
-			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], DESC), DimTravel[Class], ", ")
-			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], ASC), DimTravel[Class], ", ")
-			RETURN IF(COUNTROWS(VALUES(DimTravel[Class])) < 2, "Select more than one travel class to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by travel class.")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Delay' = "Passengers arriving >15 min late are " & FORMAT([Satisfaction Rate - Delayed], "0%") & " satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0%") & " when on time (" & FORMAT([Delay Satisfaction Penalty (pts)], "+0.0;-0.0") & " pts); " & FORMAT([Delayed Share], "0%") & " of passengers are delayed."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Service Gap' = "Lowest-rated service: " & [Lowest Rated Attribute] & " (" & FORMAT([Lowest Attribute Rating], "0.00") & " / 5); best: " & [Highest Rated Attribute] & " (" & FORMAT([Highest Attribute Rating], "0.00") & " / 5)."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Best Model' = [Best Model] & " leads on held-out Macro F1 (" & FORMAT([Best Macro F1], "0.0%") & ") with ROC-AUC " & FORMAT([Best ROC-AUC], "0.000") & " and accuracy " & FORMAT([Best Accuracy], "0.0%") & "."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Stability' = "5-fold CV Macro F1 for " & [Best Model] & " = " & FORMAT([Best Model CV Mean], "0.0000") & " +/- " & FORMAT([Best Model CV Std], "0.0000") & " (std-dev across folds) - " & IF([Best Model CV Std] < 0.005, "performance is stable across folds.", "fold-to-fold variation is notable; review before deployment.")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Fairness' =
-			VAR bm = [Best Model]
-			VAR lo = MINX(ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
-			VAR hi = MAXX(ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
-			VAR loName = CONCATENATEX(TOPN(1, ALL(SubgroupPerformance[Group Label]), CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm), ASC), SubgroupPerformance[Group Label], ", ")
-			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loName & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Explainability' = "Top global SHAP drivers: " & [Top 3 SHAP Features] & ". The top five features carry " & FORMAT([Top 5 Share of SHAP], "0%") & " of total mean |SHAP|."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Action' = "Prioritise " & [Lowest Rated Attribute] & " (lowest rating) and " & [Top Feature (SHAP)] & " (largest model driver); recognise teams behind " & [Highest Rated Attribute] & "."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Travel-type gap' =
-			VAR hi = MAXX(VALUES(DimTravel[Type of Travel]), [Satisfaction Rate])
-			VAR lo = MINX(VALUES(DimTravel[Type of Travel]), [Satisfaction Rate])
-			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Type of Travel]), [Satisfaction Rate], DESC), DimTravel[Type of Travel], ", ")
-			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Type of Travel]), [Satisfaction Rate], ASC), DimTravel[Type of Travel], ", ")
-			RETURN IF(COUNTROWS(VALUES(DimTravel[Type of Travel])) < 2, "Select more than one travel type to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by travel type.")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Customer-type gap' =
-			VAR hi = MAXX(VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate])
-			VAR lo = MINX(VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate])
-			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate], DESC), DimPassengerProfile[Customer Type], ", ")
-			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Customer Type]), [Satisfaction Rate], ASC), DimPassengerProfile[Customer Type], ", ")
-			RETURN IF(COUNTROWS(VALUES(DimPassengerProfile[Customer Type])) < 2, "Select more than one customer type to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by customer type.")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Gender gap' =
-			VAR hi = MAXX(VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate])
-			VAR lo = MINX(VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate])
-			VAR hiName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate], DESC), DimPassengerProfile[Gender], ", ")
-			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimPassengerProfile[Gender]), [Satisfaction Rate], ASC), DimPassengerProfile[Gender], ", ")
-			RETURN IF(COUNTROWS(VALUES(DimPassengerProfile[Gender])) < 2, "Select more than one gender to compare.", hiName & " is most satisfied (" & FORMAT(hi, "0.0%") & ") vs " & loName & " (" & FORMAT(lo, "0.0%") & ") - a " & FORMAT((hi - lo) * 100, "0.0") & "-pt gap by gender.")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Fix first' = "Fix the weakest touch-points first: " & CONCATENATEX(TOPN(3, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], ASC), DimServiceAttribute[Service Attribute] & " (" & FORMAT([Average Service Rating], "0.00") & "/5)", ", ", [Average Service Rating], ASC) & "."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Protect top driver' = "Protect " & [Top Feature (SHAP)] & " - the single largest model driver - and keep it consistent across airports; the strongest correlate in view is " & [Strongest Associated Feature] & " (" & FORMAT([Strongest Association Value], "0.00") & ")."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Target segments' =
-			VAR lo = MINX(VALUES(DimTravel[Class]), [Satisfaction Rate])
-			VAR loName = CONCATENATEX(TOPN(1, VALUES(DimTravel[Class]), [Satisfaction Rate], ASC), DimTravel[Class], ", ")
-			RETURN "Target " & loName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Manage delays' = "Delayed arrivals (>15 min) are " & FORMAT([Delayed Share], "0%") & " of passengers and only " & FORMAT([Satisfaction Rate - Delayed], "0.0%") & " are satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0.0%") & " on time - invest in delay communication and recovery."
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Insight - Recognise strengths' = "Recognise the teams behind " & [Highest Rated Attribute] & " (" & FORMAT([Highest Attribute Rating], "0.00") & "/5): they out-score the rest of the journey."
-		displayFolder: 8 Narrative (data-driven text)
-
-	/// Rendered by a table visual of Insights[Topic] x [Insight Text].
-	measure 'Insight Text' =
-			SWITCH(SELECTEDVALUE(Insights[Order]),
-				1, [Insight - Headline],
-				2, [Insight - Class Gap],
-				3, [Insight - Delay],
-				4, [Insight - Service Gap],
-				5, [Insight - Best Model],
-				6, [Insight - Stability],
-				7, [Insight - Fairness],
-				8, [Insight - Explainability],
-				9, [Insight - Action],
-				10, [Insight - Fix first],
-				11, [Insight - Protect top driver],
-				12, [Insight - Target segments],
-				13, [Insight - Manage delays],
-				14, [Insight - Recognise strengths],
-				15, [Insight - Travel-type gap],
-				16, [Insight - Customer-type gap],
-				17, [Insight - Gender gap])
-		displayFolder: 8 Narrative (data-driven text)
-
 	measure 'Title - Class Chart' = "Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Title - Delay Chart' = "Satisfaction by Arrival Delay  |  on-time " & FORMAT([Satisfaction Rate - On Time], "0%") & " vs delayed " & FORMAT([Satisfaction Rate - Delayed], "0%")
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Title - Individual' = "Individual Passenger — SHAP Feature Contributions  |  " & [Selected Passenger]
-		displayFolder: 8 Narrative (data-driven text)
-
-	measure 'Title - Gemini' = "Gemini AI Explanation  |  " & [Selected Passenger]
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Title - Model Chart' = "Model comparison  |  best: " & [Best Model]

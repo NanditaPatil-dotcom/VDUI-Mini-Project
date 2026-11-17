@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "fc91dcc33a17b708b9e1",
   "position": {
-    "x": 115.0006532772743,
-    "y": 708.9122877546804,
-    "z": 19000,
-    "height": 28.896609100096597,
-    "width": 1368.786746846681,
-    "tabOrder": 19000
+    "x": 96.1159595079761,
+    "y": 703.8096189960376,
+    "z": 18000,
+    "height": 29.693257471277207,
+    "width": 1406.522722323657,
+    "tabOrder": 18000
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "                                                                                                                                      KEY EXPLAINABILITY FINDINGS",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "11.8pt",
+                      "fontSize": "12.1pt",
                       "color": "#ffffff"
                     }
                   }

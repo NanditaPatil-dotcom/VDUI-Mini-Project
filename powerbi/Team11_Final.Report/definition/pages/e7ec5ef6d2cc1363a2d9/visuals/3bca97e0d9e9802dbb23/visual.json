@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "3bca97e0d9e9802dbb23",
   "position": {
-    "x": 115.0006532772743,
-    "y": 114.25048995795575,
-    "z": 6000,
-    "height": 38.02185407907447,
-    "width": 503.409348006946,
-    "tabOrder": 6000
+    "x": 96.1159595079761,
+    "y": 92.75363629764877,
+    "z": 5000,
+    "height": 39.07007562010158,
+    "width": 517.2878012101451,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "          Top 5 Factors Influencing Satisfaction Predictions",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "13.3pt",
+                      "fontSize": "13.7pt",
                       "color": "#ffffff"
                     }
                   }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "0430072f522417306488",
   "position": {
-    "x": 645.7857362211539,
-    "y": 96.0,
-    "z": 10000,
-    "height": 34.980105752748514,
-    "width": 838.0016639028013,
-    "tabOrder": 10000
+    "x": 641.5342151645942,
+    "y": 74.0,
+    "z": 9000,
+    "height": 35.94446957049346,
+    "width": 861.1044666670389,
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "                                               Individual Passenger — SHAP Feature Contributions",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "13.3pt",
+                      "fontSize": "13.7pt",
                       "color": "#ffffff"
                     }
                   }

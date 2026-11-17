@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "28436b49747d31ed1221",
   "position": {
-    "x": 841.9785032691782,
-    "y": 753.0176384864068,
-    "z": 20000,
-    "height": 141.44129717415703,
-    "width": 667.6637576285476,
-    "tabOrder": 20000
+    "x": 843.1358053643185,
+    "y": 749.1309067153553,
+    "z": 19000,
+    "height": 145.3406813067779,
+    "width": 686.0705278889839,
+    "tabOrder": 19000
   },
   "visual": {
     "visualType": "textbox",
@@ -22,7 +22,7 @@
                     "value": "3. AI-Generated Interpretability",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "11.8pt"
+                      "fontSize": "12.1pt"
                     }
                   }
                 ]
@@ -32,7 +32,7 @@
                   {
                     "value": "Gemini converts SHAP evidence into human-readable explanations, making model predictions easier to understand.",
                     "textStyle": {
-                      "fontSize": "11.8pt"
+                      "fontSize": "12.1pt"
                     }
                   }
                 ]
@@ -43,7 +43,7 @@
                     "value": "4. Actionable Insights",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "11.8pt"
+                      "fontSize": "12.1pt"
                     }
                   }
                 ]
@@ -53,7 +53,7 @@
                   {
                     "value": "Gemini generates service improvement recommendations based on influential features and their contribution to individual predictions.",
                     "textStyle": {
-                      "fontSize": "11.8pt"
+                      "fontSize": "12.1pt"
                     }
                   }
                 ]

@@ -38,14 +38,6 @@ relationship rel_SubgroupPerformance_Model_DimModel
 	fromColumn: SubgroupPerformance.Model
 	toColumn: DimModel.Model
 
-relationship rel_ShapLocal_Passenger_Index_GeminiInsights
-	fromColumn: ShapLocal.'Passenger Index'
-	toColumn: GeminiInsights.'Passenger Index'
-
-relationship rel_GeminiRecommendations_Passenger_Index_GeminiInsights
-	fromColumn: GeminiRecommendations.'Passenger Index'
-	toColumn: GeminiInsights.'Passenger Index'
-
 relationship rel_shap_local_explanations_feature_shap_importance
 	fromColumn: shap_local_explanations.feature
 	toColumn: shap_importance.Feature

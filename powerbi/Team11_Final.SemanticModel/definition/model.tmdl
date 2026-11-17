@@ -13,13 +13,8 @@ ref table DimModel
 ref table ModelComparison
 ref table CVScores
 ref table SubgroupPerformance
-ref table MetricSelector
 ref table ShapImportance
-ref table ShapLocal
-ref table GeminiInsights
-ref table GeminiRecommendations
 ref table CorrelationRanking
-ref table Insights
 ref table shap_importance
 ref table shap_local_explanations
 ref table gemini_insights

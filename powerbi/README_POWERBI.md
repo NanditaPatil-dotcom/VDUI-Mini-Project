@@ -80,3 +80,8 @@ Edit `build/model_def.py` (M queries, DAX) or `build/pages.py` (layout) and re-r
 * Narrative measures rewritten with standard DAX patterns; diagnostic query in `DAX_diagnostics.dax`.
 * Max 5 charts/tables per page. Model outputs validated: `validation_report.md` (37/37).
 * **Not tested in Power BI Desktop** – follow `TEST_CHECKLIST.md`.
+
+## 8. Reliability pass (latest)
+* Header = navy title bar only ("BEYOND THE BOARDING PASS | TEAM 11"); header navigation buttons removed. Use the page tabs at the bottom.
+* Removed: Live Observations and every dynamic narrative table/measure (`Insights` table, `Insight - *` measures), the old duplicate AI tables/measures (`GeminiInsights`, `GeminiRecommendations`, `ShapLocal`, `MetricSelector`, tooltip/passenger measures). Findings/recommendations are now static text computed from the CSVs.
+* Nandita's page, tables and her Gemini explanation measure are untouched; her static Key Explainability Findings text is kept.

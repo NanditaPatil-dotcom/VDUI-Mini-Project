@@ -319,7 +319,9 @@ in
 in
     Source''', desc="Helper table: each row renders one data-driven sentence through [Insight Text]."))
     T.extend(nandita_tables())
-    return T
+    def _name(t):
+        return next(l for l in t.split("\n") if l.startswith("table ")).replace("table ", "").strip("'")
+    return [t for t in T if _name(t) not in REMOVED_TABLES]
 
 
 # ---------------------------------------------------------------------------------------------------
@@ -423,10 +425,23 @@ OVERRIDES = {
 }
 
 
+# Removed in the "reliability" pass: dynamic narrative (Live Observations etc.) and everything only they or the old AI page used.
+REMOVED_TABLES = {"Insights", "GeminiInsights", "GeminiRecommendations", "ShapLocal", "MetricSelector"}
+REMOVED_MEASURES = {
+    "Selected Model Metric", "Selected Passenger Index", "Selected Passenger", "Selected Predicted Class", "Selected Actual Class",
+    "Selected P(Satisfied)", "Selected Prediction Confidence", "Selected Prediction Correct", "Gemini Explanation",
+    "Gemini Uncertainty Note", "SHAP toward Satisfied", "SHAP toward Neutral or Dissatisfied", "Net SHAP Value",
+    "Top Contributor (Selected Passenger)", "Feature Gemini Note (tooltip)", "Feature Correlation (tooltip)",
+    "Feature Corr Method (tooltip)", "Feature Avg Rating (tooltip)", "Tooltip Feature", "Feature Rank", "Title - Individual", "Title - Gemini",
+}
+
+
 def measure_list():
     M = []
 
     def add(name, dax, fmt=None, folder=None, desc=None, hidden=False):
+        if name.startswith("Insight") or name in REMOVED_MEASURES:
+            return
         M.append(ms(name, OVERRIDES.get(name, dax), fmt, folder, desc, hidden))
 
     f1 = "1 Passenger KPIs"
@@ -693,6 +708,8 @@ def relationships_tmdl():
     R = []
 
     def rel(many_t, many_c, one_t, one_c):
+        if many_t in REMOVED_TABLES or one_t in REMOVED_TABLES:
+            return
         R.append(relationship(f"rel_{many_t}_{many_c}_{one_t}".replace(" ", "_"),
                               f"{q(many_t)}.{q(many_c)}", f"{q(one_t)}.{q(one_c)}"))
 
@@ -711,7 +728,9 @@ def relationships_tmdl():
     return "\n".join(R)
 
 
-ALL_TABLE_NAMES = ["DimTravel", "DimPassengerProfile", "DimSatisfaction", "FactPassenger", "FactServiceRating",
+_ALL = ["DimTravel", "DimPassengerProfile", "DimSatisfaction", "FactPassenger", "FactServiceRating",
                    "DimServiceAttribute", "DimModel", "ModelComparison", "CVScores", "SubgroupPerformance",
                    "MetricSelector", "ShapImportance", "ShapLocal", "GeminiInsights", "GeminiRecommendations",
                    "CorrelationRanking", "Insights", "shap_importance", "shap_local_explanations", "gemini_insights", "PassengerSelectorTable", "_Measures"]
+
+ALL_TABLE_NAMES = [t for t in _ALL if t not in REMOVED_TABLES]

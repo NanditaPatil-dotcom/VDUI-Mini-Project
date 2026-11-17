@@ -14,9 +14,9 @@ any line that fails (screenshot or the red error text). **Do not treat any item 
 - [ ] Compare side by side with `AI_Explainability.pbix` (unchanged in the repo): same fields, same text.
 
 ## 2. Navigation, slicers, interactions
-- [ ] Banner navigator: each tab opens its page (Overview, EDA, Model Performance, AI Explainability, Conclusion). Ctrl+Click in Desktop.
+- [ ] Every page has the same navy title bar with only "BEYOND THE BOARDING PASS | TEAM 11" (no header buttons). The standard page tabs at the bottom switch pages.
 - [ ] Overview "Follow the story" buttons open Overview / EDA / AI Explainability / Conclusion.
-- [ ] Conclusion buttons open Overview, EDA, AI Explainability and Passenger Segment Detail.
+- [ ] Conclusion buttons open Overview, EDA, AI Explainability and Passenger Segment Detail (hidden drill-through page; the button just opens it unfiltered).
 - [ ] Slicers Gender / Class / Customer Type / Type of Travel on Overview: KPI cards, donut, class chart, findings table update.
 - [ ] Go to EDA: the same slicer selections are still applied (View > Sync slicers shows the four groups on Overview and EDA).
 - [ ] Click a bar in the class chart: other visuals on the page cross-filter. Click again to clear.
@@ -24,9 +24,8 @@ any line that fails (screenshot or the red error text). **Do not treat any item 
 - [ ] Right-click a class bar → Drill through → Passenger Segment Detail opens with that class; the **← Back** button returns to the page you came from with your filters intact.
 - [ ] Model page: Model slicer and Passenger-attribute slicer change the charts.
 
-## 3. Narrative / rendering
-- [ ] Overview "Key findings" and EDA "Live observations" show the sentence column (not just Topic) and change with slicers.
-- [ ] Conclusion page shows both tables with sentences. If any sentence column is blank, run `DAX_diagnostics.dax` (DAX query view) and send me the column name that errors.
+## 3. Findings text
+- [ ] Overview "Key findings" and Conclusion "What the data says" / "Recommendations" are static text boxes generated from the CSVs (they do not change with slicers; that is stated on each box). The earlier dynamic "Live observations" visual was removed because its DAX could not be made reliable.
 
 ## 4. Numbers
 - [ ] Overview cards equal `expected_values.csv` (129,487 passengers, 43.4 % satisfied, XGBoost best Macro F1 96.4 %).
