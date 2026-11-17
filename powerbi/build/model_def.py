@@ -373,10 +373,14 @@ IF(
     )
 )""")
     out.append(tbl("gemini_insights", gi_cols, m_of("gemini_insights"), measures=[disp]))
-    pst = ("table PassengerSelectorTable\n\n\tcolumn row_index\n\t\tdataType: int64\n\t\tsummarizeBy: none\n\t\tsourceColumn: row_index\n\n"
-           "\tpartition PassengerSelectorTable = calculated\n\t\tmode: import\n\t\tsource =\n"
-           "\t\t\t\tDISTINCT(\n\t\t\t\t\tSELECTCOLUMNS(\n\t\t\t\t\t\tgemini_insights,\n\t\t\t\t\t\t\"row_index\",\n"
-           "\t\t\t\t\t\tgemini_insights[explanations.row_index]\n\t\t\t\t\t)\n\t\t\t\t)\n")
+    pst = tbl("PassengerSelectorTable", [col("row_index", "int64", fmt="0")],
+              """let
+    Source = gemini_insights,
+    Selected = Table.SelectColumns(Source, {"explanations.row_index"}),
+    Renamed = Table.RenameColumns(Selected, {{"explanations.row_index", "row_index"}}),
+    Result = Table.Distinct(Renamed)
+in
+    Result""", desc="Passenger list for the slicer: distinct explanations.row_index of gemini_insights (same values as the original calculated table).")
     out.append(pst)
     return out
 

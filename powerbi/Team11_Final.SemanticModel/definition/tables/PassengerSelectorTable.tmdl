@@ -1,17 +1,19 @@
+/// Passenger list for the slicer: distinct explanations.row_index of gemini_insights (same values as the original calculated table).
 table PassengerSelectorTable
 
 	column row_index
 		dataType: int64
+		formatString: 0
 		summarizeBy: none
 		sourceColumn: row_index
 
-	partition PassengerSelectorTable = calculated
+	partition PassengerSelectorTable = m
 		mode: import
 		source =
-				DISTINCT(
-					SELECTCOLUMNS(
-						gemini_insights,
-						"row_index",
-						gemini_insights[explanations.row_index]
-					)
-				)
+				let
+					Source = gemini_insights,
+					Selected = Table.SelectColumns(Source, {"explanations.row_index"}),
+					Renamed = Table.RenameColumns(Selected, {{"explanations.row_index", "row_index"}}),
+					Result = Table.Distinct(Renamed)
+				in
+					Result
