@@ -30,6 +30,24 @@ in
     {'Final' if extra else 'Typed'}'''
 
 
+def inline_m(csv_path, types):
+    """Embed a small CSV as an inline #table so no extra file is needed."""
+    import os, pandas as pd
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    df = pd.read_csv(os.path.join(root, csv_path), keep_default_na=False)
+    mt = {"type text": "text", "Int64.Type": "Int64.Type", "type number": "number"}
+    hdr = ", ".join('#"%s" = %s' % (c, mt[t]) for c, t in types)
+    def v(x, t):
+        if t == "type text":
+            return '"' + str(x).replace('"', '""') + '"'
+        return str(x)
+    rows = ", ".join("{" + ", ".join(v(r[c], t) for c, t in types) + "}" for _, r in df.iterrows())
+    return f"""let
+    Source = #table(type table [{hdr}], {{{rows}}})
+in
+    Source"""
+
+
 # ---------------------------------------------------------------------------------------------------
 # Expressions (parameter + staging query)
 # ---------------------------------------------------------------------------------------------------
@@ -267,14 +285,14 @@ in
         col("Predicted Probability", "double", fmt="0.0%"), col("Probability Satisfied", "double", fmt="0.0%"),
         col("Correct Prediction"), col("Explanation"), col("Evidence Features"), col("Uncertainty Note"),
         col("Gemini Model"), col("Generated At")],
-        csv_m("powerbi\\data\\gemini_insights_flat.csv", gi_types),
+        inline_m("powerbi/data/gemini_insights_flat.csv", gi_types),
         desc="One row per explained passenger, flattened from explainability/gemini_insights.json by build/prepare_data.py."))
 
     gr_types = [("Passenger Index", "Int64.Type"), ("Evidence Feature", "type text"),
                 ("Recommendation", "type text"), ("Reason", "type text")]
     T.append(tbl("GeminiRecommendations", [
         col("Passenger Index", "int64", fmt="0"), col("Evidence Feature"), col("Recommendation"), col("Reason")],
-        csv_m("powerbi\\data\\gemini_recommendations_flat.csv", gr_types)))
+        inline_m("powerbi/data/gemini_recommendations_flat.csv", gr_types)))
 
     cr_types = [("Feature", "type text"), ("Method", "type text"), ("EffectValue", "type number"),
                 ("AbsoluteEffect", "type number"), ("PValue", "type number"), ("SampleCount", "Int64.Type"),

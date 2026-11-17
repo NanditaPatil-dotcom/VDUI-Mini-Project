@@ -25,8 +25,6 @@ table GeminiRecommendations
 		mode: import
 		source =
 				let
-					Source = Csv.Document(File.Contents(Root & "powerbi\data\gemini_recommendations_flat.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
-					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
-					Typed = Table.TransformColumnTypes(Promoted, {{"Passenger Index", Int64.Type}, {"Evidence Feature", type text}, {"Recommendation", type text}, {"Reason", type text}}, "en-US")
+					Source = #table(type table [#"Passenger Index" = Int64.Type, #"Evidence Feature" = text, #"Recommendation" = text, #"Reason" = text], {{2884, "In-flight Wifi Service", "Review in-flight connectivity, network coverage, and onboard internet reliability for passengers.", "In-flight Wifi Service contributed negatively in this prediction, driving the model output toward neutral or dissatisfied."}, {76523, "In-flight Wifi Service", "Review onboard connectivity infrastructure to see if high-speed wifi can be consistently maintained across flights.", "In-flight Wifi Service had a strong positive contribution pushing the model toward a satisfied prediction, indicating this is an important area associated with favorable ratings."}, {76523, "Online Boarding", "Examine the digital check-in and boarding pass experience to ensure it remains smooth and reliable for passengers.", "A high rating for Online Boarding contributed positively toward the predicted satisfaction outcome in the model."}})
 				in
-					Typed
+					Source
