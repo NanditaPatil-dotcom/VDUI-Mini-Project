@@ -1,5 +1,5 @@
+/// Service attribute lookup with a logical grouping.
 table DimServiceAttribute
-	description: Service attribute lookup with a logical grouping.
 
 	column 'Service Attribute'
 		dataType: string

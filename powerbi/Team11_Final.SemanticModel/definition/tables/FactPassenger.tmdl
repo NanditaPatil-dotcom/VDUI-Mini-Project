@@ -1,5 +1,5 @@
+/// Grain: one row per passenger record (surrogate Passenger ID). Not an ML feature.
 table FactPassenger
-	description: Grain: one row per passenger record (surrogate Passenger ID). Not an ML feature.
 
 	column 'Passenger ID'
 		dataType: int64
@@ -29,52 +29,52 @@ table FactPassenger
 		summarizeBy: none
 		sourceColumn: SatisfactionKey
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column Gender
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Gender
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column 'Customer Type'
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Customer Type
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column Class
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Class
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column 'Type of Travel'
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Type of Travel
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column 'Age Band'
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Age Band
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column Satisfaction
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Satisfaction
 
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
 	column 'Satisfaction Tier'
 		dataType: string
 		isHidden
-		description: Duplicate of the dimension attribute - use the Dim table in visuals.
 		summarizeBy: none
 		sourceColumn: Satisfaction Tier
 
@@ -149,115 +149,115 @@ table FactPassenger
 		summarizeBy: none
 		sourceColumn: Passenger Avg Rating
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Departure and Arrival Time Convenience'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Departure and Arrival Time Convenience
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Ease of Online Booking'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Ease of Online Booking
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Check-in Service'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Check-in Service
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Online Boarding'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Online Boarding
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Gate Location'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Gate Location
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'On-board Service'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: On-board Service
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Seat Comfort'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Seat Comfort
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Leg Room Service'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Leg Room Service
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column Cleanliness
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Cleanliness
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Food and Drink'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Food and Drink
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'In-flight Service'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: In-flight Service
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'In-flight Wifi Service'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: In-flight Wifi Service
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'In-flight Entertainment'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: In-flight Entertainment
 
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Baggage Handling'
 		dataType: int64
 		formatString: 0
 		isHidden
-		description: Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 		summarizeBy: none
 		sourceColumn: Baggage Handling
 

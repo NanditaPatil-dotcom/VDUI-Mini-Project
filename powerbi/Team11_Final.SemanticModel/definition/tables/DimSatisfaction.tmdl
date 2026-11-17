@@ -1,5 +1,5 @@
+/// Original binary satisfaction x derived Low/Average/High tier.
 table DimSatisfaction
-	description: Original binary satisfaction x derived Low/Average/High tier.
 
 	column SatisfactionKey
 		dataType: int64

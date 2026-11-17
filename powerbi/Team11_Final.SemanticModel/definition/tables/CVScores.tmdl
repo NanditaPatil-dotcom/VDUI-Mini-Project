@@ -1,5 +1,5 @@
+/// Stratified 5-fold CV Macro F1 per model (source: models/cross_validation_scores.csv).
 table CVScores
-	description: Stratified 5-fold CV Macro F1 per model (source: models/cross_validation_scores.csv).
 
 	column Model
 		dataType: string

@@ -1,5 +1,5 @@
+/// Home for every DAX measure in the model.
 table Measures
-	description: Home for every DAX measure in the model.
 
 	column Placeholder
 		dataType: string
@@ -7,10 +7,10 @@ table Measures
 		summarizeBy: none
 		sourceColumn: Placeholder
 
+	/// One row per passenger record.
 	measure 'Total Passengers' = DISTINCTCOUNT(FactPassenger[Passenger ID])
 		formatString: #,0
 		displayFolder: 1 Passenger KPIs
-		description: One row per passenger record.
 
 	measure 'Satisfied Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction] = "Satisfied")
 		formatString: #,0
@@ -64,15 +64,15 @@ table Measures
 		formatString: 0.0%
 		displayFolder: 1 Passenger KPIs
 
+	/// Share of the passengers currently selected by slicers.
 	measure 'Share of Passengers' = DIVIDE([Total Passengers], CALCULATE([Total Passengers], ALLSELECTED()), 0)
 		formatString: 0.0%
 		displayFolder: 1 Passenger KPIs
-		description: Share of the passengers currently selected by slicers.
 
+	/// Share of a category's passengers in each satisfaction bucket - bars always add to 100%.
 	measure 'Satisfaction Mix %' = DIVIDE([Total Passengers], CALCULATE([Total Passengers], REMOVEFILTERS(DimSatisfaction)), 0)
 		formatString: 0%
 		displayFolder: 1 Passenger KPIs
-		description: Share of a category's passengers in each satisfaction bucket - bars always add to 100%.
 
 	measure 'Overall Satisfaction Rate' = CALCULATE([Satisfaction Rate], REMOVEFILTERS(DimTravel), REMOVEFILTERS(DimPassengerProfile), REMOVEFILTERS(DimSatisfaction))
 		formatString: 0.0%
@@ -114,10 +114,10 @@ table Measures
 		formatString: +0.0;-0.0;0.0
 		displayFolder: 2 Delay & Distance
 
+	/// Zero = not applicable, therefore excluded.
 	measure 'Average Service Rating' = CALCULATE(AVERAGE(FactServiceRating[Rating]), FactServiceRating[Rating] > 0)
 		formatString: 0.00
 		displayFolder: 3 Service Ratings
-		description: Zero = not applicable, therefore excluded.
 
 	measure 'Rating Count' = COUNTROWS(FactServiceRating)
 		formatString: #,0
@@ -139,10 +139,10 @@ table Measures
 		formatString: 0.0%
 		displayFolder: 3 Service Ratings
 
+	/// Share of an attribute's responses that fall in the rating / category on the axis.
 	measure 'Rating Share' = DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), REMOVEFILTERS(FactServiceRating[Rating Category])), 0)
 		formatString: 0%
 		displayFolder: 3 Service Ratings
-		description: Share of an attribute's responses that fall in the rating / category on the axis.
 
 	measure 'Avg Rating - Satisfied' = CALCULATE([Average Service Rating], DimSatisfaction[Satisfaction] = "Satisfied")
 		formatString: 0.00
@@ -198,6 +198,7 @@ table Measures
 		formatString: 0.000
 		displayFolder: 4 Model Performance
 
+	/// Driven by the MetricSelector slicer.
 	measure 'Selected Model Metric' =
 			SWITCH(SELECTEDVALUE(MetricSelector[Metric], "Macro F1"),
 				"Accuracy", [Model Accuracy],
@@ -207,7 +208,6 @@ table Measures
 				"ROC-AUC", [Model ROC-AUC])
 		formatString: 0.0%
 		displayFolder: 4 Model Performance
-		description: Driven by the MetricSelector slicer.
 
 	measure 'Best Macro F1' = MAXX(ALL(ModelComparison), ModelComparison[Macro F1])
 		formatString: 0.0%
@@ -238,10 +238,10 @@ table Measures
 		formatString: 0.0000
 		displayFolder: 4 Model Performance
 
+	/// Sample std-dev (ddof=1) of the 5 fold Macro F1 scores, from Nandika's evaluation.
 	measure 'CV Std Dev' = AVERAGE(ModelComparison[CV Macro F1 Std])
 		formatString: 0.0000
 		displayFolder: 4 Model Performance
-		description: Sample std-dev (ddof=1) of the 5 fold Macro F1 scores, from Nandika's evaluation.
 
 	measure 'CV Lower Band' = [CV Mean Macro F1] - [CV Std Dev]
 		formatString: 0.0000
@@ -275,10 +275,10 @@ table Measures
 		formatString: #,0
 		displayFolder: 5 Subgroup Analysis
 
+	/// Recall of the Satisfied class.
 	measure 'Subgroup Recall' = DIVIDE(SUM(SubgroupPerformance[TP]), SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[FN]), 0)
 		formatString: 0.0%
 		displayFolder: 5 Subgroup Analysis
-		description: Recall of the Satisfied class.
 
 	measure 'Subgroup Precision' = DIVIDE(SUM(SubgroupPerformance[TP]), SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[FP]), 0)
 		formatString: 0.0%
@@ -296,12 +296,12 @@ table Measures
 		formatString: 0.0%
 		displayFolder: 5 Subgroup Analysis
 
+	/// Max minus min recall across the groups in context.
 	measure 'Recall Gap (pts)' =
 			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall])
 			RETURN (MAXX(t, [@v]) - MINX(t, [@v])) * 100
 		formatString: 0.0
 		displayFolder: 5 Subgroup Analysis
-		description: Max minus min recall across the groups in context.
 
 	measure 'FPR Gap (pts)' =
 			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup FPR])
@@ -327,10 +327,10 @@ table Measures
 		formatString: 0.000
 		displayFolder: 6 SHAP & Correlation
 
+	/// Blank for features ranked below 5 so charts show only the top five.
 	measure 'Top 5 SHAP' = IF(MAX(ShapImportance[Rank]) <= 5, [Mean Abs SHAP])
 		formatString: 0.000
 		displayFolder: 6 SHAP & Correlation
-		description: Blank for features ranked below 5 so charts show only the top five.
 
 	measure 'Top 10 SHAP' = IF(MAX(ShapImportance[Rank]) <= 10, [Mean Abs SHAP])
 		formatString: 0.000
@@ -423,19 +423,19 @@ table Measures
 	measure 'Gemini Uncertainty Note' = SELECTEDVALUE(GeminiInsights[Uncertainty Note], "")
 		displayFolder: 7 Passenger Explanation
 
+	/// Top-10 contributions only; positive values push the prediction toward Satisfied.
 	measure 'SHAP toward Satisfied' =
 			VAR v = SUM(ShapLocal[SHAP Value])
 			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 7 Passenger Explanation
-		description: Top-10 contributions only; positive values push the prediction toward Satisfied.
 
+	/// Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.
 	measure 'SHAP toward Neutral or Dissatisfied' =
 			VAR v = SUM(ShapLocal[SHAP Value])
 			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 7 Passenger Explanation
-		description: Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.
 
 	measure 'Net SHAP Value' = SUM(ShapLocal[SHAP Value])
 		formatString: +0.000;-0.000;0.000
@@ -485,6 +485,7 @@ table Measures
 	measure 'Insight - Action' = "Prioritise " & [Lowest Rated Attribute] & " (lowest rating) and " & [Top Feature (SHAP)] & " (largest model driver); recognise teams behind " & [Highest Rated Attribute] & "."
 		displayFolder: 8 Narrative (data-driven text)
 
+	/// Rendered by a table visual of Insights[Topic] x [Insight Text].
 	measure 'Insight Text' =
 			SWITCH(SELECTEDVALUE(Insights[Order]),
 				1, [Insight - Headline],
@@ -497,7 +498,6 @@ table Measures
 				8, [Insight - Explainability],
 				9, [Insight - Action])
 		displayFolder: 8 Narrative (data-driven text)
-		description: Rendered by a table visual of Insights[Topic] x [Insight Text].
 
 	measure 'Title - Class Chart' = "Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"
 		displayFolder: 8 Narrative (data-driven text)

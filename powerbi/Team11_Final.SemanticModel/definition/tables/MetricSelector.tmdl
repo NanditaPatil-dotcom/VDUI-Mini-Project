@@ -1,5 +1,5 @@
+/// Disconnected slicer table that drives [Selected Model Metric].
 table MetricSelector
-	description: Disconnected slicer table that drives [Selected Model Metric].
 
 	column Metric
 		dataType: string

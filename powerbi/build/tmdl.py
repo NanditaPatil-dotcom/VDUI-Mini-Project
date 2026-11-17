@@ -26,7 +26,7 @@ def _block(expr: str, base: int) -> str:
 
 def column(name, dtype="string", source=None, hidden=False, summarize=None, sort_by=None,
            fmt=None, expr=None, folder=None, desc=None, category=None):
-    s = T + "column " + q(name)
+    s = (f"{T}/// {desc}\n" if desc else "") + T + "column " + q(name)
     if expr is not None:
         if "\n" in expr:
             s += " =\n" + _block(expr, 3)
@@ -38,8 +38,6 @@ def column(name, dtype="string", source=None, hidden=False, summarize=None, sort
         s += f"{T*2}formatString: {fmt}\n"
     if hidden:
         s += f"{T*2}isHidden\n"
-    if desc:
-        s += f"{T*2}description: {desc}\n"
     if folder:
         s += f"{T*2}displayFolder: {folder}\n"
     if category:
@@ -55,7 +53,7 @@ def column(name, dtype="string", source=None, hidden=False, summarize=None, sort
 
 
 def measure(name, expr, fmt=None, folder=None, desc=None, hidden=False):
-    s = T + "measure " + q(name) + " ="
+    s = (f"{T}/// {desc}\n" if desc else "") + T + "measure " + q(name) + " ="
     if "\n" in expr.strip():
         s += "\n" + _block(expr, 3) + "\n"
     else:
@@ -64,8 +62,6 @@ def measure(name, expr, fmt=None, folder=None, desc=None, hidden=False):
         s += f"{T*2}formatString: {fmt}\n"
     if folder:
         s += f"{T*2}displayFolder: {folder}\n"
-    if desc:
-        s += f"{T*2}description: {desc}\n"
     if hidden:
         s += f"{T*2}isHidden\n"
     return s
@@ -77,11 +73,9 @@ def partition(name, m_code, mode="import"):
 
 
 def table(name, columns, m_code=None, measures=(), hidden=False, desc=None):
-    s = f"table {q(name)}\n"
+    s = (f"/// {desc}\n" if desc else "") + f"table {q(name)}\n"
     if hidden:
         s += f"{T}isHidden\n"
-    if desc:
-        s += f"{T}description: {desc}\n"
     s += "\n"
     for c in columns:
         s += c + "\n"

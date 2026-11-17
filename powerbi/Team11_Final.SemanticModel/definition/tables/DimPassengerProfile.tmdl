@@ -1,5 +1,5 @@
+/// One row per Gender x Customer Type x Age Band combination.
 table DimPassengerProfile
-	description: One row per Gender x Customer Type x Age Band combination.
 
 	column ProfileKey
 		dataType: int64

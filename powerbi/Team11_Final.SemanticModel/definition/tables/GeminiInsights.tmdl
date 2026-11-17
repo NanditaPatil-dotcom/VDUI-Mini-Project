@@ -1,5 +1,5 @@
+/// One row per explained passenger, flattened from explainability/gemini_insights.json by build/prepare_data.py.
 table GeminiInsights
-	description: One row per explained passenger, flattened from explainability/gemini_insights.json by build/prepare_data.py.
 
 	column 'Passenger Index'
 		dataType: int64

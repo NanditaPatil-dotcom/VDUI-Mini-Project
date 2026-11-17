@@ -1,5 +1,5 @@
+/// Per-model subgroup metrics on the held-out test set. Positive class = Satisfied.
 table SubgroupPerformance
-	description: Per-model subgroup metrics on the held-out test set. Positive class = Satisfied.
 
 	column Model
 		dataType: string

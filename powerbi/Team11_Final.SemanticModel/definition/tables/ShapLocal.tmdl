@@ -1,5 +1,5 @@
+/// Local SHAP contributions for the explained passengers.
 table ShapLocal
-	description: Local SHAP contributions for the explained passengers.
 
 	column 'Passenger Index'
 		dataType: int64

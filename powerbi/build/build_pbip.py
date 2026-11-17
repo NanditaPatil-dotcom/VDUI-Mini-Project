@@ -59,7 +59,7 @@ def build_semantic_model():
     w(os.path.join(d, "expressions.tmdl"), MD.expressions_tmdl())
     w(os.path.join(d, "relationships.tmdl"), MD.relationships_tmdl())
     for t in MD.tables():
-        name = t.split("\n", 1)[0].replace("table ", "").strip("'")
+        name = next(l for l in t.split("\n") if l.startswith("table ")).replace("table ", "").strip("'")
         w(os.path.join(d, "tables", f"{name}.tmdl"), t)
     meas = MD.measure_list()
     w(os.path.join(d, "tables", "Measures.tmdl"), tmdl.table(

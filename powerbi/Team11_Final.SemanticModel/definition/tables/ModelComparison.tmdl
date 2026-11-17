@@ -1,5 +1,5 @@
+/// Held-out test metrics + 5-fold CV summary (source: models/model_comparison.csv).
 table ModelComparison
-	description: Held-out test metrics + 5-fold CV summary (source: models/model_comparison.csv).
 
 	column Model
 		dataType: string

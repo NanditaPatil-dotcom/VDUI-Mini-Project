@@ -1,5 +1,5 @@
+/// Correlation / association of each feature with satisfaction (source: correlation/correlation_ranking.csv). Methods are NOT directly comparable.
 table CorrelationRanking
-	description: Correlation / association of each feature with satisfaction (source: correlation/correlation_ranking.csv). Methods are NOT directly comparable.
 
 	column Feature
 		dataType: string

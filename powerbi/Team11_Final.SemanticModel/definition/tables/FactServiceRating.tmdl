@@ -1,5 +1,5 @@
+/// Grain: one row per passenger x service attribute (14 attributes). Rating 0 = not applicable.
 table FactServiceRating
-	description: Grain: one row per passenger x service attribute (14 attributes). Rating 0 = not applicable.
 
 	column 'Passenger ID'
 		dataType: int64

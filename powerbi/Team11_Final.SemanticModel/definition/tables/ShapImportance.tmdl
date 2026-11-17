@@ -1,5 +1,5 @@
+/// Global mean |SHAP| for the selected model (source: explainability/shap_importance.csv).
 table ShapImportance
-	description: Global mean |SHAP| for the selected model (source: explainability/shap_importance.csv).
 
 	column Rank
 		dataType: int64

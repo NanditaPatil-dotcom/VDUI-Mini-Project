@@ -1,5 +1,5 @@
+/// Helper table: each row renders one data-driven sentence through [Insight Text].
 table Insights
-	description: Helper table: each row renders one data-driven sentence through [Insight Text].
 
 	column Order
 		dataType: int64

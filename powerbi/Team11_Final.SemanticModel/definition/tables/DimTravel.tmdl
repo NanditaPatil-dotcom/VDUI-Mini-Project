@@ -1,5 +1,5 @@
+/// One row per Class x Type of Travel combination.
 table DimTravel
-	description: One row per Class x Type of Travel combination.
 
 	column TravelKey
 		dataType: int64
