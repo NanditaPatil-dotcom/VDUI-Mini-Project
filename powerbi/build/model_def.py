@@ -23,7 +23,7 @@ def csv_m(path, types, extra=""):
     """M for a simple CSV table. `types` = list of (col, m-type)."""
     tt = ", ".join('{"%s", %s}' % (c, t) for c, t in types)
     return f'''let
-    Source = Csv.Document(File.Contents(RepoRoot & "{path}"), [{CSV_OPTS}]),
+    Source = Csv.Document(File.Contents(Root & "{path}"), [{CSV_OPTS}]),
     Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     Typed = Table.TransformColumnTypes(Promoted, {{{tt}}}, "en-US"){extra}
 in
@@ -45,7 +45,7 @@ def expressions_tmdl():
                           ["Gender", "Customer Type", "Type of Travel", "Class", "Satisfaction", "satisfaction_tier"])
     stg = f'''let
     // EXTRACT: one row per cleaned passenger record
-    Source = Csv.Document(File.Contents(RepoRoot & "airline_satisfaction_tiered.csv"), [{CSV_OPTS}]),
+    Source = Csv.Document(File.Contents(Root & "airline_satisfaction_tiered.csv"), [{CSV_OPTS}]),
     Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
     // TRANSFORM: types, text clean-up, label standardisation
     Typed = Table.TransformColumnTypes(Promoted, {{{tt}}}, "en-US"),
@@ -64,6 +64,7 @@ def expressions_tmdl():
 in
     TierSort'''
     out = [expression("RepoRoot", '"C:\\VDUI-Mini-Project\\"', parameter=True),
+           expression("Root", 'if Text.EndsWith(Text.Trim(RepoRoot), "\\") then Text.Trim(RepoRoot) else Text.Trim(RepoRoot) & "\\"', result="Text"),
            expression("stgPassenger", stg)]
     return "\n".join(out)
 

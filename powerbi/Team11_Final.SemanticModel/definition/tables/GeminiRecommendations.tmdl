@@ -25,7 +25,7 @@ table GeminiRecommendations
 		mode: import
 		source =
 				let
-					Source = Csv.Document(File.Contents(RepoRoot & "powerbi\data\gemini_recommendations_flat.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Source = Csv.Document(File.Contents(Root & "powerbi\data\gemini_recommendations_flat.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 					Typed = Table.TransformColumnTypes(Promoted, {{"Passenger Index", Int64.Type}, {"Evidence Feature", type text}, {"Recommendation", type text}, {"Reason", type text}}, "en-US")
 				in

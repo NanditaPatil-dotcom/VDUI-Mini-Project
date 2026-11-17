@@ -1,10 +1,14 @@
 expression RepoRoot = "C:\VDUI-Mini-Project\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	annotation PBI_ResultType = Text
 
+expression Root =
+		if Text.EndsWith(Text.Trim(RepoRoot), "\") then Text.Trim(RepoRoot) else Text.Trim(RepoRoot) & "\"
+	annotation PBI_ResultType = Text
+
 expression stgPassenger =
 		let
 			// EXTRACT: one row per cleaned passenger record
-			Source = Csv.Document(File.Contents(RepoRoot & "airline_satisfaction_tiered.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			Source = Csv.Document(File.Contents(Root & "airline_satisfaction_tiered.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 			Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 			// TRANSFORM: types, text clean-up, label standardisation
 			Typed = Table.TransformColumnTypes(Promoted, {{"Gender", type text}, {"Age", Int64.Type}, {"Customer Type", type text}, {"Type of Travel", type text}, {"Class", type text}, {"Flight Distance", Int64.Type}, {"Departure Delay", type number}, {"Arrival Delay", type number}, {"Departure and Arrival Time Convenience", Int64.Type}, {"Ease of Online Booking", Int64.Type}, {"Check-in Service", Int64.Type}, {"Online Boarding", Int64.Type}, {"Gate Location", Int64.Type}, {"On-board Service", Int64.Type}, {"Seat Comfort", Int64.Type}, {"Leg Room Service", Int64.Type}, {"Cleanliness", Int64.Type}, {"Food and Drink", Int64.Type}, {"In-flight Service", Int64.Type}, {"In-flight Wifi Service", Int64.Type}, {"In-flight Entertainment", Int64.Type}, {"Baggage Handling", Int64.Type}, {"Satisfaction", type text}, {"satisfaction", Int64.Type}, {"avg_service_rating", type number}, {"satisfaction_tier", type text}}, "en-US"),

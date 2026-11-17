@@ -91,7 +91,7 @@ table SubgroupPerformance
 		mode: import
 		source =
 				let
-					Source = Csv.Document(File.Contents(RepoRoot & "models\subgroup_model_comparison.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Source = Csv.Document(File.Contents(Root & "models\subgroup_model_comparison.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 					Typed = Table.TransformColumnTypes(Promoted, {{"Model", type text}, {"Attribute", type text}, {"Group", type text}, {"Sample Count", Int64.Type}, {"Accuracy", type number}, {"Precision", type number}, {"Recall", type number}, {"F1", type number}, {"Macro F1", type number}, {"FPR", type number}, {"TN", Int64.Type}, {"FP", Int64.Type}, {"FN", Int64.Type}, {"TP", Int64.Type}}, "en-US"),
 					Renamed = Table.RenameColumns(Typed, {{"Sample Count", "Passengers"}}),

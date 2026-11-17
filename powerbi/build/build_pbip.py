@@ -54,7 +54,7 @@ def build_semantic_model():
     refs = "\n".join(f"ref table {tmdl.q(t)}" for t in MD.ALL_TABLE_NAMES)
     w(os.path.join(d, "model.tmdl"),
       "model Model\n\tculture: en-US\n\tdefaultPowerBIDataSourceVersion: powerBI_V3\n\tsourceQueryCulture: en-US\n\n"
-      + refs + "\n\nref expression RepoRoot\nref expression stgPassenger\n\nref cultureInfo en-US\n")
+      + refs + "\n\nref expression RepoRoot\nref expression Root\nref expression stgPassenger\n\nref cultureInfo en-US\n")
     w(os.path.join(d, "cultures", "en-US.tmdl"), "cultureInfo en-US\n")
     w(os.path.join(d, "expressions.tmdl"), MD.expressions_tmdl())
     w(os.path.join(d, "relationships.tmdl"), MD.relationships_tmdl())

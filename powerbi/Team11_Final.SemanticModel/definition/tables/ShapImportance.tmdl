@@ -39,7 +39,7 @@ table ShapImportance
 		mode: import
 		source =
 				let
-					Source = Csv.Document(File.Contents(RepoRoot & "explainability\shap_importance.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Source = Csv.Document(File.Contents(Root & "explainability\shap_importance.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 					Typed = Table.TransformColumnTypes(Promoted, {{"Rank", Int64.Type}, {"Feature", type text}, {"MeanAbsoluteSHAP", type number}, {"MeanSHAP", type number}, {"ExplainedOutput", type text}, {"SampleSize", Int64.Type}}, "en-US"),
 					Final = Table.RenameColumns(Typed, {{"MeanAbsoluteSHAP", "Mean Absolute SHAP"}, {"MeanSHAP", "Mean SHAP"}, {"ExplainedOutput", "Explained Output"}, {"SampleSize", "Sample Size"}})

@@ -68,7 +68,7 @@ table GeminiInsights
 		mode: import
 		source =
 				let
-					Source = Csv.Document(File.Contents(RepoRoot & "powerbi\data\gemini_insights_flat.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Source = Csv.Document(File.Contents(Root & "powerbi\data\gemini_insights_flat.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
 					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
 					Typed = Table.TransformColumnTypes(Promoted, {{"Passenger Index", Int64.Type}, {"Passenger Label", type text}, {"Actual Class", type text}, {"Predicted Class", type text}, {"Predicted Probability", type number}, {"Probability Satisfied", type number}, {"Correct Prediction", type text}, {"Explanation", type text}, {"Evidence Features", type text}, {"Uncertainty Note", type text}, {"Gemini Model", type text}, {"Generated At", type text}}, "en-US")
 				in
