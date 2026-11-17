@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Best Model CV Std"
                 }
               },
-              "queryRef": "Measures.Best Model CV Std",
+              "queryRef": "_Measures.Best Model CV Std",
               "nativeQueryRef": "Best Model CV Std",
               "displayName": "CV STD-DEV (BEST MODEL)"
             }

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Disparity Flag"
                 }
               },
-              "queryRef": "Measures.Disparity Flag",
+              "queryRef": "_Measures.Disparity Flag",
               "nativeQueryRef": "Disparity Flag",
               "displayName": "DISPARITY CHECK"
             }

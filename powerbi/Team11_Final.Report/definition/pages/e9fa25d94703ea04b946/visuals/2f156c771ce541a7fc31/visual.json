@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Best Macro F1"
                 }
               },
-              "queryRef": "Measures.Best Macro F1",
+              "queryRef": "_Measures.Best Macro F1",
               "nativeQueryRef": "Best Macro F1",
               "displayName": "BEST MODEL MACRO F1"
             }

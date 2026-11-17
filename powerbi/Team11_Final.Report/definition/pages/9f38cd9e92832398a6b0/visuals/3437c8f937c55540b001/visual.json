@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Rating Share"
                 }
               },
-              "queryRef": "Measures.Rating Share",
+              "queryRef": "_Measures.Rating Share",
               "nativeQueryRef": "Rating Share"
             }
           ]

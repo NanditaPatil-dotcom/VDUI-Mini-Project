@@ -39,13 +39,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Rating - Satisfied"
                 }
               },
-              "queryRef": "Measures.Avg Rating - Satisfied",
+              "queryRef": "_Measures.Avg Rating - Satisfied",
               "nativeQueryRef": "Avg Rating - Satisfied"
             },
             {
@@ -53,13 +53,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Rating - Neutral or Dissatisfied"
                 }
               },
-              "queryRef": "Measures.Avg Rating - Neutral or Dissatisfied",
+              "queryRef": "_Measures.Avg Rating - Neutral or Dissatisfied",
               "nativeQueryRef": "Avg Rating - Neutral or Dissatisfied"
             }
           ]
@@ -246,7 +246,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Avg Rating - Satisfied"
+            "metadata": "_Measures.Avg Rating - Satisfied"
           }
         },
         {
@@ -264,7 +264,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.Avg Rating - Neutral or Dissatisfied"
+            "metadata": "_Measures.Avg Rating - Neutral or Dissatisfied"
           }
         }
       ]

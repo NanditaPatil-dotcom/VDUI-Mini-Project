@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Best ROC-AUC"
                 }
               },
-              "queryRef": "Measures.Best ROC-AUC",
+              "queryRef": "_Measures.Best ROC-AUC",
               "nativeQueryRef": "Best ROC-AUC",
               "displayName": "BEST ROC-AUC"
             }

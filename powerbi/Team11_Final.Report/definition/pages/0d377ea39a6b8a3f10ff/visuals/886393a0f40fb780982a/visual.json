@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Lowest Recall Group"
                 }
               },
-              "queryRef": "Measures.Lowest Recall Group",
+              "queryRef": "_Measures.Lowest Recall Group",
               "nativeQueryRef": "Lowest Recall Group",
               "displayName": "LOWEST-RECALL GROUP"
             }

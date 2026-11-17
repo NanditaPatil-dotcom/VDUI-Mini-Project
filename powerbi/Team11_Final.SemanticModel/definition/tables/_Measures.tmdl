@@ -1,5 +1,5 @@
 /// Home for every DAX measure in the model.
-table Measures
+table _Measures
 
 	column Placeholder
 		dataType: string
@@ -508,7 +508,7 @@ table Measures
 	measure 'Title - Model Chart' = "Model comparison  |  best: " & [Best Model]
 		displayFolder: 8 Narrative (data-driven text)
 
-	partition Measures = m
+	partition _Measures = m
 		mode: import
 		source =
 				let

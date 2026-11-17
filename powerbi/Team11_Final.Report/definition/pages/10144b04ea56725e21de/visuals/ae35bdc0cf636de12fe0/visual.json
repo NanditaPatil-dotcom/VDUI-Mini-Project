@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Feature Rank"
                 }
               },
-              "queryRef": "Measures.Feature Rank",
+              "queryRef": "_Measures.Feature Rank",
               "nativeQueryRef": "Feature Rank",
               "displayName": "SHAP RANK"
             }

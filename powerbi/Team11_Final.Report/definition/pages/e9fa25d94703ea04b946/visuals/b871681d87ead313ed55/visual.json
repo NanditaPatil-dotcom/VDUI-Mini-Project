@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "High Tier Rate"
                 }
               },
-              "queryRef": "Measures.High Tier Rate",
+              "queryRef": "_Measures.High Tier Rate",
               "nativeQueryRef": "High Tier Rate",
               "displayName": "HIGH-TIER RATE"
             }

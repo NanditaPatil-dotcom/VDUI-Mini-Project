@@ -53,7 +53,7 @@ def Col(t, c):
     return {"Column": {"Expression": {"SourceRef": {"Entity": t}}, "Property": c}}
 
 
-def Mea(c, t="Measures"):
+def Mea(c, t="_Measures"):
     return {"Measure": {"Expression": {"SourceRef": {"Entity": t}}, "Property": c}}
 
 
@@ -68,7 +68,7 @@ def proj(ref, display=None, active=True):
         qr = f"{ref[1]}.{ref[2]}"
         nq = ref[2]
     else:
-        qr = f"Measures.{ref[1]}"
+        qr = f"_Measures.{ref[1]}"
         nq = ref[1]
     d = {"field": f, "queryRef": qr, "nativeQueryRef": nq}
     if ref[0] == "c" and active:
@@ -79,7 +79,7 @@ def proj(ref, display=None, active=True):
 
 
 def qref(ref):
-    return f"{ref[1]}.{ref[2]}" if ref[0] == "c" else f"Measures.{ref[1]}"
+    return f"{ref[1]}.{ref[2]}" if ref[0] == "c" else f"_Measures.{ref[1]}"
 
 
 def c(t, n):
@@ -107,7 +107,7 @@ def vco(title=None, title_color=NAVY, title_size=12, title_align="left", bg=WHIT
         tp = {"show": lit(True), "fontColor": colr(title_color), "fontSize": num(title_size), "bold": lit(True),
               "alignment": lit(title_align), "fontFamily": lit("Segoe UI Semibold")}
         if title_measure:
-            tp["text"] = {"expr": {"Measure": {"Expression": {"SourceRef": {"Entity": "Measures"}}, "Property": title_measure}}}
+            tp["text"] = {"expr": {"Measure": {"Expression": {"SourceRef": {"Entity": "_Measures"}}, "Property": title_measure}}}
         else:
             tp["text"] = lit(title)
         o["title"] = [{"properties": tp}]
@@ -156,7 +156,7 @@ def dp_colors(table, column, mapping):
 
 def dp_measures(mapping):
     """colour series that are measures: mapping measure-name -> colour"""
-    return [{"properties": {"fill": colr(color)}, "selector": {"metadata": f"Measures.{n}"}} for n, color in mapping.items()]
+    return [{"properties": {"fill": colr(color)}, "selector": {"metadata": f"_Measures.{n}"}} for n, color in mapping.items()]
 
 
 # ---- chart objects ----

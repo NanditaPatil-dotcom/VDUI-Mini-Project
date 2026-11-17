@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Strongest Associated Feature"
                 }
               },
-              "queryRef": "Measures.Strongest Associated Feature",
+              "queryRef": "_Measures.Strongest Associated Feature",
               "nativeQueryRef": "Strongest Associated Feature",
               "displayName": "STRONGEST ASSOCIATION"
             }

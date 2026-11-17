@@ -554,4 +554,4 @@ def relationships_tmdl():
 ALL_TABLE_NAMES = ["DimTravel", "DimPassengerProfile", "DimSatisfaction", "FactPassenger", "FactServiceRating",
                    "DimServiceAttribute", "DimModel", "ModelComparison", "CVScores", "SubgroupPerformance",
                    "MetricSelector", "ShapImportance", "ShapLocal", "GeminiInsights", "GeminiRecommendations",
-                   "CorrelationRanking", "Insights", "Measures"]
+                   "CorrelationRanking", "Insights", "_Measures"]

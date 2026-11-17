@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Top Feature (SHAP)"
                 }
               },
-              "queryRef": "Measures.Top Feature (SHAP)",
+              "queryRef": "_Measures.Top Feature (SHAP)",
               "nativeQueryRef": "Top Feature (SHAP)",
               "displayName": "TOP MODEL DRIVER (SHAP)"
             }

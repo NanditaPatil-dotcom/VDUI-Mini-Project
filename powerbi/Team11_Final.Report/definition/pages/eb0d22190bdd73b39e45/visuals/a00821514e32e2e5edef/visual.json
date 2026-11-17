@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Arrival Delay"
                 }
               },
-              "queryRef": "Measures.Avg Arrival Delay",
+              "queryRef": "_Measures.Avg Arrival Delay",
               "nativeQueryRef": "Avg Arrival Delay",
               "displayName": "AVG ARRIVAL DELAY (MIN)"
             }

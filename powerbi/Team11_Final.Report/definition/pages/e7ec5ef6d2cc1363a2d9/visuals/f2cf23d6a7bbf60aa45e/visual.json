@@ -39,13 +39,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Top 5 SHAP"
                 }
               },
-              "queryRef": "Measures.Top 5 SHAP",
+              "queryRef": "_Measures.Top 5 SHAP",
               "nativeQueryRef": "Top 5 SHAP"
             }
           ]
@@ -58,7 +58,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Top 5 SHAP"

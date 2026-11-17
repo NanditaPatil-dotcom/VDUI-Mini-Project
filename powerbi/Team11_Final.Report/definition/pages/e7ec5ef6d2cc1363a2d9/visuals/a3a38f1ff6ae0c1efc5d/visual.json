@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Selected Prediction Correct"
                 }
               },
-              "queryRef": "Measures.Selected Prediction Correct",
+              "queryRef": "_Measures.Selected Prediction Correct",
               "nativeQueryRef": "Selected Prediction Correct",
               "displayName": "PREDICTION CORRECT?"
             }

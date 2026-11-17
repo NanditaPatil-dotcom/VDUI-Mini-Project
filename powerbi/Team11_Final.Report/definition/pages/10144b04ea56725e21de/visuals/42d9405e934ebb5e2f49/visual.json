@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Tooltip Feature"
                 }
               },
-              "queryRef": "Measures.Tooltip Feature",
+              "queryRef": "_Measures.Tooltip Feature",
               "nativeQueryRef": "Tooltip Feature",
               "displayName": "FEATURE"
             }

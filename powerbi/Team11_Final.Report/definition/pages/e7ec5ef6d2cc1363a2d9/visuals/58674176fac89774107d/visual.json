@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Selected Prediction Confidence"
                 }
               },
-              "queryRef": "Measures.Selected Prediction Confidence",
+              "queryRef": "_Measures.Selected Prediction Confidence",
               "nativeQueryRef": "Selected Prediction Confidence",
               "displayName": "MODEL CONFIDENCE"
             }

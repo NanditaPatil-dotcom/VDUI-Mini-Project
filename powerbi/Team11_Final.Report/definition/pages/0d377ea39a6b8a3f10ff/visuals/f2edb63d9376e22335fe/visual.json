@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup Macro F1"
                 }
               },
-              "queryRef": "Measures.Subgroup Macro F1",
+              "queryRef": "_Measures.Subgroup Macro F1",
               "nativeQueryRef": "Subgroup Macro F1"
             }
           ]

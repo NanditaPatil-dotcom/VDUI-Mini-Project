@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Top Contributor (Selected Passenger)"
                 }
               },
-              "queryRef": "Measures.Top Contributor (Selected Passenger)",
+              "queryRef": "_Measures.Top Contributor (Selected Passenger)",
               "nativeQueryRef": "Top Contributor (Selected Passenger)",
               "displayName": "TOP CONTRIBUTOR"
             }

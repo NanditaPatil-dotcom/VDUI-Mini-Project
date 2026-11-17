@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Best Model"
                 }
               },
-              "queryRef": "Measures.Best Model",
+              "queryRef": "_Measures.Best Model",
               "nativeQueryRef": "Best Model",
               "displayName": "BEST MODEL"
             }

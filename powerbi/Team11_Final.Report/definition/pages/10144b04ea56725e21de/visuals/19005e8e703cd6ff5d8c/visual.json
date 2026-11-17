@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Feature Avg Rating (tooltip)"
                 }
               },
-              "queryRef": "Measures.Feature Avg Rating (tooltip)",
+              "queryRef": "_Measures.Feature Avg Rating (tooltip)",
               "nativeQueryRef": "Feature Avg Rating (tooltip)",
               "displayName": "AVG SERVICE RATING"
             }

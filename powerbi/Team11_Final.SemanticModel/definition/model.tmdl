@@ -20,7 +20,7 @@ ref table GeminiInsights
 ref table GeminiRecommendations
 ref table CorrelationRanking
 ref table Insights
-ref table Measures
+ref table _Measures
 
 ref expression RepoRoot
 ref expression stgPassenger

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Top 5 Share of SHAP"
                 }
               },
-              "queryRef": "Measures.Top 5 Share of SHAP",
+              "queryRef": "_Measures.Top 5 Share of SHAP",
               "nativeQueryRef": "Top 5 Share of SHAP",
               "displayName": "TOP-5 SHARE OF |SHAP|"
             }

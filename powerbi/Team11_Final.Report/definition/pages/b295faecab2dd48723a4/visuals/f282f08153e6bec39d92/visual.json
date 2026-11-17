@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Significant Features"
                 }
               },
-              "queryRef": "Measures.Significant Features",
+              "queryRef": "_Measures.Significant Features",
               "nativeQueryRef": "Significant Features",
               "displayName": "SIGNIFICANT FEATURES (adj p<0.05)"
             }

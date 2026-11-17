@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Fold Macro F1"
                 }
               },
-              "queryRef": "Measures.Fold Macro F1",
+              "queryRef": "_Measures.Fold Macro F1",
               "nativeQueryRef": "Fold Macro F1"
             }
           ]

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Feature Corr Method (tooltip)"
                 }
               },
-              "queryRef": "Measures.Feature Corr Method (tooltip)",
+              "queryRef": "_Measures.Feature Corr Method (tooltip)",
               "nativeQueryRef": "Feature Corr Method (tooltip)",
               "displayName": "METHOD"
             }

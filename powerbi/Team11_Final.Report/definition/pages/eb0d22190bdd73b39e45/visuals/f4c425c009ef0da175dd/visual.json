@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Flight Distance"
                 }
               },
-              "queryRef": "Measures.Avg Flight Distance",
+              "queryRef": "_Measures.Avg Flight Distance",
               "nativeQueryRef": "Avg Flight Distance",
               "displayName": "AVG FLIGHT DISTANCE (MI)"
             }

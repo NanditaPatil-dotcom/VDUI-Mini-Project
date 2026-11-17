@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Strongest Association Value"
                 }
               },
-              "queryRef": "Measures.Strongest Association Value",
+              "queryRef": "_Measures.Strongest Association Value",
               "nativeQueryRef": "Strongest Association Value",
               "displayName": "EFFECT SIZE (MAX |r|)"
             }

@@ -62,8 +62,8 @@ def build_semantic_model():
         name = next(l for l in t.split("\n") if l.startswith("table ")).replace("table ", "").strip("'")
         w(os.path.join(d, "tables", f"{name}.tmdl"), t)
     meas = MD.measure_list()
-    w(os.path.join(d, "tables", "Measures.tmdl"), tmdl.table(
-        "Measures",
+    w(os.path.join(d, "tables", "_Measures.tmdl"), tmdl.table(
+        "_Measures",
         [tmdl.column("Placeholder", "string", hidden=True)],
         '''let
     Source = #table(type table [Placeholder = text], {{""}})

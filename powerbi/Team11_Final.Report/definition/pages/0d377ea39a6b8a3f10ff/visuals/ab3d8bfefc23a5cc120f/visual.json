@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "FPR Gap (pts)"
                 }
               },
-              "queryRef": "Measures.FPR Gap (pts)",
+              "queryRef": "_Measures.FPR Gap (pts)",
               "nativeQueryRef": "FPR Gap (pts)",
               "displayName": "FALSE-POSITIVE-RATE GAP (PTS)"
             }

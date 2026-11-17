@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Feature Correlation (tooltip)"
                 }
               },
-              "queryRef": "Measures.Feature Correlation (tooltip)",
+              "queryRef": "_Measures.Feature Correlation (tooltip)",
               "nativeQueryRef": "Feature Correlation (tooltip)",
               "displayName": "CORRELATION"
             }

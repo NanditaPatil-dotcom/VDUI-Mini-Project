@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Lowest Rated Attribute"
                 }
               },
-              "queryRef": "Measures.Lowest Rated Attribute",
+              "queryRef": "_Measures.Lowest Rated Attribute",
               "nativeQueryRef": "Lowest Rated Attribute",
               "displayName": "LOWEST-RATED SERVICE"
             }

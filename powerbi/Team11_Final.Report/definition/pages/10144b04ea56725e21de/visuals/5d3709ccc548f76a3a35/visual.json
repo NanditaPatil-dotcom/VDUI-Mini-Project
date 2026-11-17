@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Mean Abs SHAP"
                 }
               },
-              "queryRef": "Measures.Mean Abs SHAP",
+              "queryRef": "_Measures.Mean Abs SHAP",
               "nativeQueryRef": "Mean Abs SHAP",
               "displayName": "MEAN |SHAP|"
             }

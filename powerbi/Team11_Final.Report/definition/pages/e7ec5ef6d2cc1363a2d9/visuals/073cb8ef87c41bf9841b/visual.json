@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Gemini Explanation"
                 }
               },
-              "queryRef": "Measures.Gemini Explanation",
+              "queryRef": "_Measures.Gemini Explanation",
               "nativeQueryRef": "Gemini Explanation"
             }
           ]

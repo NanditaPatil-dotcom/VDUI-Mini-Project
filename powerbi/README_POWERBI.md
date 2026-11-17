@@ -49,7 +49,7 @@ DimPassengerProfile ──┼─< FactPassenger   (1 row / passenger, [Passenger
 DimSatisfaction ──┘ └─< FactServiceRating (passenger × 14 service attributes, unpivoted; 0 = not applicable)
 DimModel ─< ModelComparison / CVScores / SubgroupPerformance
 GeminiInsights ─< ShapLocal, GeminiRecommendations          ShapImportance, CorrelationRanking, Insights, MetricSelector (stand-alone)
-Measures (all DAX, folders 1-8)
+_Measures (all DAX, folders 1-8)
 ```
 Power Query: `stgPassenger` (staging, not loaded) → `DimTravel`, `DimPassengerProfile`, `DimSatisfaction` (Distinct + Index key) → `FactPassenger` (Left-outer merges for the 3 keys; Age Band, Delay Bucket, Distance Band added) → `FactServiceRating` (Unpivot Other Columns).
 The staging query is the usual fix for "reference the fact to build dims, then merge keys back" (otherwise it is circular).
@@ -61,7 +61,7 @@ Design rules honoured: palette `#173D75 / #2389ED / #65B7A3 / #E8A044 / #F3F6FA 
 
 ## 4. Verify after the first refresh
 `powerbi/expected_values.csv` holds the headline numbers computed independently in pandas (e.g. 129,487 passengers, 43.4 % satisfied, XGBoost best macro-F1 96.4 %).
-Compare them with the Overview cards / the `Measures` table. Details in `integration_notes.md`.
+Compare them with the Overview cards / the `_Measures` table. Details in `integration_notes.md`.
 
 ## 5. Regenerating
 ```bash

@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Selected Predicted Class"
                 }
               },
-              "queryRef": "Measures.Selected Predicted Class",
+              "queryRef": "_Measures.Selected Predicted Class",
               "nativeQueryRef": "Selected Predicted Class",
               "displayName": "PREDICTED CLASS"
             }

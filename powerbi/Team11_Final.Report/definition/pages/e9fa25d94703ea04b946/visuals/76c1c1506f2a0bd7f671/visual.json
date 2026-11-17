@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Satisfaction Mix %"
                 }
               },
-              "queryRef": "Measures.Satisfaction Mix %",
+              "queryRef": "_Measures.Satisfaction Mix %",
               "nativeQueryRef": "Satisfaction Mix %"
             }
           ]
@@ -368,7 +368,7 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Title - Class Chart"

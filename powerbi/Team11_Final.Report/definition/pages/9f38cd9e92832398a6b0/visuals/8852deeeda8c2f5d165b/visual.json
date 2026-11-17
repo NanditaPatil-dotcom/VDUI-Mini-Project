@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Good Rating Share"
                 }
               },
-              "queryRef": "Measures.Good Rating Share",
+              "queryRef": "_Measures.Good Rating Share",
               "nativeQueryRef": "Good Rating Share",
               "displayName": "GOOD RATINGS (4-5)"
             }

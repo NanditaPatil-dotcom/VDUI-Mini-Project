@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Effect Value"
                 }
               },
-              "queryRef": "Measures.Effect Value",
+              "queryRef": "_Measures.Effect Value",
               "nativeQueryRef": "Effect Value"
             }
           ]
@@ -77,7 +77,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Absolute Effect"

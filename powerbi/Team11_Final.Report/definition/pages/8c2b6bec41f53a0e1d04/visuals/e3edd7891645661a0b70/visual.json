@@ -65,13 +65,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Total Passengers"
                 }
               },
-              "queryRef": "Measures.Total Passengers",
+              "queryRef": "_Measures.Total Passengers",
               "nativeQueryRef": "Total Passengers"
             },
             {
@@ -79,13 +79,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Satisfaction Rate"
                 }
               },
-              "queryRef": "Measures.Satisfaction Rate",
+              "queryRef": "_Measures.Satisfaction Rate",
               "nativeQueryRef": "Satisfaction Rate"
             },
             {
@@ -93,13 +93,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "High Tier Rate"
                 }
               },
-              "queryRef": "Measures.High Tier Rate",
+              "queryRef": "_Measures.High Tier Rate",
               "nativeQueryRef": "High Tier Rate"
             },
             {
@@ -107,13 +107,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Departure Delay"
                 }
               },
-              "queryRef": "Measures.Avg Departure Delay",
+              "queryRef": "_Measures.Avg Departure Delay",
               "nativeQueryRef": "Avg Departure Delay"
             },
             {
@@ -121,13 +121,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Arrival Delay"
                 }
               },
-              "queryRef": "Measures.Avg Arrival Delay",
+              "queryRef": "_Measures.Avg Arrival Delay",
               "nativeQueryRef": "Avg Arrival Delay"
             },
             {
@@ -135,13 +135,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Avg Flight Distance"
                 }
               },
-              "queryRef": "Measures.Avg Flight Distance",
+              "queryRef": "_Measures.Avg Flight Distance",
               "nativeQueryRef": "Avg Flight Distance"
             },
             {
@@ -149,13 +149,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Average Service Rating"
                 }
               },
-              "queryRef": "Measures.Average Service Rating",
+              "queryRef": "_Measures.Average Service Rating",
               "nativeQueryRef": "Average Service Rating"
             }
           ]
@@ -168,7 +168,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Total Passengers"

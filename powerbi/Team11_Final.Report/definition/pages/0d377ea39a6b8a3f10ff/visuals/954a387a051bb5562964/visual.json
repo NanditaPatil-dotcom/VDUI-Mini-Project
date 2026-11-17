@@ -50,13 +50,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup Passengers"
                 }
               },
-              "queryRef": "Measures.Subgroup Passengers",
+              "queryRef": "_Measures.Subgroup Passengers",
               "nativeQueryRef": "Subgroup Passengers"
             },
             {
@@ -64,13 +64,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup Precision"
                 }
               },
-              "queryRef": "Measures.Subgroup Precision",
+              "queryRef": "_Measures.Subgroup Precision",
               "nativeQueryRef": "Subgroup Precision"
             },
             {
@@ -78,13 +78,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup Recall"
                 }
               },
-              "queryRef": "Measures.Subgroup Recall",
+              "queryRef": "_Measures.Subgroup Recall",
               "nativeQueryRef": "Subgroup Recall"
             },
             {
@@ -92,13 +92,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup FPR"
                 }
               },
-              "queryRef": "Measures.Subgroup FPR",
+              "queryRef": "_Measures.Subgroup FPR",
               "nativeQueryRef": "Subgroup FPR"
             },
             {
@@ -106,13 +106,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup Macro F1"
                 }
               },
-              "queryRef": "Measures.Subgroup Macro F1",
+              "queryRef": "_Measures.Subgroup Macro F1",
               "nativeQueryRef": "Subgroup Macro F1"
             }
           ]

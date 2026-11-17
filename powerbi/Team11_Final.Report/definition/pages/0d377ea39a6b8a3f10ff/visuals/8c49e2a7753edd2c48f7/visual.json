@@ -58,13 +58,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Subgroup FPR"
                 }
               },
-              "queryRef": "Measures.Subgroup FPR",
+              "queryRef": "_Measures.Subgroup FPR",
               "nativeQueryRef": "Subgroup FPR"
             }
           ]

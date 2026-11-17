@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Satisfaction Rate"
                 }
               },
-              "queryRef": "Measures.Satisfaction Rate",
+              "queryRef": "_Measures.Satisfaction Rate",
               "nativeQueryRef": "Satisfaction Rate",
               "displayName": "SATISFACTION RATE"
             }

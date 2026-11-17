@@ -35,13 +35,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Insight Text"
                 }
               },
-              "queryRef": "Measures.Insight Text",
+              "queryRef": "_Measures.Insight Text",
               "nativeQueryRef": "Insight Text"
             }
           ]

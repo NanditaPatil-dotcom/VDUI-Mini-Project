@@ -39,13 +39,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "SHAP toward Satisfied"
                 }
               },
-              "queryRef": "Measures.SHAP toward Satisfied",
+              "queryRef": "_Measures.SHAP toward Satisfied",
               "nativeQueryRef": "SHAP toward Satisfied"
             },
             {
@@ -53,13 +53,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "SHAP toward Neutral or Dissatisfied"
                 }
               },
-              "queryRef": "Measures.SHAP toward Neutral or Dissatisfied",
+              "queryRef": "_Measures.SHAP toward Neutral or Dissatisfied",
               "nativeQueryRef": "SHAP toward Neutral or Dissatisfied"
             }
           ]
@@ -72,7 +72,7 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measures"
+                    "Entity": "_Measures"
                   }
                 },
                 "Property": "Net SHAP Value"
@@ -257,7 +257,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.SHAP toward Satisfied"
+            "metadata": "_Measures.SHAP toward Satisfied"
           }
         },
         {
@@ -275,7 +275,7 @@
             }
           },
           "selector": {
-            "metadata": "Measures.SHAP toward Neutral or Dissatisfied"
+            "metadata": "_Measures.SHAP toward Neutral or Dissatisfied"
           }
         }
       ]

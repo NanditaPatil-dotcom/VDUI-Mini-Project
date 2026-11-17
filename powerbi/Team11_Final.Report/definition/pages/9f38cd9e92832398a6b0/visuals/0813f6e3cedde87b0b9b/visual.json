@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Highest Rated Attribute"
                 }
               },
-              "queryRef": "Measures.Highest Rated Attribute",
+              "queryRef": "_Measures.Highest Rated Attribute",
               "nativeQueryRef": "Highest Rated Attribute",
               "displayName": "HIGHEST-RATED SERVICE"
             }

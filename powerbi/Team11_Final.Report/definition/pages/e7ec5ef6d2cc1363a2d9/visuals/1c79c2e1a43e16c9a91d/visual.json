@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measures"
+                      "Entity": "_Measures"
                     }
                   },
                   "Property": "Selected P(Satisfied)"
                 }
               },
-              "queryRef": "Measures.Selected P(Satisfied)",
+              "queryRef": "_Measures.Selected P(Satisfied)",
               "nativeQueryRef": "Selected P(Satisfied)",
               "displayName": "P(SATISFIED)"
             }
