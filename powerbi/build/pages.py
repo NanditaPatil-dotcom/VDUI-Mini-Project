@@ -185,18 +185,7 @@ def build_pages(root, ctx_pages, F, bm):
     sat_stack(p, 590, 554, 330, 312, "Returning Passenger Profile", c("DimPassengerProfile", "Customer Type"), kind="hundredPercentStackedBarChart",
               label="eda customer")
     sat_stack(p, 930, 554, 320, 312, "Reason for Travelling", c("DimTravel", "Type of Travel"), kind="hundredPercentStackedBarChart", label="eda travel")
-    bc, bt = F["by_class"], F["by_travel"]
-    obs = [
-        [("ANALYST OBSERVATIONS", 11, True, NAVY)],
-        [(f"• Business class: {pct(bc['Business'])} satisfied vs Economy {pct(bc['Economy'])}.", 9.5, False, TEXT)],
-        [(f"• Business travellers {pct(bt['Business'])} vs personal {pct(bt['Personal'])} satisfied.", 9.5, False, TEXT)],
-        [(f"• Arrival >15 min late: {pct(F['sat_late'])} satisfied vs {pct(F['sat_ontime'])} on time.", 9.5, False, TEXT)],
-        [(f"• Returning passengers are {pct(F['by_cust']['Returning'])} satisfied vs first-time {pct(F['by_cust']['First-time'])}.", 9.5, False, TEXT)],
-        [(f"• Gender gap is small ({pct(F['by_gender']['Female'])} F vs {pct(F['by_gender']['Male'])} M).", 9.5, False, TEXT)],
-        [("Percentages are within each category (not raw counts). Static text = full dataset; charts follow the slicers. Right-click a Class bar -> Drill through for the segment detail.",
-          8, False, MUTED, True)],
-    ]
-    p.textbox(1260, 554, 320, 312, obs, bg=WHITE, border=BORDER, radius=10, shadow=True, label="observations")
+    insight_table(p, 1260, 554, 320, 312, "LIVE OBSERVATIONS", ["Who is happiest?", "Travel-type gap", "Customer-type gap", "Gender gap", "Delay effect"], size=9)
 
     # ============================= 3 SERVICE QUALITY =============================
     p = new("service")
@@ -272,8 +261,13 @@ def build_pages(root, ctx_pages, F, bm):
                                   extra={"markers": [{"properties": {"show": lit(True)}}]}), label="cv lines")
     p.matrix(1220, 242, 360, 300, "CV Mean +/- Std-Dev", [c("DimModel", "Model")], [],
              [m("CV Mean Macro F1"), m("CV Std Dev"), m("CV Min Macro F1"), m("CV Max Macro F1")], size=9, label="cv matrix")
-    p.image(20, 554, 540, 312, "Cross-validation error bands (mean +/- 1 std-dev across 5 folds)", "model_error_bands.png")
-    p.image(570, 554, 300, 312, "XGBoost confusion matrix (test set)", "xgboost_confusion_matrix.png")
+    p.chart("lineChart", 20, 554, 540, 312, "CV error bands: mean Macro F1 with +/- 1 std-dev across folds", category=c("DimModel", "Model"),
+            values=[m("CV Upper Band"), m("CV Mean Macro F1"), m("CV Lower Band")],
+            objects=chart_objects(legend="Top", labels=True, val_axis=True, gridlines=True,
+                                  datapoints=dp_measures({"CV Upper Band": TEAL, "CV Mean Macro F1": NAVY, "CV Lower Band": AMBER}),
+                                  extra={"markers": [{"properties": {"show": lit(True)}}]}), label="cv error bands")
+    p.matrix(570, 554, 300, 312, "Confusion matrix counts (test set)", [c("DimModel", "Model")], [],
+             [m("Confusion TN"), m("Confusion FP"), m("Confusion FN"), m("Confusion TP")], size=9, label="confusion matrix")
     insight_table(p, 880, 554, 700, 312, "MODEL EVALUATION CONCLUSION  |  calculated, not typed", ["Best model", "Stability", "Fairness check"], size=10)
 
     # ============================= 6 SUBGROUP PERFORMANCE =============================
@@ -311,7 +305,11 @@ def build_pages(root, ctx_pages, F, bm):
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]),
             tooltip_page=ctx_pages["tooltip"].id, subtitle="hover a bar for the SHAP tooltip", label="top5 shap explain")
-    p.image(430, 242, 370, 300, "SHAP beeswarm (global)", "shap_beeswarm.png")
+    p.chart("clusteredBarChart", 430, 242, 370, 300, "Direction of influence (signed mean SHAP, top 10)", category=c("ShapImportance", "Feature"),
+            values=[m("Signed SHAP Top 10")], sort=(m("Top 10 SHAP"), "Descending"),
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, cat_size=8, label_size=8,
+                                  datapoints=[{"properties": {"fill": colr(TEAL)}}]),
+            subtitle="+ pushes toward Satisfied, - toward Neutral/Dissatisfied", tooltip_page=ctx_pages["tooltip"].id, label="signed shap")
     p.chart("stackedBarChart", 810, 242, 770, 300, "Why this prediction? Top-10 SHAP contributions for the selected passenger",
             category=c("ShapLocal", "Feature"), values=[m("SHAP toward Satisfied"), m("SHAP toward Neutral or Dissatisfied")],
             sort=(m("Net SHAP Value"), "Descending"),
@@ -333,21 +331,10 @@ def build_pages(root, ctx_pages, F, bm):
     chrome(p, ctx, "conclusion")
     kpi_row(p, [("Total Passengers", "PASSENGERS ANALYSED"), ("Satisfaction Rate", "SATISFACTION RATE"), ("Best Model", "BEST MODEL", 20),
                 ("Best Macro F1", "BEST MACRO F1"), ("Recall Gap (pts)", "WIDEST SUBGROUP RECALL GAP (PTS)")])
-    p.table(20, 242, 900, 420, "WHAT THE DATA SAYS  |  every sentence is a DAX measure", [c("Insights", "Topic"), m("Insight Text")],
-            sort=(c("Insights", "Order"), "Ascending"), size=11, label="all insights")
-    lowest = list(F["avg_rating"].items())[:3]
-    recs = [
-        [("RECOMMENDATIONS", 12, True, NAVY)],
-        [(f"1  Fix the weakest touch-points first: {lowest[0][0]} ({lowest[0][1]:.2f}/5), {lowest[1][0]} ({lowest[1][1]:.2f}/5) and "
-          f"{lowest[2][0]} ({lowest[2][1]:.2f}/5) are the lowest-rated services.", 10, False, TEXT)],
-        [("2  Protect Online Boarding - it is the strongest correlate of satisfaction and the top-ranked driver in the model.", 10, False, TEXT)],
-        [(f"3  Target Economy and personal-travel passengers ({pct(F['by_class']['Economy'])} and {pct(F['by_travel']['Personal'])} satisfied) with service "
-          "recovery rather than blanket spend.", 10, False, TEXT)],
-        [(f"4  Manage delays: passengers arriving >15 min late are {pct(F['sat_late'])} satisfied vs {pct(F['sat_ontime'])} on time.", 10, False, TEXT)],
-        [("5  Recognise strong teams (baggage handling, in-flight service) - they out-score the rest of the journey.", 10, False, TEXT)],
-        [("Evidence = associations and SHAP attributions; they guide where to investigate, they do not prove cause.", 8.5, False, MUTED, True)],
-    ]
-    p.textbox(930, 242, 650, 420, recs, bg=WHITE, border=BORDER, radius=10, shadow=True, label="recommendations")
+    insight_table(p, 20, 242, 900, 420, "WHAT THE DATA SAYS  |  every sentence is a DAX measure",
+                  ["Headline", "Who is happiest?", "Delay effect", "Service gap", "Best model", "Stability", "Fairness check", "Explainability", "Where to act"], size=11)
+    insight_table(p, 930, 242, 650, 420, "RECOMMENDATIONS  |  computed from the data in view",
+                  ["Fix first", "Protect the top driver", "Target segments", "Manage delays", "Recognise strengths"], size=10)
     lim = [
         [("LIMITATIONS & NEXT STEPS", 12, True, NAVY)],
         [("• No flight-date or route fields exist, so no time trend or map is shown.   • Zero ratings are treated as 'not applicable'.", 9.5, False, TEXT)],

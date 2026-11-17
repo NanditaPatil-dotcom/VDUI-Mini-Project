@@ -323,6 +323,26 @@ table _Measures
 	measure 'Disparity Flag' = IF([Recall Gap (pts)] > 10, "Material recall gap (>10 pts) - investigate", "Recall gap within 10 pts")
 		displayFolder: 5 Subgroup Analysis
 
+	/// Test-set confusion-matrix count (each passenger appears once under Gender).
+	measure 'Confusion TN' = CALCULATE(SUM(SubgroupPerformance[TN]), SubgroupPerformance[Attribute] = "Gender")
+		formatString: #,0
+		displayFolder: 5 Subgroup Analysis
+
+	/// Test-set confusion-matrix count (each passenger appears once under Gender).
+	measure 'Confusion FP' = CALCULATE(SUM(SubgroupPerformance[FP]), SubgroupPerformance[Attribute] = "Gender")
+		formatString: #,0
+		displayFolder: 5 Subgroup Analysis
+
+	/// Test-set confusion-matrix count (each passenger appears once under Gender).
+	measure 'Confusion FN' = CALCULATE(SUM(SubgroupPerformance[FN]), SubgroupPerformance[Attribute] = "Gender")
+		formatString: #,0
+		displayFolder: 5 Subgroup Analysis
+
+	/// Test-set confusion-matrix count (each passenger appears once under Gender).
+	measure 'Confusion TP' = CALCULATE(SUM(SubgroupPerformance[TP]), SubgroupPerformance[Attribute] = "Gender")
+		formatString: #,0
+		displayFolder: 5 Subgroup Analysis
+
 	measure 'Mean Abs SHAP' = SUM(ShapImportance[Mean Absolute SHAP])
 		formatString: 0.000
 		displayFolder: 6 SHAP & Correlation
@@ -334,6 +354,11 @@ table _Measures
 
 	measure 'Top 10 SHAP' = IF(MAX(ShapImportance[Rank]) <= 10, [Mean Abs SHAP])
 		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	/// Direction of influence: positive pushes toward Satisfied.
+	measure 'Signed SHAP Top 10' = IF(MAX(ShapImportance[Rank]) <= 10, AVERAGE(ShapImportance[Mean SHAP]))
+		formatString: +0.000;-0.000;0.000
 		displayFolder: 6 SHAP & Correlation
 
 	measure 'Tooltip Feature' = SELECTEDVALUE(ShapImportance[Feature], "All features")
@@ -453,9 +478,9 @@ table _Measures
 			VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])
 			VAR hi = MAXX(t, [@v])
 			VAR lo = MINX(t, [@v])
-			VAR hiC = MINX(FILTER(t, [@v] = hi), DimTravel[Class])
-			VAR loC = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
-			RETURN hiC & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & loC & " (" & FORMAT(lo, "0%") & ") - a " & FORMAT((hi - lo) * 100, "0") & "-point gap by travel class."
+			VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Class])
+			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
+			RETURN topName & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & botName & " (" & FORMAT(lo, "0%") & ") - a " & FORMAT((hi - lo) * 100, "0") & "-point gap by travel class."
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Delay' = "Passengers arriving >15 min late are " & FORMAT([Satisfaction Rate - Delayed], "0%") & " satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0%") & " when on time (" & FORMAT([Delay Satisfaction Penalty (pts)], "+0.0;-0.0") & " pts); " & FORMAT([Delayed Share], "0%") & " of passengers are delayed."
@@ -475,14 +500,60 @@ table _Measures
 			VAR t = ADDCOLUMNS(ALL(SubgroupPerformance[Group Label]), "@v", CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
 			VAR lo = MINX(t, [@v])
 			VAR hi = MAXX(t, [@v])
-			VAR loG = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])
-			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loG & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
+			VAR lowGroup = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])
+			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & lowGroup & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Explainability' = "Top global SHAP drivers: " & [Top 3 SHAP Features] & ". The top five features carry " & FORMAT([Top 5 Share of SHAP], "0%") & " of total mean |SHAP|."
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Insight - Action' = "Prioritise " & [Lowest Rated Attribute] & " (lowest rating) and " & [Top Feature (SHAP)] & " (largest model driver); recognise teams behind " & [Highest Rated Attribute] & "."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Travel-type gap' =
+			VAR t = ADDCOLUMNS(VALUES(DimTravel[Type of Travel]), "@v", [Satisfaction Rate])
+			VAR hi = MAXX(t, [@v])
+			VAR lo = MINX(t, [@v])
+			VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Type of Travel])
+			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Type of Travel])
+			RETURN IF(COUNTROWS(t) < 2, "Select more than one travel type to compare.", topName & " " & "travel types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Customer-type gap' =
+			VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Customer Type]), "@v", [Satisfaction Rate])
+			VAR hi = MAXX(t, [@v])
+			VAR lo = MINX(t, [@v])
+			VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Customer Type])
+			VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Customer Type])
+			RETURN IF(COUNTROWS(t) < 2, "Select more than one customer type to compare.", topName & " " & "customer types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Gender gap' =
+			VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Gender]), "@v", [Satisfaction Rate])
+			VAR hi = MAXX(t, [@v])
+			VAR lo = MINX(t, [@v])
+			VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Gender])
+			VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Gender])
+			RETURN IF(COUNTROWS(t) < 2, "Select more than one gender to compare.", topName & " " & "genders are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Fix first' = "Fix the weakest touch-points first: " & CONCATENATEX(TOPN(3, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], ASC), DimServiceAttribute[Service Attribute] & " (" & FORMAT([Average Service Rating], "0.00") & "/5)", ", ", [Average Service Rating], ASC) & "."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Protect top driver' = "Protect " & [Top Feature (SHAP)] & " - the single largest model driver - and keep it consistent across airports; the strongest correlate in view is " & [Strongest Associated Feature] & " (" & FORMAT([Strongest Association Value], "0.00") & ")."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Target segments' =
+			VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])
+			VAR lo = MINX(t, [@v])
+			VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
+			RETURN "Target " & botName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Manage delays' = "Delayed arrivals (>15 min) are " & FORMAT([Delayed Share], "0%") & " of passengers and only " & FORMAT([Satisfaction Rate - Delayed], "0.0%") & " are satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0.0%") & " on time - invest in delay communication and recovery."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Recognise strengths' = "Recognise the teams behind " & [Highest Rated Attribute] & " (" & FORMAT([Highest Attribute Rating], "0.00") & "/5): they out-score the rest of the journey."
 		displayFolder: 8 Narrative (data-driven text)
 
 	/// Rendered by a table visual of Insights[Topic] x [Insight Text].
@@ -496,7 +567,15 @@ table _Measures
 				6, [Insight - Stability],
 				7, [Insight - Fairness],
 				8, [Insight - Explainability],
-				9, [Insight - Action])
+				9, [Insight - Action],
+				10, [Insight - Fix first],
+				11, [Insight - Protect top driver],
+				12, [Insight - Target segments],
+				13, [Insight - Manage delays],
+				14, [Insight - Recognise strengths],
+				15, [Insight - Travel-type gap],
+				16, [Insight - Customer-type gap],
+				17, [Insight - Gender gap])
 		displayFolder: 8 Narrative (data-driven text)
 
 	measure 'Title - Class Chart' = "Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"

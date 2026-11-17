@@ -23,6 +23,6 @@ table Insights
 		mode: import
 		source =
 				let
-					Source = #table(type table [Order = Int64.Type, Topic = text, Page = text], {{1, "Headline", "Overview"}, {2, "Who is happiest?", "Overview"}, {3, "Delay effect", "Overview"}, {4, "Service gap", "Overview"}, {5, "Best model", "Conclusion"}, {6, "Stability", "Conclusion"}, {7, "Fairness check", "Conclusion"}, {8, "Explainability", "Conclusion"}, {9, "Where to act", "Conclusion"}})
+					Source = #table(type table [Order = Int64.Type, Topic = text, Page = text], {{1, "Headline", "Overview"}, {2, "Who is happiest?", "Overview"}, {3, "Delay effect", "Overview"}, {4, "Service gap", "Overview"}, {5, "Best model", "Conclusion"}, {6, "Stability", "Conclusion"}, {7, "Fairness check", "Conclusion"}, {8, "Explainability", "Conclusion"}, {9, "Where to act", "Conclusion"}, {10, "Fix first", "Recommendation"}, {11, "Protect the top driver", "Recommendation"}, {12, "Target segments", "Recommendation"}, {13, "Manage delays", "Recommendation"}, {14, "Recognise strengths", "Recommendation"}, {15, "Travel-type gap", "EDA"}, {16, "Customer-type gap", "EDA"}, {17, "Gender gap", "EDA"}})
 				in
 					Source

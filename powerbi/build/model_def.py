@@ -82,7 +82,7 @@ def expressions_tmdl():
     Buffered = Table.Buffer(TierSort)
 in
     Buffered'''
-    out = [expression("RepoRoot", '"C:\\VDUI-Mini-Project\\"', parameter=True),
+    out = [expression("RepoRoot", '"C:\\Users\\Nandika Gupta\\Downloads\\VDUI-Mini-Project-main\\VDUI-Mini-Project-main"', parameter=True),
            expression("Root", 'if Text.EndsWith(Text.Trim(RepoRoot), "\\") then Text.Trim(RepoRoot) else Text.Trim(RepoRoot) & "\\"', result="Text"),
            expression("stgPassenger", stg)]
     return "\n".join(out)
@@ -308,7 +308,10 @@ in
 
     ins = [(1, "Headline", "Overview"), (2, "Who is happiest?", "Overview"), (3, "Delay effect", "Overview"),
            (4, "Service gap", "Overview"), (5, "Best model", "Conclusion"), (6, "Stability", "Conclusion"),
-           (7, "Fairness check", "Conclusion"), (8, "Explainability", "Conclusion"), (9, "Where to act", "Conclusion")]
+           (7, "Fairness check", "Conclusion"), (8, "Explainability", "Conclusion"), (9, "Where to act", "Conclusion"),
+           (10, "Fix first", "Recommendation"), (11, "Protect the top driver", "Recommendation"), (12, "Target segments", "Recommendation"),
+           (13, "Manage delays", "Recommendation"), (14, "Recognise strengths", "Recommendation"),
+           (15, "Travel-type gap", "EDA"), (16, "Customer-type gap", "EDA"), (17, "Gender gap", "EDA")]
     rows = ", ".join('{%d, "%s", "%s"}' % r for r in ins)
     T.append(tbl("Insights", [col("Order", "int64", hidden=True, fmt="0"), col("Topic", sort_by="Order"), col("Page")],
                  f'''let
@@ -454,10 +457,15 @@ def measure_list():
         "MINX(ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), \"@v\", [Subgroup Recall]), [@v])", "0.0%", f5)
     add("Disparity Flag", 'IF([Recall Gap (pts)] > 10, "Material recall gap (>10 pts) - investigate", "Recall gap within 10 pts")', None, f5)
 
+    for k in ("TN", "FP", "FN", "TP"):
+        add(f"Confusion {k}", f'CALCULATE(SUM(SubgroupPerformance[{k}]), SubgroupPerformance[Attribute] = "Gender")', "#,0", f5,
+            "Test-set confusion-matrix count (each passenger appears once under Gender).")
     f6 = "6 SHAP & Correlation"
     add("Mean Abs SHAP", "SUM(ShapImportance[Mean Absolute SHAP])", "0.000", f6)
     add("Top 5 SHAP", "IF(MAX(ShapImportance[Rank]) <= 5, [Mean Abs SHAP])", "0.000", f6, "Blank for features ranked below 5 so charts show only the top five.")
     add("Top 10 SHAP", "IF(MAX(ShapImportance[Rank]) <= 10, [Mean Abs SHAP])", "0.000", f6)
+    add("Signed SHAP Top 10", "IF(MAX(ShapImportance[Rank]) <= 10, AVERAGE(ShapImportance[Mean SHAP]))", "+0.000;-0.000;0.000", f6,
+        "Direction of influence: positive pushes toward Satisfied.")
     add("Tooltip Feature", 'SELECTEDVALUE(ShapImportance[Feature], "All features")', None, f6)
     add("Feature Rank", "MAX(ShapImportance[Rank])", "0", f6)
     add("SHAP Share", "DIVIDE([Mean Abs SHAP], CALCULATE([Mean Abs SHAP], REMOVEFILTERS(ShapImportance)), 0)", "0.0%", f6)
@@ -511,9 +519,9 @@ def measure_list():
     add("Insight - Class Gap",
         'VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])\n'
         'VAR hi = MAXX(t, [@v])\nVAR lo = MINX(t, [@v])\n'
-        'VAR hiC = MINX(FILTER(t, [@v] = hi), DimTravel[Class])\n'
-        'VAR loC = MINX(FILTER(t, [@v] = lo), DimTravel[Class])\n'
-        'RETURN hiC & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & loC & " (" & FORMAT(lo, "0%") & ") - a " '
+        'VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Class])\n'
+        'VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])\n'
+        'RETURN topName & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & botName & " (" & FORMAT(lo, "0%") & ") - a " '
         '& FORMAT((hi - lo) * 100, "0") & "-point gap by travel class."', None, f8)
     add("Insight - Delay",
         '"Passengers arriving >15 min late are " & FORMAT([Satisfaction Rate - Delayed], "0%") & " satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0%") '
@@ -533,8 +541,8 @@ def measure_list():
         'VAR bm = [Best Model]\n'
         'VAR t = ADDCOLUMNS(ALL(SubgroupPerformance[Group Label]), "@v", CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))\n'
         'VAR lo = MINX(t, [@v])\nVAR hi = MAXX(t, [@v])\n'
-        'VAR loG = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])\n'
-        'RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loG & ") to " & FORMAT(hi, "0.0%") '
+        'VAR lowGroup = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])\n'
+        'RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & lowGroup & ") to " & FORMAT(hi, "0.0%") '
         '& ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."', None, f8)
     add("Insight - Explainability",
         '"Top global SHAP drivers: " & [Top 3 SHAP Features] & ". The top five features carry " & FORMAT([Top 5 Share of SHAP], "0%") & " of total mean |SHAP|."',
@@ -542,10 +550,41 @@ def measure_list():
     add("Insight - Action",
         '"Prioritise " & [Lowest Rated Attribute] & " (lowest rating) and " & [Top Feature (SHAP)] & " (largest model driver); recognise teams behind " & [Highest Rated Attribute] & "."',
         None, f8)
+    add("Insight - Travel-type gap",
+        'VAR t = ADDCOLUMNS(VALUES(DimTravel[Type of Travel]), "@v", [Satisfaction Rate])\n'
+        'VAR hi = MAXX(t, [@v])\nVAR lo = MINX(t, [@v])\n'
+        'VAR topName = MINX(FILTER(t, [@v] = hi), DimTravel[Type of Travel])\n'
+        'VAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Type of Travel])\n'
+        'RETURN IF(COUNTROWS(t) < 2, "Select more than one travel type to compare.", topName & " " & "travel types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")', None, f8)
+    add("Insight - Customer-type gap",
+        'VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Customer Type]), "@v", [Satisfaction Rate])\n'
+        'VAR hi = MAXX(t, [@v])\nVAR lo = MINX(t, [@v])\n'
+        'VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Customer Type])\n'
+        'VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Customer Type])\n'
+        'RETURN IF(COUNTROWS(t) < 2, "Select more than one customer type to compare.", topName & " " & "customer types are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")', None, f8)
+    add("Insight - Gender gap",
+        'VAR t = ADDCOLUMNS(VALUES(DimPassengerProfile[Gender]), "@v", [Satisfaction Rate])\n'
+        'VAR hi = MAXX(t, [@v])\nVAR lo = MINX(t, [@v])\n'
+        'VAR topName = MINX(FILTER(t, [@v] = hi), DimPassengerProfile[Gender])\n'
+        'VAR botName = MINX(FILTER(t, [@v] = lo), DimPassengerProfile[Gender])\n'
+        'RETURN IF(COUNTROWS(t) < 2, "Select more than one gender to compare.", topName & " " & "genders are " & FORMAT(hi, "0.0%") & " satisfied vs " & botName & " " & FORMAT(lo, "0.0%") & " (" & FORMAT((hi - lo) * 100, "0.0") & "-pt gap).")', None, f8)
+    add("Insight - Fix first",
+        '"Fix the weakest touch-points first: " & CONCATENATEX(TOPN(3, VALUES(DimServiceAttribute[Service Attribute]), [Average Service Rating], ASC), '
+        'DimServiceAttribute[Service Attribute] & " (" & FORMAT([Average Service Rating], "0.00") & "/5)", ", ", [Average Service Rating], ASC) & "."', None, f8)
+    add("Insight - Protect top driver",
+        '"Protect " & [Top Feature (SHAP)] & " - the single largest model driver - and keep it consistent across airports; the strongest correlate in view is " & [Strongest Associated Feature] & " (" & FORMAT([Strongest Association Value], "0.00") & ")."', None, f8)
+    add("Insight - Target segments",
+        'VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])\n'
+        'VAR lo = MINX(t, [@v])\nVAR botName = MINX(FILTER(t, [@v] = lo), DimTravel[Class])\n'
+        'RETURN "Target " & botName & " passengers (only " & FORMAT(lo, "0.0%") & " satisfied) with service recovery rather than blanket spend."', None, f8)
+    add("Insight - Manage delays",
+        '"Delayed arrivals (>15 min) are " & FORMAT([Delayed Share], "0%") & " of passengers and only " & FORMAT([Satisfaction Rate - Delayed], "0.0%") & " are satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0.0%") & " on time - invest in delay communication and recovery."', None, f8)
+    add("Insight - Recognise strengths",
+        '"Recognise the teams behind " & [Highest Rated Attribute] & " (" & FORMAT([Highest Attribute Rating], "0.00") & "/5): they out-score the rest of the journey."', None, f8)
     add("Insight Text",
         'SWITCH(SELECTEDVALUE(Insights[Order]),\n    1, [Insight - Headline],\n    2, [Insight - Class Gap],\n    3, [Insight - Delay],\n'
         '    4, [Insight - Service Gap],\n    5, [Insight - Best Model],\n    6, [Insight - Stability],\n    7, [Insight - Fairness],\n'
-        '    8, [Insight - Explainability],\n    9, [Insight - Action])', None, f8, "Rendered by a table visual of Insights[Topic] x [Insight Text].")
+        '    8, [Insight - Explainability],\n    9, [Insight - Action],\n    10, [Insight - Fix first],\n    11, [Insight - Protect top driver],\n    12, [Insight - Target segments],\n    13, [Insight - Manage delays],\n    14, [Insight - Recognise strengths],\n    15, [Insight - Travel-type gap],\n    16, [Insight - Customer-type gap],\n    17, [Insight - Gender gap])', None, f8, "Rendered by a table visual of Insights[Topic] x [Insight Text].")
     add("Title - Class Chart", '"Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"', None, f8)
     add("Title - Delay Chart", '"Satisfaction by Arrival Delay  |  on-time " & FORMAT([Satisfaction Rate - On Time], "0%") & " vs delayed " & FORMAT([Satisfaction Rate - Delayed], "0%")', None, f8)
     add("Title - Model Chart", '"Model comparison  |  best: " & [Best Model]', None, f8)

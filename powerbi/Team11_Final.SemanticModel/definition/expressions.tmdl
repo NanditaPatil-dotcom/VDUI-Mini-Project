@@ -1,4 +1,4 @@
-expression RepoRoot = "C:\VDUI-Mini-Project\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+expression RepoRoot = "C:\Users\Nandika Gupta\Downloads\VDUI-Mini-Project-main\VDUI-Mini-Project-main" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
 	annotation PBI_ResultType = Text
 
 expression Root =
