@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "f3b9d45393e572e09a12",
+  "name": "f0382bb8cccf8263f8c2",
   "position": {
-    "x": 27.5,
-    "y": 598.9306197964847,
-    "z": 19000,
-    "height": 107.50786308973173,
-    "width": 1572.5,
-    "tabOrder": 19000
+    "x": 1260.0,
+    "y": 100.0,
+    "z": 12000,
+    "height": 62.0,
+    "width": 320.0,
+    "tabOrder": 12000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
@@ -20,44 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "GeminiRecommendations"
+                      "Entity": "GeminiInsights"
                     }
                   },
-                  "Property": "Evidence Feature"
+                  "Property": "Passenger Label"
                 }
               },
-              "queryRef": "GeminiRecommendations.Evidence Feature",
-              "nativeQueryRef": "Evidence Feature",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "GeminiRecommendations"
-                    }
-                  },
-                  "Property": "Recommendation"
-                }
-              },
-              "queryRef": "GeminiRecommendations.Recommendation",
-              "nativeQueryRef": "Recommendation",
-              "active": true
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "GeminiRecommendations"
-                    }
-                  },
-                  "Property": "Reason"
-                }
-              },
-              "queryRef": "GeminiRecommendations.Reason",
-              "nativeQueryRef": "Reason",
+              "queryRef": "GeminiInsights.Passenger Label",
+              "nativeQueryRef": "Passenger Label",
               "active": true
             }
           ]
@@ -65,21 +35,30 @@
       }
     },
     "objects": {
-      "columnHeaders": [
+      "data": [
         {
           "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#FFFFFF'"
-                    }
-                  }
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
-            "backColor": {
+            "fontColor": {
               "solid": {
                 "color": {
                   "expr": {
@@ -90,10 +69,10 @@
                 }
               }
             },
-            "fontSize": {
+            "textSize": {
               "expr": {
                 "Literal": {
-                  "Value": "10.0D"
+                  "Value": "9.0D"
                 }
               }
             },
@@ -114,16 +93,9 @@
           }
         }
       ],
-      "values": [
+      "items": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10.0D"
-                }
-              }
-            },
             "fontColor": {
               "solid": {
                 "color": {
@@ -135,25 +107,10 @@
                 }
               }
             },
-            "backColorPrimary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#FFFFFF'"
-                    }
-                  }
-                }
-              }
-            },
-            "backColorSecondary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#F3F7FC'"
-                    }
-                  }
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
                 }
               }
             },
@@ -167,31 +124,20 @@
           }
         }
       ],
-      "grid": [
+      "selection": [
         {
           "properties": {
-            "outlineColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#E6EDF6'"
-                    }
-                  }
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             },
-            "gridVertical": {
+            "selectAllCheckboxEnabled": {
               "expr": {
                 "Literal": {
                   "Value": "false"
-                }
-              }
-            },
-            "rowPadding": {
-              "expr": {
-                "Literal": {
-                  "Value": "4.0D"
                 }
               }
             }
@@ -224,7 +170,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "12.0D"
+                  "Value": "9.0D"
                 }
               }
             },
@@ -252,7 +198,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Gemini service-improvement recommendations'"
+                  "Value": "'Explained passenger (pick one)'"
                 }
               }
             }
@@ -314,7 +260,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "10.0D"
+                  "Value": "8.0D"
                 }
               }
             }
@@ -327,7 +273,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }

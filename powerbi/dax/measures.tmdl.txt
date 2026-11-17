@@ -415,51 +415,56 @@
 			RETURN IF(ISBLANK(note), "No Gemini recommendation was generated for this feature in the explained passengers.", note)
 		displayFolder: 6 SHAP & Correlation
 
-	measure 'Selected Passenger' = SELECTEDVALUE(GeminiInsights[Passenger Label], "Select a passenger")
+	/// The passenger picked in the slicer; the first explained passenger when none is picked.
+	measure 'Selected Passenger Index' = SELECTEDVALUE(GeminiInsights[Passenger Index], MINX(ALL(GeminiInsights), GeminiInsights[Passenger Index]))
+		formatString: 0
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Selected Predicted Class' = SELECTEDVALUE(GeminiInsights[Predicted Class], "-")
+	measure 'Selected Passenger' = CALCULATE(MAX(GeminiInsights[Passenger Label]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Selected Actual Class' = SELECTEDVALUE(GeminiInsights[Actual Class], "-")
+	measure 'Selected Predicted Class' = CALCULATE(MAX(GeminiInsights[Predicted Class]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Selected P(Satisfied)' = SELECTEDVALUE(GeminiInsights[Probability Satisfied])
+	measure 'Selected Actual Class' = CALCULATE(MAX(GeminiInsights[Actual Class]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected P(Satisfied)' = CALCULATE(MAX(GeminiInsights[Probability Satisfied]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		formatString: 0.0%
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Selected Prediction Confidence' = SELECTEDVALUE(GeminiInsights[Predicted Probability])
+	measure 'Selected Prediction Confidence' = CALCULATE(MAX(GeminiInsights[Predicted Probability]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		formatString: 0.0%
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Selected Prediction Correct' = SELECTEDVALUE(GeminiInsights[Correct Prediction], "-")
+	measure 'Selected Prediction Correct' = CALCULATE(MAX(GeminiInsights[Correct Prediction]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Gemini Explanation' = SELECTEDVALUE(GeminiInsights[Explanation], "Select one passenger to read the Gemini explanation.")
+	measure 'Gemini Explanation' = CALCULATE(MAX(GeminiInsights[Explanation]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Gemini Uncertainty Note' = SELECTEDVALUE(GeminiInsights[Uncertainty Note], "")
+	measure 'Gemini Uncertainty Note' = CALCULATE(MAX(GeminiInsights[Uncertainty Note]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))
 		displayFolder: 7 Passenger Explanation
 
 	/// Top-10 contributions only; positive values push the prediction toward Satisfied.
 	measure 'SHAP toward Satisfied' =
-			VAR v = SUM(ShapLocal[SHAP Value])
+			VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])
 			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 7 Passenger Explanation
 
 	/// Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.
 	measure 'SHAP toward Neutral or Dissatisfied' =
-			VAR v = SUM(ShapLocal[SHAP Value])
+			VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])
 			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Net SHAP Value' = SUM(ShapLocal[SHAP Value])
+	measure 'Net SHAP Value' = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])
 		formatString: +0.000;-0.000;0.000
 		displayFolder: 7 Passenger Explanation
 
-	measure 'Top Contributor (Selected Passenger)' = IF(HASONEVALUE(GeminiInsights[Passenger Index]), CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Contribution Rank] = 1), "Select one passenger")
+	measure 'Top Contributor (Selected Passenger)' = CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Passenger Index] = [Selected Passenger Index], ShapLocal[Contribution Rank] = 1)
 		displayFolder: 7 Passenger Explanation
 
 	measure 'Insight - Headline' =

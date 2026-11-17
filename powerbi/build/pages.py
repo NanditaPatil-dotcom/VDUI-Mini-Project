@@ -63,9 +63,8 @@ def chrome(p, ctx, key, with_passenger_slicers=False, extra_slicers=None):
     p.begin_group("Header", 0, 0, 1600, 88)
     p.textbox(0, 0, 1600, 84, [[(" ", 4, False, WHITE)]], bg=NAVY, label="banner")
     p.textbox(0, 84, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="banner accent")
-    p.textbox(20, 10, 330, 64, [[("\u2708  BEYOND THE BOARDING PASS", 16, True, WHITE)],
-                                [("Airline Passenger Satisfaction  |  Team 11", 9, False, "#BBD4F5")]], label="app title")
-    p.page_navigator(350, 22, 1240, 44)
+    p.textbox(20, 16, 520, 52, [[("\u2708  BEYOND THE BOARDING PASS  |  TEAM 11", 16, True, WHITE)]], label="app title")
+    p.page_navigator(560, 22, 1030, 44)
     p.end_group()
     if with_passenger_slicers:
         p.begin_group("Filters", 20, 94, 1560, 50)
@@ -222,43 +221,45 @@ def build_pages(root, ctx_pages, F, bm):
     p = new("explain")
     chrome(p, ctx, "explain")
     p.dy = 0
-    X, Y0, YS = 1600 / 1920.0, 96.0, (900 - 96 - 8) / 1081.0
-    R = lambda x, y, w, h: (x * X, Y0 + y * YS, w * X, h * YS)  # noqa: E731
-    def head(x, y, w, h, text):
-        p.textbox(*R(x, y, w, h), [{"runs": [(text, 13, True, NAVY)], "align": "center"}], label=f"head {text[:20]}")
-    head(41, 8, 673, 60, "Top 5 Factors Influencing Satisfaction Predictions")
-    p.chart("clusteredBarChart", *R(41, 76, 673, 325), "", category=c("ShapImportance", "Feature"), values=[m("Top 5 SHAP")],
+    def head(x, y, w, text, h=32):
+        p.textbox(x, y, w, h, [{"runs": [(text, 13, True, NAVY)], "align": "center"}], label=f"head {text[:20]}")
+    # left column
+    head(20, 100, 520, "Top 5 Factors Influencing Satisfaction Predictions")
+    p.chart("clusteredBarChart", 20, 134, 520, 262, "", category=c("ShapImportance", "Feature"), values=[m("Top 5 SHAP")],
             sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]),
             tooltip_page=ctx_pages["tooltip"].id, label="top5 shap explain")
-    head(41, 418, 673, 49, "Gemini AI Explanation")
-    p.table(*R(41, 467, 673, 197), "", [m("Gemini Explanation")], size=10, label="gemini text")
-    head(751, 8, 809, 40, "Individual Passenger \u2014 SHAP Feature Contributions")
-    p.chart("clusteredBarChart", *R(751, 47, 809, 617), "", category=c("ShapLocal", "Feature"), values=[m("Net SHAP Value")],
+    head(20, 406, 520, "Gemini AI Explanation")
+    p.table(20, 440, 520, 190, "", [m("Gemini Explanation")], size=10, label="gemini text")
+    # middle column
+    head(550, 100, 700, "Individual Passenger \u2014 SHAP Feature Contributions")
+    p.chart("clusteredBarChart", 550, 134, 700, 496, "", category=c("ShapLocal", "Feature"), values=[m("Net SHAP Value")],
             sort=(m("Net SHAP Value"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, cat_size=9, label_size=8,
                                   datapoints=[{"properties": {"fill": colr(NAVY)}}]),
             subtitle="Positive pushes toward Satisfied, negative toward Neutral/Dissatisfied", label="individual shap")
-    p.card(*R(1575, 47, 331, 156), "Selected Prediction Confidence", "PREDICTED CLASS PROBABILITY", color=NAVY, size=24)
-    p.slicer(*R(1575, 210, 331, 156), c("GeminiInsights", "Passenger Label"), title="Explained passenger", single=True,
-             default=F["first_label"], label="passenger list")
-    p.card(*R(1575, 373, 331, 138), "Selected Predicted Class", "PREDICTED CLASS", color=BLUE, size=15)
-    p.card(*R(1575, 518, 331, 138), "Selected Actual Class", "ACTUAL CLASS", color=TEAL, size=15)
-    p.table(*R(33, 683, 1887, 146), "Gemini service-improvement recommendations",
+    # right column
+    p.slicer(1260, 100, 320, 62, c("GeminiInsights", "Passenger Label"), title="Explained passenger (pick one)", single=True, label="passenger list")
+    p.card(1260, 172, 320, 110, "Selected Prediction Confidence", "PREDICTED CLASS PROBABILITY", color=NAVY, size=24)
+    p.card(1260, 292, 320, 110, "Selected Predicted Class", "PREDICTED CLASS", color=BLUE, size=14)
+    p.card(1260, 412, 320, 110, "Selected Actual Class", "ACTUAL CLASS", color=TEAL, size=14)
+    p.card(1260, 532, 320, 98, "Selected Prediction Correct", "PREDICTION CORRECT?", color=AMBER, size=20)
+    # bottom
+    p.table(20, 642, 1560, 120, "Gemini service-improvement recommendations",
             [c("GeminiRecommendations", "Evidence Feature"), c("GeminiRecommendations", "Recommendation"), c("GeminiRecommendations", "Reason")],
             size=10, label="gemini recs")
-    head(33, 836, 1852, 36, "KEY EXPLAINABILITY FINDINGS")
-    left = [[("1. Dominant Features", 11, True, NAVY)],
-            [("In-flight WiFi Service and Type of Travel are the two most influential features in the global SHAP analysis.", 10, False, TEXT)],
-            [("2. Individual Prediction Behaviour", 11, True, NAVY)],
-            [("SHAP values reveal how individual features contribute positively or negatively to a passenger's prediction.", 10, False, TEXT)]]
-    right = [[("3. AI-Generated Interpretability", 11, True, NAVY)],
-             [("Gemini converts SHAP evidence into human-readable explanations, making model predictions easier to understand.", 10, False, TEXT)],
-             [("4. Actionable Insights", 11, True, NAVY)],
-             [("Gemini generates service improvement recommendations based on influential features and their contribution to individual predictions.", 10, False, TEXT)]]
-    p.textbox(*R(41, 872, 940, 205), left, bg=WHITE, border=BORDER, radius=8, label="findings left")
-    p.textbox(*R(1000, 872, 920, 205), right, bg=WHITE, border=BORDER, radius=8, label="findings right")
+    head(20, 770, 1560, "KEY EXPLAINABILITY FINDINGS", h=26)
+    left = [[("1. Dominant Features", 10.5, True, NAVY)],
+            [("In-flight WiFi Service and Type of Travel are the two most influential features in the global SHAP analysis.", 9.5, False, TEXT)],
+            [("2. Individual Prediction Behaviour", 10.5, True, NAVY)],
+            [("SHAP values reveal how individual features contribute positively or negatively to a passenger's prediction.", 9.5, False, TEXT)]]
+    right = [[("3. AI-Generated Interpretability", 10.5, True, NAVY)],
+             [("Gemini converts SHAP evidence into human-readable explanations, making model predictions easier to understand.", 9.5, False, TEXT)],
+             [("4. Actionable Insights", 10.5, True, NAVY)],
+             [("Gemini generates service improvement recommendations based on influential features and their contribution to individual predictions.", 9.5, False, TEXT)]]
+    p.textbox(20, 800, 770, 92, left, bg=WHITE, border=BORDER, radius=8, label="findings left")
+    p.textbox(810, 800, 770, 92, right, bg=WHITE, border=BORDER, radius=8, label="findings right")
 
     # ============================= 8 CONCLUSION =============================
     p = new("conclusion")

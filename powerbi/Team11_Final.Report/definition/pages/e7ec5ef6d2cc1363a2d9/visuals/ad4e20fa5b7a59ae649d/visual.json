@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "0ee8fe71f25aeee15866",
+  "name": "ad4e20fa5b7a59ae649d",
   "position": {
-    "x": 27.5,
-    "y": 711.5929694727105,
-    "z": 20000,
-    "height": 26.508788159111933,
-    "width": 1543.3333333333335,
-    "tabOrder": 20000
+    "x": 1260.0,
+    "y": 172.0,
+    "z": 13000,
+    "height": 5.0,
+    "width": 320.0,
+    "tabOrder": 13000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,16 +19,15 @@
               {
                 "textRuns": [
                   {
-                    "value": "KEY EXPLAINABILITY FINDINGS",
+                    "value": " ",
                     "textStyle": {
-                      "fontSize": "13pt",
+                      "fontSize": "2pt",
                       "color": "#173D75",
-                      "fontFamily": "Segoe UI",
-                      "fontWeight": "bold"
+                      "fontFamily": "Segoe UI"
                     }
                   }
                 ],
-                "horizontalTextAlignment": "center"
+                "horizontalTextAlignment": "left"
               }
             ]
           }
@@ -55,7 +54,25 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#173D75'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
                 }
               }
             }

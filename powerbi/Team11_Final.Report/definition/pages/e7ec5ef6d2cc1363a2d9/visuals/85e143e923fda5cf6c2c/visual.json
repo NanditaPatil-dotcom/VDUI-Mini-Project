@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "e144473c900cf4473456",
+  "name": "85e143e923fda5cf6c2c",
   "position": {
-    "x": 1312.5,
-    "y": 250.6345975948196,
-    "z": 14000,
-    "height": 114.87141535615172,
-    "width": 275.83333333333337,
-    "tabOrder": 14000
+    "x": 20.0,
+    "y": 642.0,
+    "z": 21000,
+    "height": 120.0,
+    "width": 1560.0,
+    "tabOrder": 21000
   },
   "visual": {
-    "visualType": "slicer",
+    "visualType": "tableEx",
     "query": {
       "queryState": {
         "Values": {
@@ -20,14 +20,44 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "GeminiInsights"
+                      "Entity": "GeminiRecommendations"
                     }
                   },
-                  "Property": "Passenger Label"
+                  "Property": "Evidence Feature"
                 }
               },
-              "queryRef": "GeminiInsights.Passenger Label",
-              "nativeQueryRef": "Passenger Label",
+              "queryRef": "GeminiRecommendations.Evidence Feature",
+              "nativeQueryRef": "Evidence Feature",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GeminiRecommendations"
+                    }
+                  },
+                  "Property": "Recommendation"
+                }
+              },
+              "queryRef": "GeminiRecommendations.Recommendation",
+              "nativeQueryRef": "Recommendation",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GeminiRecommendations"
+                    }
+                  },
+                  "Property": "Reason"
+                }
+              },
+              "queryRef": "GeminiRecommendations.Reason",
+              "nativeQueryRef": "Reason",
               "active": true
             }
           ]
@@ -35,30 +65,21 @@
       }
     },
     "objects": {
-      "data": [
+      "columnHeaders": [
         {
           "properties": {
-            "mode": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Dropdown'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "header": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
                 }
               }
             },
-            "fontColor": {
+            "backColor": {
               "solid": {
                 "color": {
                   "expr": {
@@ -69,10 +90,10 @@
                 }
               }
             },
-            "textSize": {
+            "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -93,9 +114,16 @@
           }
         }
       ],
-      "items": [
+      "values": [
         {
           "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
+                }
+              }
+            },
             "fontColor": {
               "solid": {
                 "color": {
@@ -107,10 +135,25 @@
                 }
               }
             },
-            "textSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "10.0D"
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F3F7FC'"
+                    }
+                  }
                 }
               }
             },
@@ -124,20 +167,31 @@
           }
         }
       ],
-      "selection": [
+      "grid": [
         {
           "properties": {
-            "singleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#E6EDF6'"
+                    }
+                  }
                 }
               }
             },
-            "selectAllCheckboxEnabled": {
+            "gridVertical": {
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "4.0D"
                 }
               }
             }
@@ -170,7 +224,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "9.0D"
+                  "Value": "12.0D"
                 }
               }
             },
@@ -198,7 +252,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Explained passenger'"
+                  "Value": "'Gemini service-improvement recommendations'"
                 }
               }
             }
@@ -260,7 +314,7 @@
             "radius": {
               "expr": {
                 "Literal": {
-                  "Value": "8.0D"
+                  "Value": "10.0D"
                 }
               }
             }
@@ -273,7 +327,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -282,62 +336,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "591bc0c51dec6b7fbb81",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "GeminiInsights"
-              }
-            },
-            "Property": "Passenger Label"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "s",
-              "Entity": "GeminiInsights",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "s"
-                          }
-                        },
-                        "Property": "Passenger Label"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Passenger #2884 - predicted Neutral/Dissatisfied'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        }
-      }
-    ]
   }
 }

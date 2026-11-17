@@ -494,21 +494,25 @@ def measure_list():
         'RETURN IF(ISBLANK(note), "No Gemini recommendation was generated for this feature in the explained passengers.", note)', None, f6)
 
     f7 = "7 Passenger Explanation"
-    add("Selected Passenger", 'SELECTEDVALUE(GeminiInsights[Passenger Label], "Select a passenger")', None, f7)
-    add("Selected Predicted Class", 'SELECTEDVALUE(GeminiInsights[Predicted Class], "-")', None, f7)
-    add("Selected Actual Class", 'SELECTEDVALUE(GeminiInsights[Actual Class], "-")', None, f7)
-    add("Selected P(Satisfied)", "SELECTEDVALUE(GeminiInsights[Probability Satisfied])", "0.0%", f7)
-    add("Selected Prediction Confidence", "SELECTEDVALUE(GeminiInsights[Predicted Probability])", "0.0%", f7)
-    add("Selected Prediction Correct", 'SELECTEDVALUE(GeminiInsights[Correct Prediction], "-")', None, f7)
-    add("Gemini Explanation", 'SELECTEDVALUE(GeminiInsights[Explanation], "Select one passenger to read the Gemini explanation.")', None, f7)
-    add("Gemini Uncertainty Note", 'SELECTEDVALUE(GeminiInsights[Uncertainty Note], "")', None, f7)
-    add("SHAP toward Satisfied", "VAR v = SUM(ShapLocal[SHAP Value])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)", "+0.000;-0.000;0.000", f7,
+    add("Selected Passenger Index", "SELECTEDVALUE(GeminiInsights[Passenger Index], MINX(ALL(GeminiInsights), GeminiInsights[Passenger Index]))", "0", f7,
+        "The passenger picked in the slicer; the first explained passenger when none is picked.")
+    def pick(col):
+        return f"CALCULATE(MAX(GeminiInsights[{col}]), GeminiInsights[Passenger Index] = [Selected Passenger Index], REMOVEFILTERS(GeminiInsights[Passenger Label]))"
+    add("Selected Passenger", pick("Passenger Label"), None, f7)
+    add("Selected Predicted Class", pick("Predicted Class"), None, f7)
+    add("Selected Actual Class", pick("Actual Class"), None, f7)
+    add("Selected P(Satisfied)", pick("Probability Satisfied"), "0.0%", f7)
+    add("Selected Prediction Confidence", pick("Predicted Probability"), "0.0%", f7)
+    add("Selected Prediction Correct", pick("Correct Prediction"), None, f7)
+    add("Gemini Explanation", pick("Explanation"), None, f7)
+    add("Gemini Uncertainty Note", pick("Uncertainty Note"), None, f7)
+    add("SHAP toward Satisfied", "VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)", "+0.000;-0.000;0.000", f7,
         "Top-10 contributions only; positive values push the prediction toward Satisfied.")
-    add("SHAP toward Neutral or Dissatisfied", "VAR v = SUM(ShapLocal[SHAP Value])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)", "+0.000;-0.000;0.000", f7,
+    add("SHAP toward Neutral or Dissatisfied", "VAR v = CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])\nRETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)", "+0.000;-0.000;0.000", f7,
         "Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.")
-    add("Net SHAP Value", "SUM(ShapLocal[SHAP Value])", "+0.000;-0.000;0.000", f7)
+    add("Net SHAP Value", "CALCULATE(SUM(ShapLocal[SHAP Value]), ShapLocal[Passenger Index] = [Selected Passenger Index])", "+0.000;-0.000;0.000", f7)
     add("Top Contributor (Selected Passenger)",
-        'IF(HASONEVALUE(GeminiInsights[Passenger Index]), CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Contribution Rank] = 1), "Select one passenger")', None, f7)
+        "CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Passenger Index] = [Selected Passenger Index], ShapLocal[Contribution Rank] = 1)", None, f7)
 
     f8 = "8 Narrative (data-driven text)"
     add("Insight - Headline",

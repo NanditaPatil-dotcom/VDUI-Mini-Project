@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "b77ac683704f7ef40946",
+  "name": "1ec6ad67145a1fc00661",
   "position": {
-    "x": 34.16666666666667,
-    "y": 738.1017576318224,
-    "z": 21000,
-    "height": 150.95282146160963,
-    "width": 783.3333333333334,
-    "tabOrder": 21000
+    "x": 810.0,
+    "y": 800.0,
+    "z": 24000,
+    "height": 92.0,
+    "width": 770.0,
+    "tabOrder": 24000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "1. Dominant Features",
+                    "value": "3. AI-Generated Interpretability",
                     "textStyle": {
-                      "fontSize": "11pt",
+                      "fontSize": "10.5pt",
                       "color": "#173D75",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
@@ -33,9 +33,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "In-flight WiFi Service and Type of Travel are the two most influential features in the global SHAP analysis.",
+                    "value": "Gemini converts SHAP evidence into human-readable explanations, making model predictions easier to understand.",
                     "textStyle": {
-                      "fontSize": "10pt",
+                      "fontSize": "9.5pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -46,9 +46,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "2. Individual Prediction Behaviour",
+                    "value": "4. Actionable Insights",
                     "textStyle": {
-                      "fontSize": "11pt",
+                      "fontSize": "10.5pt",
                       "color": "#173D75",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
@@ -60,9 +60,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "SHAP values reveal how individual features contribute positively or negatively to a passenger's prediction.",
+                    "value": "Gemini generates service improvement recommendations based on influential features and their contribution to individual predictions.",
                     "textStyle": {
-                      "fontSize": "10pt",
+                      "fontSize": "9.5pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }

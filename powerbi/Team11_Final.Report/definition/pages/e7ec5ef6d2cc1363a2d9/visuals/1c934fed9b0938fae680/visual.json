@@ -3,10 +3,10 @@
   "name": "1c934fed9b0938fae680",
   "position": {
     "x": 20.0,
-    "y": 10.0,
+    "y": 16.0,
     "z": 4000,
-    "height": 64.0,
-    "width": 330.0,
+    "height": 52.0,
+    "width": 520.0,
     "tabOrder": 4000
   },
   "visual": {
@@ -19,25 +19,12 @@
               {
                 "textRuns": [
                   {
-                    "value": "✈  BEYOND THE BOARDING PASS",
+                    "value": "✈  BEYOND THE BOARDING PASS  |  TEAM 11",
                     "textStyle": {
                       "fontSize": "16pt",
                       "color": "#FFFFFF",
                       "fontFamily": "Segoe UI",
                       "fontWeight": "bold"
-                    }
-                  }
-                ],
-                "horizontalTextAlignment": "left"
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Airline Passenger Satisfaction  |  Team 11",
-                    "textStyle": {
-                      "fontSize": "9pt",
-                      "color": "#BBD4F5",
-                      "fontFamily": "Segoe UI"
                     }
                   }
                 ],
