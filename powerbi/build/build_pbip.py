@@ -115,10 +115,10 @@ def build_report():
     seg = Page("segment", "Passenger Segment Detail", hidden=True)
     seg.filters = [
         {"name": hid("seg", "class"), "field": Col("DimTravel", "Class"), "type": "Categorical", "howCreated": "Drillthrough"},
-        {"name": hid("seg", "tier"), "field": Col("DimSatisfaction", "Satisfaction Tier"), "type": "Categorical", "howCreated": "Drillthrough"}]
+        {"name": hid("seg", "tier"), "field": Col("DimTravel", "Type of Travel"), "type": "Categorical", "howCreated": "Drillthrough"}]
     seg.binding = {"name": hid("seg", "binding"), "type": "Drillthrough", "parameters": [
         {"name": hid("seg", "p1"), "boundFilter": seg.filters[0]["name"], "fieldExpr": Col("DimTravel", "Class")},
-        {"name": hid("seg", "p2"), "boundFilter": seg.filters[1]["name"], "fieldExpr": Col("DimSatisfaction", "Satisfaction Tier")}]}
+        {"name": hid("seg", "p2"), "boundFilter": seg.filters[1]["name"], "fieldExpr": Col("DimTravel", "Type of Travel")}]}
     reg["segment"] = seg
 
     bm_ids = {n: hid("bookmark", n) for n in ("bm_hook", "bm_build", "bm_insight", "bm_conclusion")}

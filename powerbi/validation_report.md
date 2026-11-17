@@ -4,6 +4,16 @@ The report reads these CSVs unchanged. Validated metrics were **not** modified; 
 
 | Result | Check | Detail |
 |---|---|---|
+| PASS | unfiltered passenger count (rows = Total Passengers) is 129,487 | 129,487 rows |
+| PASS | Satisfied + Neutral/Dissatisfied = total | 56,262 satisfied |
+| PASS | High + Average + Low tier = total | no other tier values |
+| PASS | DimTravel: left-outer merge keeps every passenger and finds every key | 6 dimension rows, 129,487 fact rows |
+| PASS | DimPassengerProfile: left-outer merge keeps every passenger and finds every key | 16 dimension rows, 129,487 fact rows |
+| PASS | DimSatisfaction: left-outer merge keeps every passenger and finds every key | 6 dimension rows, 129,487 fact rows |
+| PASS | FactServiceRating rows = 14 x passengers after unpivot | 1,812,818 rows |
+| PASS | row_index values in SHAP local file = Gemini passengers | [np.int64(2884), np.int64(76523)] |
+| PASS | passenger 2884: SHAP rows, predicted class and probability agree between SHAP file and Gemini file | 22 SHAP rows, Neutral or Dissatisfied, p=0.9988, 1 recommendation row(s) |
+| PASS | passenger 76523: SHAP rows, predicted class and probability agree between SHAP file and Gemini file | 22 SHAP rows, Satisfied, p=0.9995, 2 recommendation row(s) |
 | PASS | CV folds = 5 (Logistic Regression) | 5 folds |
 | PASS | CV mean matches model_comparison (Logistic Regression) | 0.901128 vs 0.901128 |
 | PASS | CV std (ddof=1) matches model_comparison (Logistic Regression) | 0.000550 vs 0.000550 |
@@ -45,4 +55,4 @@ The report reads these CSVs unchanged. Validated metrics were **not** modified; 
 - Top-5 SHAP: In-flight Wifi Service, Type of Travel, Customer Type, Online Boarding, Class
 - Top-5 |Spearman|: Online Boarding, In-flight Entertainment, In-flight Wifi Service, Seat Comfort, On-board Service
 
-**37 of 37 checks passed.**
+**47 of 47 checks passed.**

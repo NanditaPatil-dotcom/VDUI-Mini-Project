@@ -309,15 +309,15 @@ class Page:
         acc = accent or color
         self.textbox(x, y, w, 5, [[(" ", 2, False, acc)]], bg=acc, label=f"accent {label}", border=None)
         o = {"labels": [{"properties": {"color": colr(color), "fontSize": num(size), "fontFamily": lit("Segoe UI Semibold"),
-                                        "labelDisplayUnits": num(0)}}],
+                                        "labelDisplayUnits": num(1)}}],
              "categoryLabels": [{"properties": {"show": lit(True), "color": colr(MUTED), "fontSize": num(10), "fontFamily": lit(FONT)}}]}
         q = query({"Values": [m(measure)]})
         q["queryState"]["Values"]["projections"][0]["displayName"] = label
         return self.add("card", x, y, w, h, q=q, objects=o, container=vco(bg=WHITE, border=BORDER, radius=8),
                         label=f"kpi {label}")
 
-    def slicer(self, x, y, w, h, ref, sync=None, title=None, single=False, default=None, multi_dropdown=True, label=None):
-        o = {"data": [{"properties": {"mode": lit("Dropdown")}}],
+    def slicer(self, x, y, w, h, ref, sync=None, title=None, single=False, default=None, multi_dropdown=True, label=None, mode="Dropdown"):
+        o = {"data": [{"properties": {"mode": lit(mode)}}],
              "header": [{"properties": {"show": lit(True), "fontColor": colr(NAVY), "textSize": num(9), "bold": lit(True),
                                         "fontFamily": lit(FONT)}}],
              "items": [{"properties": {"fontColor": colr(TEXT), "textSize": num(10), "fontFamily": lit(FONT)}}],

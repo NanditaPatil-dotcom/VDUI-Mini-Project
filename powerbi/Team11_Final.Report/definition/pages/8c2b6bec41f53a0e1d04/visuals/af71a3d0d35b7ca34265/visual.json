@@ -66,7 +66,7 @@
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "0.0D"
+                  "Value": "1.0D"
                 }
               }
             }

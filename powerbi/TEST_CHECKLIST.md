@@ -8,9 +8,11 @@ any line that fails (screenshot or the red error text). **Do not treat any item 
 - [ ] `RepoRoot` parameter = your repo folder. Close & Apply finishes with no red errors (10–15 min the first time).
 - [ ] Model view: relationships include `shap_local_explanations → shap_importance` (Nandita's) and `shap_local_explanations → PassengerSelectorTable` (added so her slicer drives her cards/bars).
 
+Demo steps with exact clicks are in `DEMO_GUIDE.md`.
+
 ## 1. AI EXPLAINABILITY (copied from AI_Explainability.pbix)
 - [ ] Page shows: Top-5 SHAP chart, Gemini explanation, individual SHAP bars, probability / predicted-class / actual-class cards, passenger list slicer, recommendations table, Key Explainability Findings text.
-- [ ] Slicer starts on 76523. Pick 2884 → explanation, cards and SHAP bars change. Pick 76523 again → they change back.
+- [ ] Slicer starts on 76523. Pick 2884 → SHAP bars, probability, predicted/actual class, Gemini explanation AND recommendations all change (1 recommendation row for 2884, 2 for 76523). Pick 76523 again → they change back.
 - [ ] Compare side by side with `AI_Explainability.pbix` (unchanged in the repo): same fields, same text.
 
 ## 2. Navigation, slicers, interactions

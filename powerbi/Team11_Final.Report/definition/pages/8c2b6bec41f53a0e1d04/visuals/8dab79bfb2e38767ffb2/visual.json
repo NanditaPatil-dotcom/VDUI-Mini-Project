@@ -3,10 +3,10 @@
   "name": "8dab79bfb2e38767ffb2",
   "position": {
     "x": 20.0,
-    "y": 10.0,
+    "y": 8.0,
     "z": 5000,
-    "height": 40.0,
-    "width": 64.0,
+    "height": 44.0,
+    "width": 110.0,
     "tabOrder": 5000
   },
   "visual": {
@@ -41,7 +41,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'← Back'"
+                  "Value": "'←  BACK'"
                 }
               }
             },
@@ -50,7 +50,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#FFFFFF'"
+                      "Value": "'#173D75'"
                     }
                   }
                 }
@@ -59,7 +59,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "11.0D"
+                  "Value": "13.0D"
                 }
               }
             },
@@ -105,7 +105,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24508F'"
+                      "Value": "'#E8A044'"
                     }
                   }
                 }
@@ -137,7 +137,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#2389ED'"
+                      "Value": "'#FFFFFF'"
                     }
                   }
                 }
@@ -171,7 +171,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24508F'"
+                      "Value": "'#E8A044'"
                     }
                   }
                 }

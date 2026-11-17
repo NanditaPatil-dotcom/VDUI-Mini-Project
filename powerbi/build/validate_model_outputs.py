@@ -23,6 +23,40 @@ co = pd.read_csv(P("correlation", "correlation_ranking.csv"))
 n_test = len(pd.read_csv(P("models", "test_indices.csv")))
 cmfile = {"Logistic Regression": "logistic_regression", "Random Forest": "random_forest", "XGBoost": "xgboost"}
 
+
+# 0 passenger data model (replicates the Power Query steps in pandas)
+df = pd.read_csv(P("airline_satisfaction_tiered.csv"))
+check("unfiltered passenger count (rows = Total Passengers) is 129,487", len(df) == 129487, f"{len(df):,} rows")
+sat_n = (df["Satisfaction"] == "Satisfied").sum()
+check("Satisfied + Neutral/Dissatisfied = total", sat_n + (df["Satisfaction"] == "Neutral or Dissatisfied").sum() == len(df), f"{sat_n:,} satisfied")
+check("High + Average + Low tier = total", df["satisfaction_tier"].isin(["High", "Average", "Low"]).all(), "no other tier values")
+def band_age(a):
+    return "Young" if a < 25 else "Young Adult" if a < 40 else "Adult" if a < 55 else "Senior"
+d = df.copy()
+d["Age Band"] = d.Age.map(band_age)
+for name, cols in {"DimTravel": ["Class", "Type of Travel"], "DimPassengerProfile": ["Gender", "Customer Type", "Age Band"],
+                   "DimSatisfaction": ["Satisfaction", "satisfaction_tier"]}.items():
+    dim = d[cols].drop_duplicates().reset_index(drop=True)
+    dim["key"] = dim.index + 1
+    j = d.merge(dim, on=cols, how="left")
+    check(f"{name}: left-outer merge keeps every passenger and finds every key", len(j) == len(d) and j.key.notna().all(), f"{len(dim)} dimension rows, {len(j):,} fact rows")
+rating_cols = ["Departure and Arrival Time Convenience", "Ease of Online Booking", "Check-in Service", "Online Boarding", "Gate Location", "On-board Service",
+               "Seat Comfort", "Leg Room Service", "Cleanliness", "Food and Drink", "In-flight Service", "In-flight Wifi Service", "In-flight Entertainment", "Baggage Handling"]
+check("FactServiceRating rows = 14 x passengers after unpivot", len(df) * len(rating_cols) == 1812818, f"{len(df) * len(rating_cols):,} rows")
+ex = pd.read_csv(P("explainability", "gemini_insights.json").replace(".json", ".json")) if False else None
+
+
+# 0b AI Explainability data behind the row_index selector (all from the existing explainability outputs)
+import json
+gj = json.load(open(P("explainability", "gemini_insights.json"), encoding="utf-8"))["explanations"]
+sl = pd.read_csv(P("explainability", "shap_local_explanations.csv"))
+check("row_index values in SHAP local file = Gemini passengers", sorted(sl.row_index.unique()) == sorted(e["row_index"] for e in gj), f"{sorted(sl.row_index.unique())}")
+for e in gj:
+    g = sl[sl.row_index == e["row_index"]]
+    check(f"passenger {e['row_index']}: SHAP rows, predicted class and probability agree between SHAP file and Gemini file",
+          len(g) == 22 and g.predicted_class.iloc[0] == e["predicted_class"] and abs(g.predicted_class_probability.iloc[0] - e["predicted_class_probability"]) < 1e-9,
+          f"{len(g)} SHAP rows, {e['predicted_class']}, p={e['predicted_class_probability']:.4f}, {len(e['service_improvement_suggestions'])} recommendation row(s)")
+
 # 1 five-fold CV
 for model, g in cv.groupby("Model"):
     check(f"CV folds = 5 ({model})", len(g) == 5 and sorted(g.Fold) == [1, 2, 3, 4, 5], f"{len(g)} folds")

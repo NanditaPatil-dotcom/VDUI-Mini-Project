@@ -3,10 +3,10 @@
   "name": "7af36d564aa6e2bbb7be",
   "position": {
     "x": 20.0,
-    "y": 134.0,
+    "y": 84.0,
     "z": 12000,
-    "height": 96.0,
-    "width": 304.0,
+    "height": 104.0,
+    "width": 305.0,
     "tabOrder": 12000
   },
   "visual": {
@@ -66,7 +66,7 @@
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "0.0D"
+                  "Value": "1.0D"
                 }
               }
             }

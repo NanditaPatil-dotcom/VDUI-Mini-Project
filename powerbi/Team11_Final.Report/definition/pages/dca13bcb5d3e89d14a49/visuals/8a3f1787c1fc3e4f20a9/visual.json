@@ -263,14 +263,14 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'Bookmark'"
+                  "Value": "'PageNavigation'"
                 }
               }
             },
-            "bookmark": {
+            "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'f04bd42cde409620f230'"
+                  "Value": "'e9fa25d94703ea04b946'"
                 }
               }
             }

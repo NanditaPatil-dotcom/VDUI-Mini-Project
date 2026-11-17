@@ -725,6 +725,7 @@ def relationships_tmdl():
     # AI_Explainability.pbix tables: her original relationship + the link that lets her passenger slicer drive her cards/bars
     rel("shap_local_explanations", "feature", "shap_importance", "Feature")
     rel("shap_local_explanations", "row_index", "PassengerSelectorTable", "row_index")
+    rel("gemini_insights", "explanations.row_index", "PassengerSelectorTable", "row_index")
     return "\n".join(R)
 
 
