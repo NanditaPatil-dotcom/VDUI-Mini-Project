@@ -306,14 +306,11 @@ class Page:
         return self.add("actionButton", x, y, w, h, objects=o, container=cont, label=label or f"btn {text}")
 
     def card(self, x, y, w, h, measure, label, color=NAVY, size=26, fmt_lbl=True, accent=None, tooltip_page=None):
-        acc = accent or color
-        self.textbox(x, y, w, 5, [[(" ", 2, False, acc)]], bg=acc, label=f"accent {label}", border=None)
-        o = {"labels": [{"properties": {"color": colr(color), "fontSize": num(size), "fontFamily": lit("Segoe UI Semibold"),
-                                        "labelDisplayUnits": num(1)}}],
-             "categoryLabels": [{"properties": {"show": lit(True), "color": colr(MUTED), "fontSize": num(10), "fontFamily": lit(FONT)}}]}
-        q = query({"Values": [m(measure)]})
-        q["queryState"]["Values"]["projections"][0]["displayName"] = label
-        return self.add("card", x, y, w, h, q=q, objects=o, container=vco(bg=WHITE, border=BORDER, radius=8),
+        """KPI tile built like a hand-made one: Power BI's own Card visual with default formatting (small grey label on top,
+        value below, both left-aligned), white tile with a thin border. `color`, `size` and `accent` are kept for old callers but unused."""
+        q = query({"Data": [m(measure)]})
+        q["queryState"]["Data"]["projections"][0]["displayName"] = label.title().replace("F1", "F1")
+        return self.add("cardVisual", x, y, w, h, q=q, container=vco(bg=WHITE, border=BORDER, radius=8, shadow=True),
                         label=f"kpi {label}")
 
     def slicer(self, x, y, w, h, ref, sync=None, title=None, single=False, default=None, multi_dropdown=True, label=None, mode="Dropdown"):
