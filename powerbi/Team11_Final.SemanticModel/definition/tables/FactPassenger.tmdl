@@ -142,13 +142,6 @@ table FactPassenger
 		sortByColumn: 'Delay Bucket Sort'
 		sourceColumn: Delay Bucket
 
-	column 'Passenger Avg Rating'
-		dataType: double
-		formatString: 0.00
-		isHidden
-		summarizeBy: none
-		sourceColumn: Passenger Avg Rating
-
 	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
 	column 'Departure and Arrival Time Convenience'
 		dataType: int64
@@ -274,6 +267,6 @@ table FactPassenger
 					JoinSat = Table.NestedJoin(ExpProfile, {"Satisfaction", "Satisfaction Tier"}, DimSatisfaction, {"Satisfaction", "Satisfaction Tier"}, "ds", JoinKind.LeftOuter),
 					ExpSat = Table.ExpandTableColumn(JoinSat, "ds", {"SatisfactionKey"}, {"SatisfactionKey"}),
 					Typed = Table.TransformColumnTypes(ExpSat, {{"TravelKey", Int64.Type}, {"ProfileKey", Int64.Type}, {"SatisfactionKey", Int64.Type}}),
-					Result = Table.SelectColumns(Typed, {"Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey", "Gender", "Customer Type", "Class", "Type of Travel", "Age Band", "Age Band Sort", "Satisfaction", "Satisfaction Tier", "Tier Sort", "Age", "Flight Distance", "Distance Band", "Distance Band Sort", "Departure Delay in Minutes", "Arrival Delay in Minutes", "Delay Bucket", "Delay Bucket Sort", "Passenger Avg Rating", "Departure and Arrival Time Convenience", "Ease of Online Booking", "Check-in Service", "Online Boarding", "Gate Location", "On-board Service", "Seat Comfort", "Leg Room Service", "Cleanliness", "Food and Drink", "In-flight Service", "In-flight Wifi Service", "In-flight Entertainment", "Baggage Handling"})
+					Result = Table.SelectColumns(Typed, {"Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey", "Gender", "Customer Type", "Class", "Type of Travel", "Age Band", "Age Band Sort", "Satisfaction", "Satisfaction Tier", "Tier Sort", "Age", "Flight Distance", "Distance Band", "Distance Band Sort", "Departure Delay in Minutes", "Arrival Delay in Minutes", "Delay Bucket", "Delay Bucket Sort", "Departure and Arrival Time Convenience", "Ease of Online Booking", "Check-in Service", "Online Boarding", "Gate Location", "On-board Service", "Seat Comfort", "Leg Room Service", "Cleanliness", "Food and Drink", "In-flight Service", "In-flight Wifi Service", "In-flight Entertainment", "Baggage Handling"})
 				in
 					Result

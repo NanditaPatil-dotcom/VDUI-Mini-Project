@@ -21,11 +21,11 @@ table _Measures
 		displayFolder: 1 Passenger KPIs
 
 	measure 'Satisfaction Rate' = DIVIDE([Satisfied Passengers], [Total Passengers], 0)
-		formatString: 0.0%
+		formatString: 0.00%
 		displayFolder: 1 Passenger KPIs
 
 	measure 'Dissatisfaction Rate' = DIVIDE([Neutral or Dissatisfied Passengers], [Total Passengers], 0)
-		formatString: 0.0%
+		formatString: 0.00%
 		displayFolder: 1 Passenger KPIs
 
 	measure 'High Tier Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "High")
@@ -139,8 +139,10 @@ table _Measures
 		formatString: 0.0%
 		displayFolder: 3 Service Ratings
 
-	/// Share of an attribute's responses that fall in the rating / category on the axis.
-	measure 'Rating Share' = DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), REMOVEFILTERS(FactServiceRating[Rating Category])), 0)
+	/// Share of an attribute's RATED responses (rating 1-5). Zero = not applicable, so it is excluded from numerator and denominator.
+	measure 'Rating Share' =
+			IF(MAX(FactServiceRating[Rating]) = 0, BLANK(),
+				DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), REMOVEFILTERS(FactServiceRating[Rating Category]), FactServiceRating[Rating] > 0), 0))
 		formatString: 0%
 		displayFolder: 3 Service Ratings
 

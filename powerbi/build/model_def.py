@@ -56,21 +56,26 @@ def expressions_tmdl():
                  ("Type of Travel", "type text"), ("Class", "type text"), ("Flight Distance", "Int64.Type"),
                  ("Departure Delay", "type number"), ("Arrival Delay", "type number")]
     stg_types += [(c, "Int64.Type") for c in RATING_COLS]
-    stg_types += [("Satisfaction", "type text"), ("satisfaction", "Int64.Type"),
-                  ("avg_service_rating", "type number"), ("satisfaction_tier", "type text")]
+    stg_types += [("Satisfaction", "type text"), ("satisfaction", "Int64.Type"), ("satisfaction_tier", "type text")]
     tt = ", ".join('{"%s", %s}' % (c, t) for c, t in stg_types)
     text_cols = ", ".join('{"%s", each Text.Trim(Text.Clean(_)), type text}' % c for c in
                           ["Gender", "Customer Type", "Type of Travel", "Class", "Satisfaction", "satisfaction_tier"])
     stg = f'''let
-    // EXTRACT: one row per cleaned passenger record
-    Source = Csv.Document(File.Contents(Root & "airline_satisfaction_tiered.csv"), [{CSV_OPTS}]),
+    // EXTRACT: primary fact = airline_satisfaction_cleaned.csv (129,487 passengers x 24 columns)
+    Source = Csv.Document(File.Contents(Root & "airline_satisfaction_cleaned.csv"), [{CSV_OPTS}]),
     Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+    // The derived Low/Average/High tier lives in airline_satisfaction_tiered.csv, which is the same rows in the same order
+    TierSource = Csv.Document(File.Contents(Root & "airline_satisfaction_tiered.csv"), [{CSV_OPTS}]),
+    TierPromoted = Table.PromoteHeaders(TierSource, [PromoteAllScalars=true]),
+    TierColumn = Table.Column(TierPromoted, "satisfaction_tier"),
+    Aligned = if Table.RowCount(Promoted) <> List.Count(TierColumn) then error "cleaned and tiered files have different row counts" else Promoted,
+    WithTier = Table.FromColumns(Table.ToColumns(Aligned) & {{TierColumn}}, Table.ColumnNames(Aligned) & {{"satisfaction_tier"}}),
     // TRANSFORM: types, text clean-up, label standardisation
-    Typed = Table.TransformColumnTypes(Promoted, {{{tt}}}, "en-US"),
+    Typed = Table.TransformColumnTypes(WithTier, {{{tt}}}, "en-US"),
     Cleaned = Table.TransformColumns(Typed, {{{text_cols}}}),
-    // numeric 0/1 flag duplicates the text target (and differs only by letter case) -> drop it
+    // numeric 0/1 flag duplicates the text target (and differs only by letter case) -> drop it; the text Satisfaction is the binary target
     DropFlag = Table.RemoveColumns(Cleaned, {{"satisfaction"}}),
-    Renamed = Table.RenameColumns(DropFlag, {{{{"Departure Delay", "Departure Delay in Minutes"}}, {{"Arrival Delay", "Arrival Delay in Minutes"}}, {{"satisfaction_tier", "Satisfaction Tier"}}, {{"avg_service_rating", "Passenger Avg Rating"}}}}),
+    Renamed = Table.RenameColumns(DropFlag, {{{{"Departure Delay", "Departure Delay in Minutes"}}, {{"Arrival Delay", "Arrival Delay in Minutes"}}, {{"satisfaction_tier", "Satisfaction Tier"}}}}),
     AddId = Table.AddIndexColumn(Renamed, "Passenger ID", 1, 1, Int64.Type),
     AgeBand = Table.AddColumn(AddId, "Age Band", each if [Age] < 25 then "Young (under 25)" else if [Age] < 40 then "Young Adult (25-39)" else if [Age] < 55 then "Adult (40-54)" else "Senior (55+)", type text),
     AgeSort = Table.AddColumn(AgeBand, "Age Band Sort", each if [Age] < 25 then 1 else if [Age] < 40 then 2 else if [Age] < 55 then 3 else 4, Int64.Type),
@@ -137,7 +142,7 @@ def tables():
     keep = (["Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey", "Gender", "Customer Type", "Class",
              "Type of Travel", "Age Band", "Age Band Sort", "Satisfaction", "Satisfaction Tier", "Tier Sort",
              "Age", "Flight Distance", "Distance Band", "Distance Band Sort", "Departure Delay in Minutes",
-             "Arrival Delay in Minutes", "Delay Bucket", "Delay Bucket Sort", "Passenger Avg Rating"] + RATING_COLS)
+             "Arrival Delay in Minutes", "Delay Bucket", "Delay Bucket Sort"] + RATING_COLS)
     keep_m = ", ".join('"%s"' % c for c in keep)
     fact_m = f'''let
     Source = stgPassenger,
@@ -164,8 +169,7 @@ in
            col("Distance Band", sort_by="Distance Band Sort"),
            col("Departure Delay in Minutes", "double", fmt="#,0.0"),
            col("Arrival Delay in Minutes", "double", fmt="#,0.0"),
-           col("Delay Bucket", sort_by="Delay Bucket Sort"),
-           col("Passenger Avg Rating", "double", fmt="0.00", hidden=True)]
+           col("Delay Bucket", sort_by="Delay Bucket Sort")]
     for c in RATING_COLS:
         fc.append(col(c, "int64", hidden=True, fmt="0", desc="Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals."))
     T.append(tbl("FactPassenger", fc, fact_m,
@@ -448,8 +452,8 @@ def measure_list():
     add("Total Passengers", "DISTINCTCOUNT(FactPassenger[Passenger ID])", "#,0", f1, "One row per passenger record.")
     add("Satisfied Passengers", 'CALCULATE([Total Passengers], FactPassenger[Satisfaction] = "Satisfied")', "#,0", f1)
     add("Neutral or Dissatisfied Passengers", 'CALCULATE([Total Passengers], FactPassenger[Satisfaction] = "Neutral or Dissatisfied")', "#,0", f1)
-    add("Satisfaction Rate", "DIVIDE([Satisfied Passengers], [Total Passengers], 0)", "0.0%", f1)
-    add("Dissatisfaction Rate", "DIVIDE([Neutral or Dissatisfied Passengers], [Total Passengers], 0)", "0.0%", f1)
+    add("Satisfaction Rate", "DIVIDE([Satisfied Passengers], [Total Passengers], 0)", "0.00%", f1)
+    add("Dissatisfaction Rate", "DIVIDE([Neutral or Dissatisfied Passengers], [Total Passengers], 0)", "0.00%", f1)
     add("High Tier Passengers", 'CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "High")', "#,0", f1)
     add("Average Tier Passengers", 'CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "Average")', "#,0", f1)
     add("Low Tier Passengers", 'CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "Low")', "#,0", f1)
@@ -491,9 +495,10 @@ def measure_list():
         "0.0%", f3)
     add("Not Rated Share", "DIVIDE(CALCULATE(COUNTROWS(FactServiceRating), FactServiceRating[Rating] = 0), [Rating Count], 0)", "0.0%", f3)
     add("Rating Share",
-        "DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), "
-        "REMOVEFILTERS(FactServiceRating[Rating Category])), 0)", "0%", f3,
-        "Share of an attribute's responses that fall in the rating / category on the axis.")
+        "IF(MAX(FactServiceRating[Rating]) = 0, BLANK(),\n"
+        "    DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), "
+        "REMOVEFILTERS(FactServiceRating[Rating Category]), FactServiceRating[Rating] > 0), 0))", "0%", f3,
+        "Share of an attribute's RATED responses (rating 1-5). Zero = not applicable, so it is excluded from numerator and denominator.")
     add("Avg Rating - Satisfied", 'CALCULATE([Average Service Rating], DimSatisfaction[Satisfaction] = "Satisfied")', "0.00", f3)
     add("Avg Rating - Neutral or Dissatisfied",
         'CALCULATE([Average Service Rating], DimSatisfaction[Satisfaction] = "Neutral or Dissatisfied")', "0.00", f3)

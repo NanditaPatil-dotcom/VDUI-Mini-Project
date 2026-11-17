@@ -3,10 +3,10 @@
   "name": "aaadca0f9ade66d9942c",
   "position": {
     "x": 20.0,
-    "y": 558.0,
+    "y": 540.0,
     "z": 25000,
-    "height": 322.0,
-    "width": 900.0,
+    "height": 340.0,
+    "width": 620.0,
     "tabOrder": 25000
   },
   "visual": {
@@ -33,9 +33,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "•  43.4% of 129,487 passengers are satisfied; 33.0% reach the High satisfaction tier and 34.3% fall in the Low tier.",
+                    "value": "•  43.45% of 129,487 passengers are satisfied (56.55% neutral or dissatisfied).",
                     "textStyle": {
-                      "fontSize": "12pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -46,9 +46,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "•  Business class passengers are 69% satisfied versus 19% in Economy.",
+                    "value": "•  High satisfaction tier: 42,695 passengers (33.0%); Low tier 34.3%.",
                     "textStyle": {
-                      "fontSize": "12pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -59,9 +59,22 @@
               {
                 "textRuns": [
                   {
-                    "value": "•  Passengers arriving more than 15 minutes late are 36% satisfied versus 46% when on time (23% of passengers are delayed).",
+                    "value": "•  Business class 69% satisfied vs Economy 19%.",
                     "textStyle": {
-                      "fontSize": "12pt",
+                      "fontSize": "11pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "•  Arrivals >15 min late: 36% satisfied vs 46% on time.",
+                    "textStyle": {
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }
@@ -74,7 +87,7 @@
                   {
                     "value": "•  Lowest-rated service: In-flight Wifi Service (2.81/5); best: In-flight Service (3.64/5).",
                     "textStyle": {
-                      "fontSize": "12pt",
+                      "fontSize": "11pt",
                       "color": "#172334",
                       "fontFamily": "Segoe UI"
                     }

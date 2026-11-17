@@ -4,9 +4,12 @@ The report reads these CSVs unchanged. Validated metrics were **not** modified; 
 
 | Result | Check | Detail |
 |---|---|---|
+| PASS | cleaned file: 129,487 passenger rows x 24 columns | 129,487 x 24 |
+| PASS | cleaned file: 73,225 Neutral/Dissatisfied and 56,262 Satisfied | 56.55% / 43.45% |
+| PASS | tiered file = cleaned file + 2 columns, identical rows in identical order (tier can be attached by position) | 24 shared columns identical |
 | PASS | unfiltered passenger count (rows = Total Passengers) is 129,487 | 129,487 rows |
 | PASS | Satisfied + Neutral/Dissatisfied = total | 56,262 satisfied |
-| PASS | High + Average + Low tier = total | no other tier values |
+| PASS | High + Average + Low tier = total | High 42,695 |
 | PASS | DimTravel: left-outer merge keeps every passenger and finds every key | 6 dimension rows, 129,487 fact rows |
 | PASS | DimPassengerProfile: left-outer merge keeps every passenger and finds every key | 16 dimension rows, 129,487 fact rows |
 | PASS | DimSatisfaction: left-outer merge keeps every passenger and finds every key | 6 dimension rows, 129,487 fact rows |
@@ -55,4 +58,4 @@ The report reads these CSVs unchanged. Validated metrics were **not** modified; 
 - Top-5 SHAP: In-flight Wifi Service, Type of Travel, Customer Type, Online Boarding, Class
 - Top-5 |Spearman|: Online Boarding, In-flight Entertainment, In-flight Wifi Service, Seat Comfort, On-board Service
 
-**47 of 47 checks passed.**
+**50 of 50 checks passed.**

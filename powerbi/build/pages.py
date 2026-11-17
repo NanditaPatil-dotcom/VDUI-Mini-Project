@@ -49,6 +49,7 @@ def facts(root):
     f["business_share"] = (df["Type of Travel"] == "Business").mean()
     f["high_tier"] = (df["satisfaction_tier"] == "High").mean()
     f["low_tier"] = (df["satisfaction_tier"] == "Low").mean()
+    f["high_n"] = int((df["satisfaction_tier"] == "High").sum())
     mc = pd.read_csv(f"{root}/models/model_comparison.csv").set_index("Model")
     best = mc["Macro F1"].idxmax()
     f["best"], f["best_f1"], f["best_auc"], f["best_acc"] = best, mc.loc[best, "Macro F1"], mc.loc[best, "ROC-AUC"], mc.loc[best, "Accuracy"]
@@ -188,26 +189,27 @@ def build_pages(root, ctx_pages, F, bm):
 
     pid = lambda k: ctx_pages[k].id if k in ctx_pages else None  # noqa
 
-    # ============================= 1 OVERVIEW (detailed version) =============================
+    # ============================= 1 OVERVIEW =============================
     p = new("overview")
-    chrome(p, ctx, "overview", with_passenger_slicers=True, slicer_style="strip")
+    chrome(p, ctx, "overview", with_passenger_slicers=True, slicer_style="column")
     kpi_row(p, [("Total Passengers", "TOTAL PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"),
-                ("High Tier Rate", "HIGH-TIER RATE"), ("Average Service Rating", "AVG SERVICE RATING (1-5)"),
-                ("Best Macro F1", "BEST MODEL MACRO F1")], y=148, h=88)
-    p.donut(20, 246, 375, 300, "Passenger Satisfaction", c("DimSatisfaction", "Satisfaction"), m("Total Passengers"), SAT_COLORS)
-    p.donut(405, 246, 375, 300, "Satisfaction Tier Mix", c("DimSatisfaction", "Satisfaction Tier"), m("Total Passengers"), TIER_COLORS)
-    sat_stack(p, 790, 246, 400, 300, "", c("DimTravel", "Class"), title_measure="Title - Class Chart", label="class mix")
-    p.chart("clusteredBarChart", 1200, 246, 380, 300, "Top 5 Satisfaction Drivers (SHAP)", category=c("ShapImportance", "Feature"),
+                ("Dissatisfaction Rate", "NEUTRAL / DISSATISFIED RATE"), ("Average Service Rating", "AVG SERVICE RATING (1-5)"),
+                ("High Tier Passengers", "HIGH TIER COUNT")], y=90, h=96, x0=20, total_w=1250)
+    p.donut(20, 198, 302, 330, "Passenger Satisfaction", c("DimSatisfaction", "Satisfaction"), m("Total Passengers"), SAT_COLORS)
+    p.donut(332, 198, 302, 330, "Satisfaction Tier Mix", c("DimSatisfaction", "Satisfaction Tier"), m("Total Passengers"), TIER_COLORS)
+    sat_stack(p, 644, 198, 310, 330, "", c("DimTravel", "Class"), title_measure="Title - Class Chart", label="class mix")
+    p.chart("clusteredBarChart", 964, 198, 306, 330, "Top 5 SHAP Drivers", category=c("ShapImportance", "Feature"),
             values=[m("Top 5 SHAP")], sort=(m("Top 5 SHAP"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
+            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="top5 shap overview")
-    findings_box(p, 20, 558, 900, 322, "KEY FINDINGS", [
-        f"{pct(F['sat_rate'], 1)} of {F['n']:,} passengers are satisfied; {pct(F['high_tier'], 1)} reach the High satisfaction tier and {pct(F['low_tier'], 1)} fall in the Low tier.",
-        f"Business class passengers are {pct(F['by_class']['Business'])} satisfied versus {pct(F['by_class']['Economy'])} in Economy.",
-        f"Passengers arriving more than 15 minutes late are {pct(F['sat_late'])} satisfied versus {pct(F['sat_ontime'])} when on time ({pct(F['late_share'])} of passengers are delayed).",
+    findings_box(p, 20, 540, 620, 340, "KEY FINDINGS", [
+        f"{pct(F['sat_rate'], 2)} of {F['n']:,} passengers are satisfied ({pct(1 - F['sat_rate'], 2)} neutral or dissatisfied).",
+        f"High satisfaction tier: {F['high_n']:,} passengers ({pct(F['high_tier'], 1)}); Low tier {pct(F['low_tier'], 1)}.",
+        f"Business class {pct(F['by_class']['Business'])} satisfied vs Economy {pct(F['by_class']['Economy'])}.",
+        f"Arrivals >15 min late: {pct(F['sat_late'])} satisfied vs {pct(F['sat_ontime'])} on time.",
         f"Lowest-rated service: {list(F['avg_rating'])[0]} ({list(F['avg_rating'].values())[0]:.2f}/5); best: {list(F['avg_rating'])[-1]} ({list(F['avg_rating'].values())[-1]:.2f}/5).",
-    ], size=12, label="key findings")
-    p.matrix(930, 558, 650, 322, "Model Performance Summary (held-out test)", [c("DimModel", "Model")], [],
+    ], size=11, label="key findings")
+    p.matrix(650, 540, 620, 340, "Model Performance Summary (held-out test)", [c("DimModel", "Model")], [],
              [m("Model Accuracy"), m("Model Macro F1"), m("Model ROC-AUC"), m("CV Mean Macro F1")], size=10, label="model summary matrix")
 
     # ============================= 2 EDA & PASSENGER ANALYSIS (incl. service quality) =============================

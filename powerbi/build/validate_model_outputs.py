@@ -25,11 +25,16 @@ cmfile = {"Logistic Regression": "logistic_regression", "Random Forest": "random
 
 
 # 0 passenger data model (replicates the Power Query steps in pandas)
-df = pd.read_csv(P("airline_satisfaction_tiered.csv"))
+df = pd.read_csv(P("airline_satisfaction_cleaned.csv"))
+tiered = pd.read_csv(P("airline_satisfaction_tiered.csv"))
+check("cleaned file: 129,487 passenger rows x 24 columns", df.shape == (129487, 24), f"{df.shape[0]:,} x {df.shape[1]}")
+check("cleaned file: 73,225 Neutral/Dissatisfied and 56,262 Satisfied", (df.Satisfaction == "Neutral or Dissatisfied").sum() == 73225 and (df.Satisfaction == "Satisfied").sum() == 56262, "56.55% / 43.45%")
+check("tiered file = cleaned file + 2 columns, identical rows in identical order (tier can be attached by position)", df.reset_index(drop=True).equals(tiered[list(df.columns)].reset_index(drop=True)) and list(tiered.columns[len(df.columns):]) == ["avg_service_rating", "satisfaction_tier"], "24 shared columns identical")
+df["satisfaction_tier"] = tiered["satisfaction_tier"].values
 check("unfiltered passenger count (rows = Total Passengers) is 129,487", len(df) == 129487, f"{len(df):,} rows")
 sat_n = (df["Satisfaction"] == "Satisfied").sum()
 check("Satisfied + Neutral/Dissatisfied = total", sat_n + (df["Satisfaction"] == "Neutral or Dissatisfied").sum() == len(df), f"{sat_n:,} satisfied")
-check("High + Average + Low tier = total", df["satisfaction_tier"].isin(["High", "Average", "Low"]).all(), "no other tier values")
+check("High + Average + Low tier = total", df["satisfaction_tier"].isin(["High", "Average", "Low"]).all(), f"High {(df.satisfaction_tier == 'High').sum():,}")
 def band_age(a):
     return "Young" if a < 25 else "Young Adult" if a < 40 else "Adult" if a < 55 else "Senior"
 d = df.copy()

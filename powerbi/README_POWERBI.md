@@ -85,3 +85,6 @@ Edit `build/model_def.py` (M queries, DAX) or `build/pages.py` (layout) and re-r
 * Header = navy title bar only ("BEYOND THE BOARDING PASS | TEAM 11"); header navigation buttons removed. Use the page tabs at the bottom.
 * Removed: Live Observations and every dynamic narrative table/measure (`Insights` table, `Insight - *` measures), the old duplicate AI tables/measures (`GeminiInsights`, `GeminiRecommendations`, `ShapLocal`, `MetricSelector`, tooltip/passenger measures). Findings/recommendations are now static text computed from the CSVs.
 * Nandita's page, tables and her Gemini explanation measure are untouched; her static Key Explainability Findings text is kept.
+
+## 9. Data audit pass
+`DATA_AUDIT.md` traces every KPI to its CSV and recalculates it with pandas. `FactPassenger` now loads from `airline_satisfaction_cleaned.csv` (tier attached by position from the tiered file), satisfaction/dissatisfaction rates show two decimals (43.45 % / 56.55 %), and `Rating Share` excludes N/A (zero) ratings from its denominator. Overview and EDA use checkbox (list) slicers.

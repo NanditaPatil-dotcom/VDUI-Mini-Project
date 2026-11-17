@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "0f7ea5b006ca1771b5a8",
+  "name": "882d0e786f847558a7f0",
   "position": {
-    "x": 1276.0,
-    "y": 148.0,
+    "x": 1028.0,
+    "y": 90.0,
     "z": 20000,
-    "height": 88.0,
-    "width": 304.0,
+    "height": 96.0,
+    "width": 242.0,
     "tabOrder": 20000
   },
   "visual": {
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Best Macro F1"
+                  "Property": "High Tier Passengers"
                 }
               },
-              "queryRef": "_Measures.Best Macro F1",
-              "nativeQueryRef": "Best Macro F1",
-              "displayName": "BEST MODEL MACRO F1"
+              "queryRef": "_Measures.High Tier Passengers",
+              "nativeQueryRef": "High Tier Passengers",
+              "displayName": "HIGH TIER COUNT"
             }
           ]
         }

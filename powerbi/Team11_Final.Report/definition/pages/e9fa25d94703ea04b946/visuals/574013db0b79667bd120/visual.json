@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "d731cf90720725316857",
+  "name": "574013db0b79667bd120",
   "position": {
-    "x": 648.0,
-    "y": 148.0,
+    "x": 524.0,
+    "y": 90.0,
     "z": 16000,
-    "height": 88.0,
-    "width": 304.0,
+    "height": 96.0,
+    "width": 242.0,
     "tabOrder": 16000
   },
   "visual": {
@@ -23,12 +23,12 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "High Tier Rate"
+                  "Property": "Dissatisfaction Rate"
                 }
               },
-              "queryRef": "_Measures.High Tier Rate",
-              "nativeQueryRef": "High Tier Rate",
-              "displayName": "HIGH-TIER RATE"
+              "queryRef": "_Measures.Dissatisfaction Rate",
+              "nativeQueryRef": "Dissatisfaction Rate",
+              "displayName": "NEUTRAL / DISSATISFIED RATE"
             }
           ]
         }
