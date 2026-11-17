@@ -178,7 +178,7 @@ def zip_project():
     if os.path.exists(z):
         os.remove(z)
     with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
-        for base in (f"{NAME}.pbip", f"{NAME}.SemanticModel", f"{NAME}.Report"):
+        for base in (f"{NAME}.pbip", f"{NAME}.SemanticModel", f"{NAME}.Report", "data"):
             p = os.path.join(OUT, base)
             if os.path.isfile(p):
                 zf.write(p, base)
