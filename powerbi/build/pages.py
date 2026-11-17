@@ -143,8 +143,7 @@ def build_pages(root, ctx_pages, F, bm):
     p.chart("clusteredBarChart", 1130, 242, 450, 300, "Top 5 Satisfaction Drivers (SHAP)", category=c("ShapImportance", "Feature"),
             values=[m("Top 5 SHAP")], sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd",
-                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]),
-            tooltip_page=ctx_pages["tooltip"].id, label="top5 shap overview")
+                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="top5 shap overview")
     insight_table(p, 20, 554, 760, 312, "KEY FINDINGS  |  recalculated with every filter",
                   ["Headline", "Who is happiest?", "Delay effect", "Service gap"], size=11)
     p.matrix(790, 554, 480, 312, "Model Performance Summary (held-out test)", [c("DimModel", "Model")], [],
@@ -213,8 +212,7 @@ def build_pages(root, ctx_pages, F, bm):
     p.chart("clusteredBarChart", 550, 544, 500, 322, "Association vs model importance: top SHAP features (hover for details)",
             category=c("ShapImportance", "Feature"), values=[m("Top 10 SHAP")], sort=(m("Top 10 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=8, label_size=8,
-                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]),
-            tooltip_page=ctx_pages["tooltip"].id, label="shap top10")
+                                  datapoints=[{"properties": {"fill": colr(NAVY)}}]), label="shap top10")
     insight_table(p, 1060, 544, 520, 322, "EVALUATION CONCLUSION  |  calculated", ["Best model", "Stability", "Fairness check"], size=9)
 
     # ============================= 7 AI EXPLAINABILITY (replicates AI_Explainability.pbix) =============================
@@ -228,8 +226,7 @@ def build_pages(root, ctx_pages, F, bm):
     p.chart("clusteredBarChart", 20, 134, 520, 262, "", category=c("ShapImportance", "Feature"), values=[m("Top 5 SHAP")],
             sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
-                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]),
-            tooltip_page=ctx_pages["tooltip"].id, label="top5 shap explain")
+                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="top5 shap explain")
     head(20, 406, 520, "Gemini AI Explanation")
     p.table(20, 440, 520, 190, "", [m("Gemini Explanation")], size=10, label="gemini text")
     # middle column
@@ -281,44 +278,9 @@ def build_pages(root, ctx_pages, F, bm):
     p.textbox(930, 674, 650, 192, [[(" ", 4, False, WHITE)]], bg=WHITE, border=BORDER, radius=10, shadow=True, label="story ctrl bg")
     p.textbox(942, 680, 620, 28, [[("CONTINUE EXPLORING", 11, True, NAVY)]], label="story ctrl title")
     p.button(942, 716, 300, 50, "↺  Restart the story (Hook)", link_bookmark(ctx.bm["bm_hook"]) if ctx.bm else None, fill=NAVY, hover=BLUE, size=10, label="restart")
-    p.button(1252, 716, 316, 50, "Segment detail (drill-through page)", link_page(ctx_pages["segment"].id), fill=BLUE, hover=NAVY, size=10, label="to segment")
+    p.button(1252, 716, 316, 50, "EDA & passenger analysis", link_page(ctx_pages["eda"].id), fill=BLUE, hover=NAVY, size=10, label="to eda")
     p.button(942, 776, 300, 50, "Model performance", link_page(ctx_pages["model"].id), fill=TEAL, hover=NAVY, size=10, label="to model")
     p.button(1252, 776, 316, 50, "AI explainability", link_page(ctx_pages["explain"].id), fill=AMBER, hover=NAVY, size=10, label="to explain")
     p.end_group()
 
-    # ============================= Drill-through: Passenger Segment Detail =============================
-    p = ctx_pages["segment"]
-    P["segment"] = p
-    p.dy = 16
-    p.begin_group("Header", 0, 0, 1600, 88)
-    p.textbox(0, 0, 1600, 84, [[(" ", 4, False, WHITE)]], bg=NAVY, label="banner")
-    p.textbox(0, 84, 1600, 4, [[(" ", 2, False, AMBER)]], bg=AMBER, label="banner accent")
-    p.textbox(100, 10, 900, 64, [[("PASSENGER SEGMENT DETAIL", 18, True, WHITE)],
-                                 [("Drill-through page: right-click a Class / Satisfaction Tier anywhere in the report -> Drill through", 9, False, "#BBD4F5")]],
-              label="segment title")
-    p.button(20, 22, 60, 40, "\u2190", link_back(), fill="#24508F", hover=BLUE, size=16, label="back button")
-    p.end_group()
-    kpi_row(p, [("Total Passengers", "PASSENGERS"), ("Satisfaction Rate", "SATISFACTION RATE"), ("High Tier Rate", "HIGH-TIER RATE"),
-                ("Average Service Rating", "AVG SERVICE RATING"), ("Avg Arrival Delay", "AVG ARRIVAL DELAY (MIN)")])
-    p.table(20, 242, 900, 624, "Segment breakdown",
-            [c("DimTravel", "Class"), c("DimTravel", "Type of Travel"), c("DimPassengerProfile", "Customer Type"), m("Total Passengers"),
-             m("Satisfaction Rate"), m("High Tier Rate"), m("Avg Departure Delay"), m("Avg Arrival Delay"), m("Avg Flight Distance"),
-             m("Average Service Rating")], sort=(m("Total Passengers"), "Descending"), size=9, label="segment table")
-    p.chart("clusteredBarChart", 930, 242, 650, 624, "Average rating by service attribute (this segment)",
-            category=c("DimServiceAttribute", "Service Attribute"), values=[m("Average Service Rating")],
-            sort=(m("Average Service Rating"), "Descending"),
-            objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
-                                  datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="segment ratings")
-
-    # ============================= Tooltip: TT - SHAP Feature =============================
-    p = ctx_pages["tooltip"]
-    P["tooltip"] = p
-    p.textbox(0, 0, 360, 330, [[(" ", 4, False, WHITE)]], bg=WHITE, border=BORDER, radius=8, label="tt bg")
-    p.card(8, 8, 344, 64, "Tooltip Feature", "FEATURE", color=NAVY, size=16)
-    p.card(8, 80, 112, 70, "Mean Abs SHAP", "MEAN |SHAP|", color=BLUE, size=16)
-    p.card(124, 80, 112, 70, "Feature Rank", "SHAP RANK", color=TEAL, size=16)
-    p.card(240, 80, 112, 70, "Feature Correlation (tooltip)", "CORRELATION", color=AMBER, size=16)
-    p.card(8, 158, 170, 62, "Feature Corr Method (tooltip)", "METHOD", color=NAVY, size=12)
-    p.card(182, 158, 170, 62, "Feature Avg Rating (tooltip)", "AVG SERVICE RATING", color=NAVY, size=16)
-    p.table(8, 226, 344, 98, "Gemini note", [m("Feature Gemini Note (tooltip)")], size=9, label="tt gemini")
     return P

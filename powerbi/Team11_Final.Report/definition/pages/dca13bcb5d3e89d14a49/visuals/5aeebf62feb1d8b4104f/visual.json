@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "8dab79bfb2e38767ffb2",
+  "name": "5aeebf62feb1d8b4104f",
   "position": {
-    "x": 20.0,
-    "y": 22.0,
-    "z": 5000,
-    "height": 40.0,
-    "width": 60.0,
-    "tabOrder": 5000
+    "x": 1252.0,
+    "y": 732.0,
+    "z": 24000,
+    "height": 50.0,
+    "width": 316.0,
+    "tabOrder": 24000
   },
   "visual": {
     "visualType": "actionButton",
@@ -41,7 +41,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'←'"
+                  "Value": "'EDA & passenger analysis'"
                 }
               }
             },
@@ -59,7 +59,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "16.0D"
+                  "Value": "10.0D"
                 }
               }
             },
@@ -105,7 +105,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24508F'"
+                      "Value": "'#2389ED'"
                     }
                   }
                 }
@@ -137,7 +137,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#2389ED'"
+                      "Value": "'#173D75'"
                     }
                   }
                 }
@@ -171,7 +171,7 @@
                 "color": {
                   "expr": {
                     "Literal": {
-                      "Value": "'#24508F'"
+                      "Value": "'#2389ED'"
                     }
                   }
                 }
@@ -263,7 +263,14 @@
             "type": {
               "expr": {
                 "Literal": {
-                  "Value": "'Back'"
+                  "Value": "'PageNavigation'"
+                }
+              }
+            },
+            "navigationSection": {
+              "expr": {
+                "Literal": {
+                  "Value": "'eb0d22190bdd73b39e45'"
                 }
               }
             }
@@ -273,5 +280,5 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "cec00865bd733ee20bdb"
+  "parentGroupName": "263ca4baa76fa975ed43"
 }

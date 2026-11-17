@@ -112,23 +112,10 @@ def build_report():
     reg = {}
     for k in PG.PAGES_ORDER:
         reg[k] = Page(k, PG.TITLES[k])
-    seg = Page("segment", "Passenger Segment Detail", hidden=True)
-    seg.filters = [
-        {"name": hid("seg", "class"), "field": Col("DimTravel", "Class"), "type": "Categorical", "howCreated": "Drillthrough"},
-        {"name": hid("seg", "tier"), "field": Col("DimSatisfaction", "Satisfaction Tier"), "type": "Categorical", "howCreated": "Drillthrough"}]
-    seg.binding = {"name": hid("seg", "binding"), "type": "Drillthrough", "parameters": [
-        {"name": hid("seg", "p1"), "boundFilter": seg.filters[0]["name"], "fieldExpr": Col("DimTravel", "Class")},
-        {"name": hid("seg", "p2"), "boundFilter": seg.filters[1]["name"], "fieldExpr": Col("DimSatisfaction", "Satisfaction Tier")}]}
-    tt = Page("tooltip", "TT - SHAP Feature", w=360, h=330, hidden=True, kind="tooltip", bg=WHITE)
-    tt.filters = [{"name": hid("tt", "feature"), "field": Col("ShapImportance", "Feature"), "type": "Categorical", "howCreated": "Drillthrough"}]
-    tt.binding = {"name": hid("tt", "binding"), "type": "Tooltip", "parameters": [
-        {"name": hid("tt", "p1"), "boundFilter": tt.filters[0]["name"], "fieldExpr": Col("ShapImportance", "Feature")}]}
-    reg["segment"], reg["tooltip"] = seg, tt
-
     bm_ids = {n: hid("bookmark", n) for n in ("bm_hook", "bm_build", "bm_insight", "bm_conclusion")}
     built = PG.build_pages(ROOT, reg, F, bm_ids)
 
-    order = [built[k].id for k in PG.PAGES_ORDER] + [built["segment"].id, built["tooltip"].id]
+    order = [built[k].id for k in PG.PAGES_ORDER] 
     write_json(os.path.join(defn, "pages", "pages.json"), {"$schema": S_PAGES, "pageOrder": order, "activePageName": built["overview"].id})
     for key, pg in built.items():
         base = os.path.join(defn, "pages", pg.id)
