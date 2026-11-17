@@ -2,3 +2,7 @@
 .env.*
 !.env.example
 __pycache__/
+
+# Power BI local caches
+**/.pbi/localSettings.json
+**/.pbi/cache.abf

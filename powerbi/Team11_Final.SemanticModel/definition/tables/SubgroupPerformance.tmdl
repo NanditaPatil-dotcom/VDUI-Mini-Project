@@ -1,0 +1,100 @@
+table SubgroupPerformance
+	description: Per-model subgroup metrics on the held-out test set. Positive class = Satisfied.
+
+	column Model
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Model
+
+	column Attribute
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Attribute
+
+	column Group
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Group
+
+	column 'Group Label'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Group Label
+
+	column Passengers
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Passengers
+
+	column Accuracy
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Accuracy
+
+	column Precision
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Precision
+
+	column Recall
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Recall
+
+	column F1
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: F1
+
+	column 'Macro F1'
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Macro F1
+
+	column FPR
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: FPR
+
+	column TN
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: TN
+
+	column FP
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: FP
+
+	column FN
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: FN
+
+	column TP
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: TP
+
+	partition SubgroupPerformance = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(RepoRoot & "models\subgroup_model_comparison.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"Model", type text}, {"Attribute", type text}, {"Group", type text}, {"Sample Count", Int64.Type}, {"Accuracy", type number}, {"Precision", type number}, {"Recall", type number}, {"F1", type number}, {"Macro F1", type number}, {"FPR", type number}, {"TN", Int64.Type}, {"FP", Int64.Type}, {"FN", Int64.Type}, {"TP", Int64.Type}}, "en-US"),
+					Renamed = Table.RenameColumns(Typed, {{"Sample Count", "Passengers"}}),
+					Final = Table.AddColumn(Renamed, "Group Label", each [Attribute] & ": " & [Group], type text)
+				in
+					Final

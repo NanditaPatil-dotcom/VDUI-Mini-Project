@@ -1,0 +1,28 @@
+table Insights
+	description: Helper table: each row renders one data-driven sentence through [Insight Text].
+
+	column Order
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Order
+
+	column Topic
+		dataType: string
+		summarizeBy: none
+		sortByColumn: Order
+		sourceColumn: Topic
+
+	column Page
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Page
+
+	partition Insights = m
+		mode: import
+		source =
+				let
+					Source = #table(type table [Order = Int64.Type, Topic = text, Page = text], {{1, "Headline", "Overview"}, {2, "Who is happiest?", "Overview"}, {3, "Delay effect", "Overview"}, {4, "Service gap", "Overview"}, {5, "Best model", "Conclusion"}, {6, "Stability", "Conclusion"}, {7, "Fairness check", "Conclusion"}, {8, "Explainability", "Conclusion"}, {9, "Where to act", "Conclusion"}})
+				in
+					Source

@@ -1,0 +1,53 @@
+table CorrelationRanking
+	description: Correlation / association of each feature with satisfaction (source: correlation/correlation_ranking.csv). Methods are NOT directly comparable.
+
+	column Feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Feature
+
+	column Method
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Method
+
+	column 'Effect Value'
+		dataType: double
+		formatString: 0.000
+		summarizeBy: none
+		sourceColumn: Effect Value
+
+	column 'Absolute Effect'
+		dataType: double
+		formatString: 0.000
+		summarizeBy: none
+		sourceColumn: Absolute Effect
+
+	column 'P-value'
+		dataType: double
+		formatString: 0.0E+00
+		summarizeBy: none
+		sourceColumn: P-value
+
+	column 'Sample Count'
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Sample Count
+
+	column 'Adjusted P-value'
+		dataType: double
+		formatString: 0.0E+00
+		summarizeBy: none
+		sourceColumn: Adjusted P-value
+
+	partition CorrelationRanking = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(RepoRoot & "correlation\correlation_ranking.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"Feature", type text}, {"Method", type text}, {"EffectValue", type number}, {"AbsoluteEffect", type number}, {"PValue", type number}, {"SampleCount", Int64.Type}, {"AdjustedPValue", type number}}, "en-US"),
+					Final = Table.RenameColumns(Typed, {{"EffectValue", "Effect Value"}, {"AbsoluteEffect", "Absolute Effect"}, {"PValue", "P-value"}, {"SampleCount", "Sample Count"}, {"AdjustedPValue", "Adjusted P-value"}})
+				in
+					Final

@@ -1,0 +1,23 @@
+table MetricSelector
+	description: Disconnected slicer table that drives [Selected Model Metric].
+
+	column Metric
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Metric Order'
+		sourceColumn: Metric
+
+	column 'Metric Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Metric Order
+
+	partition MetricSelector = m
+		mode: import
+		source =
+				let
+					Source = #table(type table [Metric = text, #"Metric Order" = Int64.Type], {{"Accuracy", 1}, {"Macro Precision", 2}, {"Macro Recall", 3}, {"Macro F1", 4}, {"ROC-AUC", 5}})
+				in
+					Source

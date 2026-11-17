@@ -1,0 +1,209 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "a8d6664b39d87d4fc02b",
+  "position": {
+    "x": 930.0,
+    "y": 242.0,
+    "z": 20000,
+    "height": 420.0,
+    "width": 650.0,
+    "tabOrder": 20000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "RECOMMENDATIONS",
+                    "textStyle": {
+                      "fontSize": "12pt",
+                      "color": "#173D75",
+                      "fontFamily": "Segoe UI",
+                      "fontWeight": "bold"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "1  Fix the weakest touch-points first: In-flight Wifi Service (2.81/5), Ease of Online Booking (2.88/5) and Gate Location (2.98/5) are the lowest-rated services.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2  Protect Online Boarding - it is the strongest correlate of satisfaction and the top-ranked driver in the model.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3  Target Economy and personal-travel passengers (19% and 10% satisfied) with service recovery rather than blanket spend.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "4  Manage delays: passengers arriving >15 min late are 36% satisfied vs 46% on time.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "5  Recognise strong teams (baggage handling, in-flight service) - they out-score the rest of the journey.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#172334",
+                      "fontFamily": "Segoe UI"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Evidence = associations and SHAP attributions; they guide where to investigate, they do not prove cause.",
+                    "textStyle": {
+                      "fontSize": "8.5pt",
+                      "color": "#5B6B82",
+                      "fontFamily": "Segoe UI",
+                      "italic": true
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#D5DFEC'"
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "10.0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

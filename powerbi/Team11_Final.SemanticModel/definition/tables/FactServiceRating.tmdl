@@ -1,0 +1,74 @@
+table FactServiceRating
+	description: Grain: one row per passenger x service attribute (14 attributes). Rating 0 = not applicable.
+
+	column 'Passenger ID'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Passenger ID
+
+	column TravelKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: TravelKey
+
+	column ProfileKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: ProfileKey
+
+	column SatisfactionKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: SatisfactionKey
+
+	column 'Service Attribute'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Service Attribute
+
+	column Rating
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Rating
+
+	column 'Rating Category' =
+			SWITCH(TRUE(),
+				ISBLANK(FactServiceRating[Rating]), BLANK(),
+				FactServiceRating[Rating] = 0, "Not Rated",
+				FactServiceRating[Rating] <= 2, "Poor",
+				FactServiceRating[Rating] = 3, "Average",
+				FactServiceRating[Rating] >= 4, "Good")
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Rating Category Sort'
+
+	column 'Rating Category Sort' =
+			SWITCH(TRUE(),
+				FactServiceRating[Rating] = 0, 4,
+				FactServiceRating[Rating] <= 2, 1,
+				FactServiceRating[Rating] = 3, 2,
+				3)
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+
+	partition FactServiceRating = m
+		mode: import
+		source =
+				let
+					Source = FactPassenger,
+					Kept = Table.SelectColumns(Source, {"Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey", "Departure and Arrival Time Convenience", "Ease of Online Booking", "Check-in Service", "Online Boarding", "Gate Location", "On-board Service", "Seat Comfort", "Leg Room Service", "Cleanliness", "Food and Drink", "In-flight Service", "In-flight Wifi Service", "In-flight Entertainment", "Baggage Handling"}),
+					Unpivoted = Table.UnpivotOtherColumns(Kept, {"Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey"}, "Service Attribute", "Rating"),
+					Typed = Table.TransformColumnTypes(Unpivoted, {{"Service Attribute", type text}, {"Rating", Int64.Type}})
+				in
+					Typed

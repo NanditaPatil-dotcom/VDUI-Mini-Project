@@ -1,0 +1,30 @@
+Measure,Expected value
+Total Passengers,"129,487"
+Satisfied Passengers,"56,262"
+Satisfaction Rate,43.4%
+Dissatisfaction Rate,56.6%
+High Tier Rate,33.0%
+Low Tier Rate,34.3%
+Returning Share,81.7%
+Avg Departure Delay,14.6
+Avg Arrival Delay,15.1
+Avg Flight Distance,"1,190"
+Average Service Rating (zeros excluded),3.28
+Good Rating Share,48.6%
+Poor Rating Share,29.5%
+Not Rated Share,1.1%
+Lowest Rated Attribute,In-flight Wifi Service
+Lowest Attribute Rating,2.81
+Highest Rated Attribute,In-flight Service
+Highest Attribute Rating,3.64
+Delayed Share (>15 min arrival),22.8%
+Satisfaction Rate - Delayed,35.8%
+Satisfaction Rate - On Time,45.7%
+Best Model (Macro F1),XGBoost
+Best Macro F1,96.4%
+Best ROC-AUC,0.995
+Best Macro Recall,96.2%
+Best Accuracy,96.4%
+Satisfaction Rate - Business,69.4%
+Satisfaction Rate - Economy,18.8%
+Satisfaction Rate - Economy Plus,24.6%

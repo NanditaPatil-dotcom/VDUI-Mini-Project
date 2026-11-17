@@ -1,0 +1,45 @@
+table DimPassengerProfile
+	description: One row per Gender x Customer Type x Age Band combination.
+
+	column ProfileKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: ProfileKey
+
+	column Gender
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Gender
+
+	column 'Customer Type'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Customer Type
+
+	column 'Age Band'
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Age Band Sort'
+		sourceColumn: Age Band
+
+	column 'Age Band Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Age Band Sort
+
+	partition DimPassengerProfile = m
+		mode: import
+		source =
+				let
+					Source = stgPassenger,
+					Kept = Table.SelectColumns(Source, {"Gender", "Customer Type", "Age Band", "Age Band Sort"}),
+					Distinct = Table.Distinct(Kept),
+					Sorted = Table.Sort(Distinct, {{"Age Band Sort", Order.Ascending}, {"Gender", Order.Ascending}, {"Customer Type", Order.Ascending}}),
+					Indexed = Table.AddIndexColumn(Sorted, "ProfileKey", 1, 1, Int64.Type),
+					Result = Table.ReorderColumns(Indexed, {"ProfileKey", "Gender", "Customer Type", "Age Band", "Age Band Sort"})
+				in
+					Result

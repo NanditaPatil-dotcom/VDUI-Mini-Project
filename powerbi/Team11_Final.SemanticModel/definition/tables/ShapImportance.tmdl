@@ -1,0 +1,47 @@
+table ShapImportance
+	description: Global mean |SHAP| for the selected model (source: explainability/shap_importance.csv).
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Rank
+
+	column Feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Feature
+
+	column 'Mean Absolute SHAP'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Mean Absolute SHAP
+
+	column 'Mean SHAP'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Mean SHAP
+
+	column 'Explained Output'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Explained Output
+
+	column 'Sample Size'
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Sample Size
+
+	partition ShapImportance = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(RepoRoot & "explainability\shap_importance.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"Rank", Int64.Type}, {"Feature", type text}, {"MeanAbsoluteSHAP", type number}, {"MeanSHAP", type number}, {"ExplainedOutput", type text}, {"SampleSize", Int64.Type}}, "en-US"),
+					Final = Table.RenameColumns(Typed, {{"MeanAbsoluteSHAP", "Mean Absolute SHAP"}, {"MeanSHAP", "Mean SHAP"}, {"ExplainedOutput", "Explained Output"}, {"SampleSize", "Sample Size"}})
+				in
+					Final

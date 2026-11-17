@@ -1,0 +1,73 @@
+table ShapLocal
+	description: Local SHAP contributions for the explained passengers.
+
+	column 'Passenger Index'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Passenger Index
+
+	column 'Actual Class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Actual Class
+
+	column 'Predicted Class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Predicted Class
+
+	column 'Predicted Probability'
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Predicted Probability
+
+	column 'Probability Satisfied'
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: Probability Satisfied
+
+	column 'Correct Prediction'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Correct Prediction
+
+	column Feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Feature
+
+	column 'Feature Value'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Feature Value
+
+	column 'SHAP Value'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: SHAP Value
+
+	column Direction
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Direction
+
+	column 'Contribution Rank'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Contribution Rank
+
+	partition ShapLocal = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(RepoRoot & "explainability\shap_local_explanations.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"row_index", Int64.Type}, {"actual_class", type text}, {"predicted_class", type text}, {"predicted_class_probability", type number}, {"probability_satisfied", type number}, {"correct_prediction", type text}, {"feature", type text}, {"feature_value", type text}, {"shap_value", type number}, {"direction", type text}, {"rank_by_absolute_contribution", Int64.Type}}, "en-US"),
+					Final = Table.RenameColumns(Typed, {{"row_index", "Passenger Index"}, {"actual_class", "Actual Class"}, {"predicted_class", "Predicted Class"}, {"predicted_class_probability", "Predicted Probability"}, {"probability_satisfied", "Probability Satisfied"}, {"correct_prediction", "Correct Prediction"}, {"feature", "Feature"}, {"feature_value", "Feature Value"}, {"shap_value", "SHAP Value"}, {"direction", "Direction"}, {"rank_by_absolute_contribution", "Contribution Rank"}})
+				in
+					Final

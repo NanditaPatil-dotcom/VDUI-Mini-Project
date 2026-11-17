@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerGroup/1.0.0/schema.json",
+  "name": "a2a6f6991152b1ffceb7",
+  "displayName": "KPI strip",
+  "position": {
+    "x": 20.0,
+    "y": 134.0,
+    "z": 13000,
+    "height": 96.0,
+    "width": 1560.0,
+    "tabOrder": 13000
+  },
+  "visualGroup": {
+    "displayName": "KPI strip",
+    "groupMode": "ScaleMode"
+  }
+}

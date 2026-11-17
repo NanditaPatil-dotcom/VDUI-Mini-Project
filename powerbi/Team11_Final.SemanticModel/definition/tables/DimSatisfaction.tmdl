@@ -1,0 +1,40 @@
+table DimSatisfaction
+	description: Original binary satisfaction x derived Low/Average/High tier.
+
+	column SatisfactionKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: SatisfactionKey
+
+	column Satisfaction
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Satisfaction
+
+	column 'Satisfaction Tier'
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Tier Sort'
+		sourceColumn: Satisfaction Tier
+
+	column 'Tier Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Tier Sort
+
+	partition DimSatisfaction = m
+		mode: import
+		source =
+				let
+					Source = stgPassenger,
+					Kept = Table.SelectColumns(Source, {"Satisfaction", "Satisfaction Tier", "Tier Sort"}),
+					Distinct = Table.Distinct(Kept),
+					Sorted = Table.Sort(Distinct, {{"Satisfaction", Order.Ascending}, {"Tier Sort", Order.Ascending}}),
+					Indexed = Table.AddIndexColumn(Sorted, "SatisfactionKey", 1, 1, Int64.Type),
+					Result = Table.ReorderColumns(Indexed, {"SatisfactionKey", "Satisfaction", "Satisfaction Tier", "Tier Sort"})
+				in
+					Result

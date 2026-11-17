@@ -1,0 +1,517 @@
+table Measures
+	description: Home for every DAX measure in the model.
+
+	column Placeholder
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Placeholder
+
+	measure 'Total Passengers' = DISTINCTCOUNT(FactPassenger[Passenger ID])
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+		description: One row per passenger record.
+
+	measure 'Satisfied Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction] = "Satisfied")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Neutral or Dissatisfied Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction] = "Neutral or Dissatisfied")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Satisfaction Rate' = DIVIDE([Satisfied Passengers], [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Dissatisfaction Rate' = DIVIDE([Neutral or Dissatisfied Passengers], [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'High Tier Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "High")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Average Tier Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "Average")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Low Tier Passengers' = CALCULATE([Total Passengers], FactPassenger[Satisfaction Tier] = "Low")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'High Tier Rate' = DIVIDE([High Tier Passengers], [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Low Tier Rate' = DIVIDE([Low Tier Passengers], [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Returning Passengers' = CALCULATE([Total Passengers], DimPassengerProfile[Customer Type] = "Returning")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'First-time Passengers' = CALCULATE([Total Passengers], DimPassengerProfile[Customer Type] = "First-time")
+		formatString: #,0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Returning Share' = DIVIDE([Returning Passengers], [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Business Travel Share' = DIVIDE(CALCULATE([Total Passengers], DimTravel[Type of Travel] = "Business"), [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Share of Passengers' = DIVIDE([Total Passengers], CALCULATE([Total Passengers], ALLSELECTED()), 0)
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+		description: Share of the passengers currently selected by slicers.
+
+	measure 'Satisfaction Mix %' = DIVIDE([Total Passengers], CALCULATE([Total Passengers], REMOVEFILTERS(DimSatisfaction)), 0)
+		formatString: 0%
+		displayFolder: 1 Passenger KPIs
+		description: Share of a category's passengers in each satisfaction bucket - bars always add to 100%.
+
+	measure 'Overall Satisfaction Rate' = CALCULATE([Satisfaction Rate], REMOVEFILTERS(DimTravel), REMOVEFILTERS(DimPassengerProfile), REMOVEFILTERS(DimSatisfaction))
+		formatString: 0.0%
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Satisfaction Gap vs Overall (pts)' = ([Satisfaction Rate] - [Overall Satisfaction Rate]) * 100
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 1 Passenger KPIs
+
+	measure 'Avg Departure Delay' = AVERAGE(FactPassenger[Departure Delay in Minutes])
+		formatString: 0.0
+		displayFolder: 2 Delay & Distance
+
+	measure 'Avg Arrival Delay' = AVERAGE(FactPassenger[Arrival Delay in Minutes])
+		formatString: 0.0
+		displayFolder: 2 Delay & Distance
+
+	measure 'Avg Flight Distance' = AVERAGE(FactPassenger[Flight Distance])
+		formatString: #,0
+		displayFolder: 2 Delay & Distance
+
+	measure 'Avg Passenger Age' = AVERAGE(FactPassenger[Age])
+		formatString: 0.0
+		displayFolder: 2 Delay & Distance
+
+	measure 'Delayed Share' = DIVIDE(CALCULATE([Total Passengers], FactPassenger[Arrival Delay in Minutes] > 15), [Total Passengers], 0)
+		formatString: 0.0%
+		displayFolder: 2 Delay & Distance
+
+	measure 'Satisfaction Rate - On Time' = CALCULATE([Satisfaction Rate], FactPassenger[Arrival Delay in Minutes] <= 15)
+		formatString: 0.0%
+		displayFolder: 2 Delay & Distance
+
+	measure 'Satisfaction Rate - Delayed' = CALCULATE([Satisfaction Rate], FactPassenger[Arrival Delay in Minutes] > 15)
+		formatString: 0.0%
+		displayFolder: 2 Delay & Distance
+
+	measure 'Delay Satisfaction Penalty (pts)' = ([Satisfaction Rate - Delayed] - [Satisfaction Rate - On Time]) * 100
+		formatString: +0.0;-0.0;0.0
+		displayFolder: 2 Delay & Distance
+
+	measure 'Average Service Rating' = CALCULATE(AVERAGE(FactServiceRating[Rating]), FactServiceRating[Rating] > 0)
+		formatString: 0.00
+		displayFolder: 3 Service Ratings
+		description: Zero = not applicable, therefore excluded.
+
+	measure 'Rating Count' = COUNTROWS(FactServiceRating)
+		formatString: #,0
+		displayFolder: 3 Service Ratings
+
+	measure 'Rated Count' = CALCULATE(COUNTROWS(FactServiceRating), FactServiceRating[Rating] > 0)
+		formatString: #,0
+		displayFolder: 3 Service Ratings
+
+	measure 'Good Rating Share' = DIVIDE(CALCULATE(COUNTROWS(FactServiceRating), FactServiceRating[Rating] >= 4), [Rated Count], 0)
+		formatString: 0.0%
+		displayFolder: 3 Service Ratings
+
+	measure 'Poor Rating Share' = DIVIDE(CALCULATE(COUNTROWS(FactServiceRating), FactServiceRating[Rating] >= 1, FactServiceRating[Rating] <= 2), [Rated Count], 0)
+		formatString: 0.0%
+		displayFolder: 3 Service Ratings
+
+	measure 'Not Rated Share' = DIVIDE(CALCULATE(COUNTROWS(FactServiceRating), FactServiceRating[Rating] = 0), [Rating Count], 0)
+		formatString: 0.0%
+		displayFolder: 3 Service Ratings
+
+	measure 'Rating Share' = DIVIDE(COUNTROWS(FactServiceRating), CALCULATE(COUNTROWS(FactServiceRating), REMOVEFILTERS(FactServiceRating[Rating]), REMOVEFILTERS(FactServiceRating[Rating Category])), 0)
+		formatString: 0%
+		displayFolder: 3 Service Ratings
+		description: Share of an attribute's responses that fall in the rating / category on the axis.
+
+	measure 'Avg Rating - Satisfied' = CALCULATE([Average Service Rating], DimSatisfaction[Satisfaction] = "Satisfied")
+		formatString: 0.00
+		displayFolder: 3 Service Ratings
+
+	measure 'Avg Rating - Neutral or Dissatisfied' = CALCULATE([Average Service Rating], DimSatisfaction[Satisfaction] = "Neutral or Dissatisfied")
+		formatString: 0.00
+		displayFolder: 3 Service Ratings
+
+	measure 'Rating Gap (Satisfied - Not)' = [Avg Rating - Satisfied] - [Avg Rating - Neutral or Dissatisfied]
+		formatString: +0.00;-0.00;0.00
+		displayFolder: 3 Service Ratings
+
+	measure 'Lowest Rated Attribute' =
+			VAR t = ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating])
+			VAR best = MINX(t, [@v])
+			VAR who = MINX(FILTER(t, [@v] = best), DimServiceAttribute[Service Attribute])
+			RETURN who
+		displayFolder: 3 Service Ratings
+
+	measure 'Lowest Attribute Rating' = MINX(ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating]), [@v])
+		formatString: 0.00
+		displayFolder: 3 Service Ratings
+
+	measure 'Highest Rated Attribute' =
+			VAR t = ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating])
+			VAR best = MAXX(t, [@v])
+			VAR who = MINX(FILTER(t, [@v] = best), DimServiceAttribute[Service Attribute])
+			RETURN who
+		displayFolder: 3 Service Ratings
+
+	measure 'Highest Attribute Rating' = MAXX(ADDCOLUMNS(VALUES(DimServiceAttribute[Service Attribute]), "@v", [Average Service Rating]), [@v])
+		formatString: 0.00
+		displayFolder: 3 Service Ratings
+
+	measure 'Model Accuracy' = AVERAGE(ModelComparison[Accuracy])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Model Macro Precision' = AVERAGE(ModelComparison[Macro Precision])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Model Macro Recall' = AVERAGE(ModelComparison[Macro Recall])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Model Macro F1' = AVERAGE(ModelComparison[Macro F1])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Model ROC-AUC' = AVERAGE(ModelComparison[ROC-AUC])
+		formatString: 0.000
+		displayFolder: 4 Model Performance
+
+	measure 'Selected Model Metric' =
+			SWITCH(SELECTEDVALUE(MetricSelector[Metric], "Macro F1"),
+				"Accuracy", [Model Accuracy],
+				"Macro Precision", [Model Macro Precision],
+				"Macro Recall", [Model Macro Recall],
+				"Macro F1", [Model Macro F1],
+				"ROC-AUC", [Model ROC-AUC])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+		description: Driven by the MetricSelector slicer.
+
+	measure 'Best Macro F1' = MAXX(ALL(ModelComparison), ModelComparison[Macro F1])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Best Model' =
+			VAR b = MAXX(ALL(ModelComparison), ModelComparison[Macro F1])
+			RETURN MINX(FILTER(ALL(ModelComparison), ModelComparison[Macro F1] = b), ModelComparison[Model])
+		displayFolder: 4 Model Performance
+
+	measure 'Best Accuracy' = MAXX(ALL(ModelComparison), ModelComparison[Accuracy])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Best Macro Recall' = MAXX(ALL(ModelComparison), ModelComparison[Macro Recall])
+		formatString: 0.0%
+		displayFolder: 4 Model Performance
+
+	measure 'Best ROC-AUC' = MAXX(ALL(ModelComparison), ModelComparison[ROC-AUC])
+		formatString: 0.000
+		displayFolder: 4 Model Performance
+
+	measure 'Fold Macro F1' = AVERAGE(CVScores[Macro F1])
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'CV Mean Macro F1' = AVERAGE(CVScores[Macro F1])
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'CV Std Dev' = AVERAGE(ModelComparison[CV Macro F1 Std])
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+		description: Sample std-dev (ddof=1) of the 5 fold Macro F1 scores, from Nandika's evaluation.
+
+	measure 'CV Lower Band' = [CV Mean Macro F1] - [CV Std Dev]
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'CV Upper Band' = [CV Mean Macro F1] + [CV Std Dev]
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'CV Min Macro F1' = MIN(CVScores[Macro F1])
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'CV Max Macro F1' = MAX(CVScores[Macro F1])
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'Best Model CV Std' =
+			VAR bm = [Best Model]
+			RETURN CALCULATE(AVERAGE(ModelComparison[CV Macro F1 Std]), ModelComparison[Model] = bm, REMOVEFILTERS(DimModel))
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'Best Model CV Mean' =
+			VAR bm = [Best Model]
+			RETURN CALCULATE(AVERAGE(ModelComparison[CV Macro F1 Mean]), ModelComparison[Model] = bm, REMOVEFILTERS(DimModel))
+		formatString: 0.0000
+		displayFolder: 4 Model Performance
+
+	measure 'Subgroup Passengers' = MAX(SubgroupPerformance[Passengers])
+		formatString: #,0
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Subgroup Recall' = DIVIDE(SUM(SubgroupPerformance[TP]), SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[FN]), 0)
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+		description: Recall of the Satisfied class.
+
+	measure 'Subgroup Precision' = DIVIDE(SUM(SubgroupPerformance[TP]), SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[FP]), 0)
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Subgroup FPR' = DIVIDE(SUM(SubgroupPerformance[FP]), SUM(SubgroupPerformance[FP]) + SUM(SubgroupPerformance[TN]), 0)
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Subgroup Accuracy' = DIVIDE(SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[TN]), SUM(SubgroupPerformance[TP]) + SUM(SubgroupPerformance[TN]) + SUM(SubgroupPerformance[FP]) + SUM(SubgroupPerformance[FN]), 0)
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Subgroup Macro F1' = AVERAGE(SubgroupPerformance[Macro F1])
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Recall Gap (pts)' =
+			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall])
+			RETURN (MAXX(t, [@v]) - MINX(t, [@v])) * 100
+		formatString: 0.0
+		displayFolder: 5 Subgroup Analysis
+		description: Max minus min recall across the groups in context.
+
+	measure 'FPR Gap (pts)' =
+			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup FPR])
+			RETURN (MAXX(t, [@v]) - MINX(t, [@v])) * 100
+		formatString: 0.0
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Lowest Recall Group' =
+			VAR t = ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall])
+			VAR best = MINX(t, [@v])
+			VAR who = MINX(FILTER(t, [@v] = best), SubgroupPerformance[Group Label])
+			RETURN who
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Lowest Group Recall' = MINX(ADDCOLUMNS(VALUES(SubgroupPerformance[Group Label]), "@v", [Subgroup Recall]), [@v])
+		formatString: 0.0%
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Disparity Flag' = IF([Recall Gap (pts)] > 10, "Material recall gap (>10 pts) - investigate", "Recall gap within 10 pts")
+		displayFolder: 5 Subgroup Analysis
+
+	measure 'Mean Abs SHAP' = SUM(ShapImportance[Mean Absolute SHAP])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Top 5 SHAP' = IF(MAX(ShapImportance[Rank]) <= 5, [Mean Abs SHAP])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+		description: Blank for features ranked below 5 so charts show only the top five.
+
+	measure 'Top 10 SHAP' = IF(MAX(ShapImportance[Rank]) <= 10, [Mean Abs SHAP])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Tooltip Feature' = SELECTEDVALUE(ShapImportance[Feature], "All features")
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Feature Rank' = MAX(ShapImportance[Rank])
+		formatString: 0
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'SHAP Share' = DIVIDE([Mean Abs SHAP], CALCULATE([Mean Abs SHAP], REMOVEFILTERS(ShapImportance)), 0)
+		formatString: 0.0%
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Top Feature (SHAP)' = MINX(FILTER(ALL(ShapImportance), ShapImportance[Rank] = 1), ShapImportance[Feature])
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Top 5 Share of SHAP' = DIVIDE(CALCULATE([Mean Abs SHAP], FILTER(ALL(ShapImportance), ShapImportance[Rank] <= 5)), CALCULATE([Mean Abs SHAP], REMOVEFILTERS(ShapImportance)), 0)
+		formatString: 0.0%
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Top 3 SHAP Features' = CONCATENATEX(TOPN(3, ALL(ShapImportance), ShapImportance[Rank], ASC), ShapImportance[Feature], ", ", ShapImportance[Rank], ASC)
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Effect Value' = AVERAGE(CorrelationRanking[Effect Value])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Absolute Effect' = AVERAGE(CorrelationRanking[Absolute Effect])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Strongest Associated Feature' =
+			VAR t = ADDCOLUMNS(VALUES(CorrelationRanking[Feature]), "@v", [Absolute Effect])
+			VAR best = MAXX(t, [@v])
+			VAR who = MINX(FILTER(t, [@v] = best), CorrelationRanking[Feature])
+			RETURN who
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Strongest Association Value' = MAXX(ADDCOLUMNS(VALUES(CorrelationRanking[Feature]), "@v", [Absolute Effect]), [@v])
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Significant Features' = CALCULATE(DISTINCTCOUNT(CorrelationRanking[Feature]), CorrelationRanking[Adjusted P-value] < 0.05)
+		formatString: 0
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Feature Correlation (tooltip)' = CALCULATE(AVERAGE(CorrelationRanking[Effect Value]), TREATAS(VALUES(ShapImportance[Feature]), CorrelationRanking[Feature]))
+		formatString: 0.000
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Feature Corr Method (tooltip)' = CALCULATE(MAX(CorrelationRanking[Method]), TREATAS(VALUES(ShapImportance[Feature]), CorrelationRanking[Feature]))
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Feature Avg Rating (tooltip)' = CALCULATE([Average Service Rating], TREATAS(VALUES(ShapImportance[Feature]), DimServiceAttribute[Service Attribute]))
+		formatString: 0.00
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Feature Gemini Note (tooltip)' =
+			VAR f = SELECTEDVALUE(ShapImportance[Feature])
+			VAR note = CALCULATE(MAX(GeminiRecommendations[Recommendation]), FILTER(ALL(GeminiRecommendations), GeminiRecommendations[Evidence Feature] = f))
+			RETURN IF(ISBLANK(note), "No Gemini recommendation was generated for this feature in the explained passengers.", note)
+		displayFolder: 6 SHAP & Correlation
+
+	measure 'Selected Passenger' = SELECTEDVALUE(GeminiInsights[Passenger Label], "Select a passenger")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected Predicted Class' = SELECTEDVALUE(GeminiInsights[Predicted Class], "-")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected Actual Class' = SELECTEDVALUE(GeminiInsights[Actual Class], "-")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected P(Satisfied)' = SELECTEDVALUE(GeminiInsights[Probability Satisfied])
+		formatString: 0.0%
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected Prediction Confidence' = SELECTEDVALUE(GeminiInsights[Predicted Probability])
+		formatString: 0.0%
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Selected Prediction Correct' = SELECTEDVALUE(GeminiInsights[Correct Prediction], "-")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Gemini Explanation' = SELECTEDVALUE(GeminiInsights[Explanation], "Select one passenger to read the Gemini explanation.")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Gemini Uncertainty Note' = SELECTEDVALUE(GeminiInsights[Uncertainty Note], "")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'SHAP toward Satisfied' =
+			VAR v = SUM(ShapLocal[SHAP Value])
+			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v > 0, v)
+		formatString: +0.000;-0.000;0.000
+		displayFolder: 7 Passenger Explanation
+		description: Top-10 contributions only; positive values push the prediction toward Satisfied.
+
+	measure 'SHAP toward Neutral or Dissatisfied' =
+			VAR v = SUM(ShapLocal[SHAP Value])
+			RETURN IF(MAX(ShapLocal[Contribution Rank]) <= 10 && v < 0, v)
+		formatString: +0.000;-0.000;0.000
+		displayFolder: 7 Passenger Explanation
+		description: Top-10 contributions only; negative values push the prediction toward Neutral or Dissatisfied.
+
+	measure 'Net SHAP Value' = SUM(ShapLocal[SHAP Value])
+		formatString: +0.000;-0.000;0.000
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Top Contributor (Selected Passenger)' = IF(HASONEVALUE(GeminiInsights[Passenger Index]), CALCULATE(MAX(ShapLocal[Feature]), ShapLocal[Contribution Rank] = 1), "Select one passenger")
+		displayFolder: 7 Passenger Explanation
+
+	measure 'Insight - Headline' =
+			FORMAT([Satisfaction Rate], "0.0%") & " of the " & FORMAT([Total Passengers], "#,0") & " passengers in view are satisfied; "
+				& FORMAT([High Tier Rate], "0.0%") & " reach the High satisfaction tier and " & FORMAT([Low Tier Rate], "0.0%") & " fall in the Low tier."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Class Gap' =
+			VAR t = ADDCOLUMNS(VALUES(DimTravel[Class]), "@v", [Satisfaction Rate])
+			VAR hi = MAXX(t, [@v])
+			VAR lo = MINX(t, [@v])
+			VAR hiC = MINX(FILTER(t, [@v] = hi), DimTravel[Class])
+			VAR loC = MINX(FILTER(t, [@v] = lo), DimTravel[Class])
+			RETURN hiC & " passengers are most satisfied (" & FORMAT(hi, "0%") & ") versus " & loC & " (" & FORMAT(lo, "0%") & ") - a " & FORMAT((hi - lo) * 100, "0") & "-point gap by travel class."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Delay' = "Passengers arriving >15 min late are " & FORMAT([Satisfaction Rate - Delayed], "0%") & " satisfied vs " & FORMAT([Satisfaction Rate - On Time], "0%") & " when on time (" & FORMAT([Delay Satisfaction Penalty (pts)], "+0.0;-0.0") & " pts); " & FORMAT([Delayed Share], "0%") & " of passengers are delayed."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Service Gap' = "Lowest-rated service: " & [Lowest Rated Attribute] & " (" & FORMAT([Lowest Attribute Rating], "0.00") & " / 5); best: " & [Highest Rated Attribute] & " (" & FORMAT([Highest Attribute Rating], "0.00") & " / 5)."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Best Model' = [Best Model] & " leads on held-out Macro F1 (" & FORMAT([Best Macro F1], "0.0%") & ") with ROC-AUC " & FORMAT([Best ROC-AUC], "0.000") & " and accuracy " & FORMAT([Best Accuracy], "0.0%") & "."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Stability' = "5-fold CV Macro F1 for " & [Best Model] & " = " & FORMAT([Best Model CV Mean], "0.0000") & " +/- " & FORMAT([Best Model CV Std], "0.0000") & " (std-dev across folds) - " & IF([Best Model CV Std] < 0.005, "performance is stable across folds.", "fold-to-fold variation is notable; review before deployment.")
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Fairness' =
+			VAR bm = [Best Model]
+			VAR t = ADDCOLUMNS(ALL(SubgroupPerformance[Group Label]), "@v", CALCULATE([Subgroup Recall], SubgroupPerformance[Model] = bm))
+			VAR lo = MINX(t, [@v])
+			VAR hi = MAXX(t, [@v])
+			VAR loG = MINX(FILTER(t, [@v] = lo), SubgroupPerformance[Group Label])
+			RETURN "For " & bm & ", recall for the Satisfied class ranges from " & FORMAT(lo, "0.0%") & " (" & loG & ") to " & FORMAT(hi, "0.0%") & ". This is a performance disparity to investigate (group size, class balance, threshold), not proof of discrimination."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Explainability' = "Top global SHAP drivers: " & [Top 3 SHAP Features] & ". The top five features carry " & FORMAT([Top 5 Share of SHAP], "0%") & " of total mean |SHAP|."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight - Action' = "Prioritise " & [Lowest Rated Attribute] & " (lowest rating) and " & [Top Feature (SHAP)] & " (largest model driver); recognise teams behind " & [Highest Rated Attribute] & "."
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Insight Text' =
+			SWITCH(SELECTEDVALUE(Insights[Order]),
+				1, [Insight - Headline],
+				2, [Insight - Class Gap],
+				3, [Insight - Delay],
+				4, [Insight - Service Gap],
+				5, [Insight - Best Model],
+				6, [Insight - Stability],
+				7, [Insight - Fairness],
+				8, [Insight - Explainability],
+				9, [Insight - Action])
+		displayFolder: 8 Narrative (data-driven text)
+		description: Rendered by a table visual of Insights[Topic] x [Insight Text].
+
+	measure 'Title - Class Chart' = "Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Title - Delay Chart' = "Satisfaction by Arrival Delay  |  on-time " & FORMAT([Satisfaction Rate - On Time], "0%") & " vs delayed " & FORMAT([Satisfaction Rate - Delayed], "0%")
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Title - Model Chart' = "Model comparison  |  best: " & [Best Model]
+		displayFolder: 8 Narrative (data-driven text)
+
+	partition Measures = m
+		mode: import
+		source =
+				let
+					Source = #table(type table [Placeholder = text], {{""}})
+				in
+					Source

@@ -1,0 +1,47 @@
+relationship rel_FactPassenger_TravelKey_DimTravel
+	fromColumn: FactPassenger.TravelKey
+	toColumn: DimTravel.TravelKey
+
+relationship rel_FactPassenger_ProfileKey_DimPassengerProfile
+	fromColumn: FactPassenger.ProfileKey
+	toColumn: DimPassengerProfile.ProfileKey
+
+relationship rel_FactPassenger_SatisfactionKey_DimSatisfaction
+	fromColumn: FactPassenger.SatisfactionKey
+	toColumn: DimSatisfaction.SatisfactionKey
+
+relationship rel_FactServiceRating_TravelKey_DimTravel
+	fromColumn: FactServiceRating.TravelKey
+	toColumn: DimTravel.TravelKey
+
+relationship rel_FactServiceRating_ProfileKey_DimPassengerProfile
+	fromColumn: FactServiceRating.ProfileKey
+	toColumn: DimPassengerProfile.ProfileKey
+
+relationship rel_FactServiceRating_SatisfactionKey_DimSatisfaction
+	fromColumn: FactServiceRating.SatisfactionKey
+	toColumn: DimSatisfaction.SatisfactionKey
+
+relationship rel_FactServiceRating_Service_Attribute_DimServiceAttribute
+	fromColumn: FactServiceRating.'Service Attribute'
+	toColumn: DimServiceAttribute.'Service Attribute'
+
+relationship rel_ModelComparison_Model_DimModel
+	fromColumn: ModelComparison.Model
+	toColumn: DimModel.Model
+
+relationship rel_CVScores_Model_DimModel
+	fromColumn: CVScores.Model
+	toColumn: DimModel.Model
+
+relationship rel_SubgroupPerformance_Model_DimModel
+	fromColumn: SubgroupPerformance.Model
+	toColumn: DimModel.Model
+
+relationship rel_ShapLocal_Passenger_Index_GeminiInsights
+	fromColumn: ShapLocal.'Passenger Index'
+	toColumn: GeminiInsights.'Passenger Index'
+
+relationship rel_GeminiRecommendations_Passenger_Index_GeminiInsights
+	fromColumn: GeminiRecommendations.'Passenger Index'
+	toColumn: GeminiInsights.'Passenger Index'

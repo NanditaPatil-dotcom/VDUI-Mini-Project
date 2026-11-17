@@ -1,0 +1,17 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerGroup/1.0.0/schema.json",
+  "name": "692bd6d1a7e1c824b5f3",
+  "displayName": "Story chapters",
+  "position": {
+    "x": 1280.0,
+    "y": 554.0,
+    "z": 30000,
+    "height": 312.0,
+    "width": 300.0,
+    "tabOrder": 30000
+  },
+  "visualGroup": {
+    "displayName": "Story chapters",
+    "groupMode": "ScaleMode"
+  }
+}

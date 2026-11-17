@@ -1,0 +1,32 @@
+table DimTravel
+	description: One row per Class x Type of Travel combination.
+
+	column TravelKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: TravelKey
+
+	column Class
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Class
+
+	column 'Type of Travel'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Type of Travel
+
+	partition DimTravel = m
+		mode: import
+		source =
+				let
+					Source = stgPassenger,
+					Kept = Table.SelectColumns(Source, {"Class", "Type of Travel"}),
+					Distinct = Table.Distinct(Kept),
+					Sorted = Table.Sort(Distinct, {{"Class", Order.Ascending}, {"Type of Travel", Order.Ascending}}),
+					Indexed = Table.AddIndexColumn(Sorted, "TravelKey", 1, 1, Int64.Type),
+					Result = Table.ReorderColumns(Indexed, {"TravelKey", "Class", "Type of Travel"})
+				in
+					Result
