@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
-  "name": "f0382bb8cccf8263f8c2",
+  "name": "3bfa2f77e52832559456",
   "position": {
     "x": 1260.0,
     "y": 100.0,
@@ -23,11 +23,11 @@
                       "Entity": "GeminiInsights"
                     }
                   },
-                  "Property": "Passenger Label"
+                  "Property": "Predicted Class"
                 }
               },
-              "queryRef": "GeminiInsights.Passenger Label",
-              "nativeQueryRef": "Passenger Label",
+              "queryRef": "GeminiInsights.Predicted Class",
+              "nativeQueryRef": "Predicted Class",
               "active": true
             }
           ]
@@ -198,7 +198,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Explained passenger (pick one)'"
+                  "Value": "'Predicted class (pick one)'"
                 }
               }
             }

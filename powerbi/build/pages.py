@@ -237,7 +237,7 @@ def build_pages(root, ctx_pages, F, bm):
                                   datapoints=[{"properties": {"fill": colr(NAVY)}}]),
             subtitle="Positive pushes toward Satisfied, negative toward Neutral/Dissatisfied", label="individual shap")
     # right column
-    p.slicer(1260, 100, 320, 62, c("GeminiInsights", "Passenger Label"), title="Explained passenger (pick one)", single=True, label="passenger list")
+    p.slicer(1260, 100, 320, 62, c("GeminiInsights", "Predicted Class"), title="Predicted class (pick one)", single=True, label="class list")
     p.card(1260, 172, 320, 110, "Selected Prediction Confidence", "PREDICTED CLASS PROBABILITY", color=NAVY, size=24)
     p.card(1260, 292, 320, 110, "Selected Predicted Class", "PREDICTED CLASS", color=BLUE, size=14)
     p.card(1260, 412, 320, 110, "Selected Actual Class", "ACTUAL CLASS", color=TEAL, size=14)
