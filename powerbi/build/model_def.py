@@ -591,6 +591,8 @@ def measure_list():
         '    8, [Insight - Explainability],\n    9, [Insight - Action],\n    10, [Insight - Fix first],\n    11, [Insight - Protect top driver],\n    12, [Insight - Target segments],\n    13, [Insight - Manage delays],\n    14, [Insight - Recognise strengths],\n    15, [Insight - Travel-type gap],\n    16, [Insight - Customer-type gap],\n    17, [Insight - Gender gap])', None, f8, "Rendered by a table visual of Insights[Topic] x [Insight Text].")
     add("Title - Class Chart", '"Satisfaction by Travel Class  |  " & FORMAT([Total Passengers], "#,0") & " passengers in view"', None, f8)
     add("Title - Delay Chart", '"Satisfaction by Arrival Delay  |  on-time " & FORMAT([Satisfaction Rate - On Time], "0%") & " vs delayed " & FORMAT([Satisfaction Rate - Delayed], "0%")', None, f8)
+    add("Title - Individual", '"Individual Passenger \u2014 SHAP Feature Contributions  |  " & [Selected Passenger]', None, f8)
+    add("Title - Gemini", '"Gemini AI Explanation  |  " & [Selected Passenger]', None, f8)
     add("Title - Model Chart", '"Model comparison  |  best: " & [Best Model]', None, f8)
     return M
 

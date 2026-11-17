@@ -604,5 +604,11 @@
 	measure 'Title - Delay Chart' = "Satisfaction by Arrival Delay  |  on-time " & FORMAT([Satisfaction Rate - On Time], "0%") & " vs delayed " & FORMAT([Satisfaction Rate - Delayed], "0%")
 		displayFolder: 8 Narrative (data-driven text)
 
+	measure 'Title - Individual' = "Individual Passenger — SHAP Feature Contributions  |  " & [Selected Passenger]
+		displayFolder: 8 Narrative (data-driven text)
+
+	measure 'Title - Gemini' = "Gemini AI Explanation  |  " & [Selected Passenger]
+		displayFolder: 8 Narrative (data-driven text)
+
 	measure 'Title - Model Chart' = "Model comparison  |  best: " & [Best Model]
 		displayFolder: 8 Narrative (data-driven text)

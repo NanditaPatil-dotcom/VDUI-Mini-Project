@@ -227,11 +227,9 @@ def build_pages(root, ctx_pages, F, bm):
             sort=(m("Top 5 SHAP"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, label_pos="OutsideEnd", cat_size=9,
                                   datapoints=[{"properties": {"fill": colr(BLUE)}}]), label="top5 shap explain")
-    head(20, 406, 520, "Gemini AI Explanation")
-    p.table(20, 440, 520, 190, "", [m("Gemini Explanation")], size=10, label="gemini text")
+    p.table(20, 406, 520, 224, "", [m("Gemini Explanation")], size=10, label="gemini text", title_measure="Title - Gemini")
     # middle column
-    head(550, 100, 700, "Individual Passenger \u2014 SHAP Feature Contributions")
-    p.chart("clusteredBarChart", 550, 134, 700, 496, "", category=c("ShapLocal", "Feature"), values=[m("Net SHAP Value")],
+    p.chart("clusteredBarChart", 550, 100, 700, 530, "", title_measure="Title - Individual", category=c("ShapLocal", "Feature"), values=[m("Net SHAP Value")],
             sort=(m("Net SHAP Value"), "Descending"),
             objects=chart_objects(labels=True, val_axis=False, gridlines=False, cat_size=9, label_size=8,
                                   datapoints=[{"properties": {"fill": colr(NAVY)}}]),

@@ -344,7 +344,7 @@ class Page:
         return self.add("donutChart", x, y, w, h, q=query({"Category": [category], "Y": [value]}), objects=o,
                         container=vco(title=title), label=label or f"donut {title}")
 
-    def table(self, x, y, w, h, title, cols, sort=None, filters=None, objects_extra=None, label=None, size=10, subtitle=None):
+    def table(self, x, y, w, h, title, cols, sort=None, filters=None, objects_extra=None, label=None, size=10, subtitle=None, title_measure=None):
         o = {"columnHeaders": [{"properties": {"fontColor": colr(WHITE), "backColor": colr(NAVY), "fontSize": num(size),
                                                "bold": lit(True), "fontFamily": lit(FONT)}}],
              "values": [{"properties": {"fontSize": num(size), "fontColor": colr(TEXT), "backColorPrimary": colr(WHITE),
@@ -353,7 +353,7 @@ class Page:
         if objects_extra:
             o.update(objects_extra)
         return self.add("tableEx", x, y, w, h, q=query({"Values": cols}, sort), objects=o,
-                        container=vco(title=title, subtitle=subtitle), filters=filters, label=label or f"table {title}")
+                        container=vco(title=title, subtitle=subtitle, title_measure=title_measure), filters=filters, label=label or f"table {title}")
 
     def matrix(self, x, y, w, h, title, rows, columns, values, sort=None, label=None, size=10, objects_extra=None):
         o = {"columnHeaders": [{"properties": {"fontColor": colr(WHITE), "backColor": colr(NAVY), "fontSize": num(size),
