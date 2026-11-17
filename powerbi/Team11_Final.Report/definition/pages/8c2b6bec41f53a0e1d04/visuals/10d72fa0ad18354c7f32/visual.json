@@ -1,7 +1,6 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerGroup/1.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "10d72fa0ad18354c7f32",
-  "displayName": "KPI strip",
   "position": {
     "x": 20.0,
     "y": 134.0,

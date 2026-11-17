@@ -281,12 +281,12 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true
+    "drillFilterOtherVisuals": true,
+    "syncGroup": {
+      "groupName": "Gender",
+      "fieldChanges": true,
+      "filterChanges": true
+    }
   },
-  "parentGroupName": "bc6f84cc4788f698d74c",
-  "syncGroup": {
-    "groupName": "Gender",
-    "fieldChanges": true,
-    "filterChanges": true
-  }
+  "parentGroupName": "bc6f84cc4788f698d74c"
 }

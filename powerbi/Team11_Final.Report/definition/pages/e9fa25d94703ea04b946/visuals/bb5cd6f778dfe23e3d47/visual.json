@@ -1,7 +1,6 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerGroup/1.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "bb5cd6f778dfe23e3d47",
-  "displayName": "Filters",
   "position": {
     "x": 770.0,
     "y": 72.0,

@@ -226,7 +226,7 @@ class Page:
         if self.group:
             d["parentGroupName"] = self.group
         if sync:
-            d["syncGroup"] = {"groupName": sync, "fieldChanges": True, "filterChanges": True}
+            v["syncGroup"] = {"groupName": sync, "fieldChanges": True, "filterChanges": True}
         if filters:
             d["filterConfig"] = {"filters": filters}
         if extra:
@@ -237,7 +237,7 @@ class Page:
     def begin_group(self, label, x, y, w, h):
         gid = hid(self.key, "group", label)
         self.z += 1000
-        d = {"$schema": S_GROUP, "name": gid, "displayName": label,
+        d = {"$schema": S_VISUAL, "name": gid,
              "position": {"x": float(x), "y": float(y), "z": self.z, "height": float(h), "width": float(w), "tabOrder": self.z},
              "visualGroup": {"displayName": label, "groupMode": "ScaleMode"}}
         self.visuals.append((gid, d))

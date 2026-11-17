@@ -1,7 +1,6 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainerGroup/1.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
   "name": "31fe9640d605435d45ff",
-  "displayName": "Header",
   "position": {
     "x": 0.0,
     "y": 0.0,
