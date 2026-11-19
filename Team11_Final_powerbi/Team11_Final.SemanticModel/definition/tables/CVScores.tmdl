@@ -1,0 +1,29 @@
+/// Stratified 5-fold CV Macro F1 per model (source: models/cross_validation_scores.csv).
+table CVScores
+
+	column Model
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Model
+
+	column Fold
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Fold
+
+	column 'Macro F1'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Macro F1
+
+	partition CVScores = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(Root & "models\cross_validation_scores.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"Model", type text}, {"Fold", Int64.Type}, {"Macro F1", type number}}, "en-US")
+				in
+					Typed

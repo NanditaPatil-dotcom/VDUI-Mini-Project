@@ -1,0 +1,51 @@
+{
+  "name": "Airline Blue",
+  "dataColors": [
+    "#2389ED",
+    "#173D75",
+    "#65B7A3",
+    "#E8A044",
+    "#6FB1F2",
+    "#4A6FA5",
+    "#9AD0C2",
+    "#F2C27B",
+    "#8FA8C8",
+    "#B8C4D6"
+  ],
+  "background": "#FFFFFF",
+  "foreground": "#172334",
+  "tableAccent": "#173D75",
+  "good": "#65B7A3",
+  "neutral": "#E8A044",
+  "bad": "#D9534F",
+  "maximum": "#173D75",
+  "center": "#9CC3F0",
+  "minimum": "#EAF3FD",
+  "firstLevelElements": "#172334",
+  "secondaryElements": "#5B6B82",
+  "primaryBackground": "#FFFFFF",
+  "secondaryBackground": "#F3F6FA",
+  "hyperlink": "#2389ED",
+  "textClasses": {
+    "title": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 12,
+      "color": "#173D75"
+    },
+    "label": {
+      "fontFace": "Segoe UI",
+      "fontSize": 9,
+      "color": "#172334"
+    },
+    "callout": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 26,
+      "color": "#173D75"
+    },
+    "header": {
+      "fontFace": "Segoe UI Semibold",
+      "fontSize": 10,
+      "color": "#173D75"
+    }
+  }
+}

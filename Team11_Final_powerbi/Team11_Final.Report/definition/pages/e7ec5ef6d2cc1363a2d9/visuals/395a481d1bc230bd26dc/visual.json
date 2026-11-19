@@ -1,0 +1,89 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "395a481d1bc230bd26dc",
+  "position": {
+    "x": 1256.411769413595,
+    "y": 127.15544462870213,
+    "z": 7000,
+    "height": 116.16581703397227,
+    "width": 246.08811240091495,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "shap_local_explanations"
+                        }
+                      },
+                      "Property": "predicted_class_probability"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Sum(shap_local_explanations.predicted_class_probability)",
+              "nativeQueryRef": "Average of predicted_class_probability"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "shap_local_explanations"
+                      }
+                    },
+                    "Property": "predicted_class_probability"
+                  }
+                },
+                "Function": 1
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "505a3fb9240e76006da6",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "shap_local_explanations"
+                  }
+                },
+                "Property": "predicted_class_probability"
+              }
+            },
+            "Function": 1
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

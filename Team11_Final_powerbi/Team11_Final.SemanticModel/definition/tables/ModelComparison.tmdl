@@ -1,0 +1,59 @@
+/// Held-out test metrics + 5-fold CV summary (source: models/model_comparison.csv).
+table ModelComparison
+
+	column Model
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Model
+
+	column Accuracy
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Accuracy
+
+	column 'Macro Precision'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Macro Precision
+
+	column 'Macro Recall'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Macro Recall
+
+	column 'Macro F1'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: Macro F1
+
+	column 'ROC-AUC'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: ROC-AUC
+
+	column 'CV Macro F1 Mean'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: CV Macro F1 Mean
+
+	column 'CV Macro F1 Std'
+		dataType: double
+		formatString: 0.0000
+		summarizeBy: none
+		sourceColumn: CV Macro F1 Std
+
+	partition ModelComparison = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(Root & "models\model_comparison.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					Typed = Table.TransformColumnTypes(Promoted, {{"Model", type text}, {"Accuracy", type number}, {"Macro Precision", type number}, {"Macro Recall", type number}, {"Macro F1", type number}, {"ROC-AUC", type number}, {"CV Macro F1 Mean", type number}, {"CV Macro F1 Std", type number}}, "en-US")
+				in
+					Typed

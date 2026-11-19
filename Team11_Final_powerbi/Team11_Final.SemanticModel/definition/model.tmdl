@@ -1,0 +1,28 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+
+ref table DimTravel
+ref table DimPassengerProfile
+ref table DimSatisfaction
+ref table FactPassenger
+ref table FactServiceRating
+ref table DimServiceAttribute
+ref table DimModel
+ref table ModelComparison
+ref table CVScores
+ref table SubgroupPerformance
+ref table ShapImportance
+ref table CorrelationRanking
+ref table shap_importance
+ref table shap_local_explanations
+ref table gemini_insights
+ref table PassengerSelectorTable
+ref table _Measures
+
+ref expression RepoRoot
+ref expression Root
+ref expression stgPassenger
+
+ref cultureInfo en-US

@@ -1,0 +1,158 @@
+table gemini_insights
+
+	column status
+		dataType: string
+		summarizeBy: none
+		sourceColumn: status
+
+	column 'target.name'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: target.name
+
+	column 'target.class_0'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: target.class_0
+
+	column 'target.class_1'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: target.class_1
+
+	column 'target.probability_output'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: target.probability_output
+
+	column model
+		dataType: string
+		summarizeBy: none
+		sourceColumn: model
+
+	column source
+		dataType: string
+		summarizeBy: none
+		sourceColumn: source
+
+	column generated_at_utc
+		dataType: dateTime
+		formatString: General Date
+		summarizeBy: none
+		sourceColumn: generated_at_utc
+
+	column 'explanations.row_index'
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: explanations.row_index
+
+	column 'explanations.actual_class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.actual_class
+
+	column 'explanations.predicted_class'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.predicted_class
+
+	column 'explanations.predicted_class_probability'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: explanations.predicted_class_probability
+
+	column 'explanations.probability_satisfied'
+		dataType: double
+		summarizeBy: none
+		sourceColumn: explanations.probability_satisfied
+
+	column 'explanations.correct_prediction'
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: explanations.correct_prediction
+
+	column 'explanations.explanation'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.explanation
+
+	column 'explanations.evidence_features.0'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.evidence_features.0
+
+	column 'explanations.evidence_features.1'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.evidence_features.1
+
+	column 'explanations.evidence_features.2'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.evidence_features.2
+
+	column 'explanations.evidence_features.3'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.evidence_features.3
+
+	column 'explanations.evidence_features.4'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.evidence_features.4
+
+	column evidence_feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: evidence_feature
+
+	column recommendation
+		dataType: string
+		summarizeBy: none
+		sourceColumn: recommendation
+
+	column reason
+		dataType: string
+		summarizeBy: none
+		sourceColumn: reason
+
+	column 'explanations.uncertainty_note'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: explanations.uncertainty_note
+
+	measure 'Gemini Explanation Display' =
+			VAR SelectedPassenger =
+				SELECTEDVALUE(PassengerSelectorTable[row_index])
+
+			RETURN
+			IF(
+				ISBLANK(SelectedPassenger),
+				"Select a passenger",
+				CALCULATE(
+					MAX(gemini_insights[explanations.explanation]),
+					FILTER(
+						ALL(gemini_insights),
+						gemini_insights[explanations.row_index]
+							= SelectedPassenger
+					)
+				)
+			)
+
+	partition gemini_insights = m
+		mode: import
+		source =
+				let
+					Source = Json.Document(File.Contents(Root & "explainability\gemini_insights.json")),
+					#"Converted to Table" = Table.FromRecords({Source}),
+					#"Expanded target" = Table.ExpandRecordColumn(#"Converted to Table", "target", {"name", "class_0", "class_1", "probability_output"}, {"target.name", "target.class_0", "target.class_1", "target.probability_output"}),
+					#"Expanded explanations" = Table.ExpandListColumn(#"Expanded target", "explanations"),
+					#"Expanded explanations1" = Table.ExpandRecordColumn(#"Expanded explanations", "explanations", {"row_index", "actual_class", "predicted_class", "predicted_class_probability", "probability_satisfied", "correct_prediction", "top_shap_contributions", "explanation", "evidence_features", "service_improvement_suggestions", "uncertainty_note"}, {"explanations.row_index", "explanations.actual_class", "explanations.predicted_class", "explanations.predicted_class_probability", "explanations.probability_satisfied", "explanations.correct_prediction", "explanations.top_shap_contributions", "explanations.explanation", "explanations.evidence_features", "explanations.service_improvement_suggestions", "explanations.uncertainty_note"}),
+					#"Split Column" = Table.SplitColumn(#"Expanded explanations1", "explanations.evidence_features", each _, {"explanations.evidence_features.0", "explanations.evidence_features.1", "explanations.evidence_features.2", "explanations.evidence_features.3", "explanations.evidence_features.4"}),
+					#"Changed Type" = Table.TransformColumnTypes(#"Split Column",{{"status", type text}, {"target.name", type text}, {"target.class_0", type text}, {"target.class_1", type text}, {"target.probability_output", type text}, {"model", type text}, {"source", type text}, {"generated_at_utc", type datetime}, {"explanations.row_index", Int64.Type}, {"explanations.actual_class", type text}, {"explanations.predicted_class", type text}, {"explanations.predicted_class_probability", type number}, {"explanations.probability_satisfied", type number}, {"explanations.correct_prediction", type logical}, {"explanations.top_shap_contributions", type any}, {"explanations.explanation", type text}, {"explanations.evidence_features.0", type text}, {"explanations.evidence_features.1", type text}, {"explanations.evidence_features.2", type text}, {"explanations.evidence_features.3", type text}, {"explanations.evidence_features.4", type text}, {"explanations.service_improvement_suggestions", type any}, {"explanations.uncertainty_note", type text}}),
+					#"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"explanations.top_shap_contributions"}),
+					#"Expanded explanations.service_improvement_suggestions" = Table.ExpandListColumn(#"Removed Columns", "explanations.service_improvement_suggestions"),
+					#"Expanded explanations.service_improvement_suggestions1" = Table.ExpandRecordColumn(#"Expanded explanations.service_improvement_suggestions", "explanations.service_improvement_suggestions", {"evidence_feature", "recommendation", "reason"}, {"evidence_feature", "recommendation", "reason"})
+				in
+					#"Expanded explanations.service_improvement_suggestions1"

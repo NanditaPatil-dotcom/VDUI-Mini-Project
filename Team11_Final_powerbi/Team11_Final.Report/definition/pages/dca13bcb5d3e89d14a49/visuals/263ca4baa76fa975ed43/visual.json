@@ -1,0 +1,16 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "263ca4baa76fa975ed43",
+  "position": {
+    "x": 930.0,
+    "y": 674.0,
+    "z": 14000,
+    "height": 192.0,
+    "width": 650.0,
+    "tabOrder": 14000
+  },
+  "visualGroup": {
+    "displayName": "Story controls",
+    "groupMode": "ScaleMode"
+  }
+}

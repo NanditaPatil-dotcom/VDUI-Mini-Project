@@ -1,0 +1,35 @@
+expression RepoRoot = "C:\Users\Nandika Gupta\Downloads\VDUI-Mini-Project-main\VDUI-Mini-Project-main" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	annotation PBI_ResultType = Text
+
+expression Root =
+		if Text.EndsWith(Text.Trim(RepoRoot), "\") then Text.Trim(RepoRoot) else Text.Trim(RepoRoot) & "\"
+	annotation PBI_ResultType = Text
+
+expression stgPassenger =
+		let
+			// EXTRACT: primary fact = airline_satisfaction_cleaned.csv (129,487 passengers x 24 columns)
+			Source = Csv.Document(File.Contents(Root & "airline_satisfaction_cleaned.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+			// The derived Low/Average/High tier lives in airline_satisfaction_tiered.csv, which is the same rows in the same order
+			TierSource = Csv.Document(File.Contents(Root & "airline_satisfaction_tiered.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+			TierPromoted = Table.PromoteHeaders(TierSource, [PromoteAllScalars=true]),
+			TierColumn = Table.Column(TierPromoted, "satisfaction_tier"),
+			Aligned = if Table.RowCount(Promoted) <> List.Count(TierColumn) then error "cleaned and tiered files have different row counts" else Promoted,
+			WithTier = Table.FromColumns(Table.ToColumns(Aligned) & {TierColumn}, Table.ColumnNames(Aligned) & {"satisfaction_tier"}),
+			// TRANSFORM: types, text clean-up, label standardisation
+			Typed = Table.TransformColumnTypes(WithTier, {{"Gender", type text}, {"Age", Int64.Type}, {"Customer Type", type text}, {"Type of Travel", type text}, {"Class", type text}, {"Flight Distance", Int64.Type}, {"Departure Delay", type number}, {"Arrival Delay", type number}, {"Departure and Arrival Time Convenience", Int64.Type}, {"Ease of Online Booking", Int64.Type}, {"Check-in Service", Int64.Type}, {"Online Boarding", Int64.Type}, {"Gate Location", Int64.Type}, {"On-board Service", Int64.Type}, {"Seat Comfort", Int64.Type}, {"Leg Room Service", Int64.Type}, {"Cleanliness", Int64.Type}, {"Food and Drink", Int64.Type}, {"In-flight Service", Int64.Type}, {"In-flight Wifi Service", Int64.Type}, {"In-flight Entertainment", Int64.Type}, {"Baggage Handling", Int64.Type}, {"Satisfaction", type text}, {"satisfaction", Int64.Type}, {"satisfaction_tier", type text}}, "en-US"),
+			Cleaned = Table.TransformColumns(Typed, {{"Gender", each Text.Trim(Text.Clean(_)), type text}, {"Customer Type", each Text.Trim(Text.Clean(_)), type text}, {"Type of Travel", each Text.Trim(Text.Clean(_)), type text}, {"Class", each Text.Trim(Text.Clean(_)), type text}, {"Satisfaction", each Text.Trim(Text.Clean(_)), type text}, {"satisfaction_tier", each Text.Trim(Text.Clean(_)), type text}}),
+			// numeric 0/1 flag duplicates the text target (and differs only by letter case) -> drop it; the text Satisfaction is the binary target
+			DropFlag = Table.RemoveColumns(Cleaned, {"satisfaction"}),
+			Renamed = Table.RenameColumns(DropFlag, {{"Departure Delay", "Departure Delay in Minutes"}, {"Arrival Delay", "Arrival Delay in Minutes"}, {"satisfaction_tier", "Satisfaction Tier"}}),
+			AddId = Table.AddIndexColumn(Renamed, "Passenger ID", 1, 1, Int64.Type),
+			AgeBand = Table.AddColumn(AddId, "Age Band", each if [Age] < 25 then "Young (under 25)" else if [Age] < 40 then "Young Adult (25-39)" else if [Age] < 55 then "Adult (40-54)" else "Senior (55+)", type text),
+			AgeSort = Table.AddColumn(AgeBand, "Age Band Sort", each if [Age] < 25 then 1 else if [Age] < 40 then 2 else if [Age] < 55 then 3 else 4, Int64.Type),
+			DelayBucket = Table.AddColumn(AgeSort, "Delay Bucket", each if [#"Arrival Delay in Minutes"] <= 0 then "On time / early" else if [#"Arrival Delay in Minutes"] <= 15 then "1-15 min" else if [#"Arrival Delay in Minutes"] <= 60 then "16-60 min" else if [#"Arrival Delay in Minutes"] <= 120 then "61-120 min" else "Over 120 min", type text),
+			DelaySort = Table.AddColumn(DelayBucket, "Delay Bucket Sort", each if [#"Arrival Delay in Minutes"] <= 0 then 1 else if [#"Arrival Delay in Minutes"] <= 15 then 2 else if [#"Arrival Delay in Minutes"] <= 60 then 3 else if [#"Arrival Delay in Minutes"] <= 120 then 4 else 5, Int64.Type),
+			DistBand = Table.AddColumn(DelaySort, "Distance Band", each if [Flight Distance] < 500 then "Short (<500 mi)" else if [Flight Distance] < 1500 then "Medium (500-1,499 mi)" else if [Flight Distance] < 2500 then "Long (1,500-2,499 mi)" else "Ultra-long (2,500+ mi)", type text),
+			DistSort = Table.AddColumn(DistBand, "Distance Band Sort", each if [Flight Distance] < 500 then 1 else if [Flight Distance] < 1500 then 2 else if [Flight Distance] < 2500 then 3 else 4, Int64.Type),
+			TierSort = Table.AddColumn(DistSort, "Tier Sort", each if [Satisfaction Tier] = "Low" then 1 else if [Satisfaction Tier] = "Average" then 2 else 3, Int64.Type)
+		in
+			TierSort
+	annotation PBI_ResultType = Table

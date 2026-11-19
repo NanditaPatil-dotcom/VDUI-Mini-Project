@@ -1,0 +1,56 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "36dae3898d04e4b05c91",
+  "position": {
+    "x": 117.55740740740738,
+    "y": 438.7907407407407,
+    "z": 19001,
+    "height": 146.29074074074074,
+    "width": 499.7648148148148,
+    "tabOrder": 19001
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gemini_insights"
+                    }
+                  },
+                  "Property": "Gemini Explanation Display"
+                }
+              },
+              "queryRef": "gemini_insights.Gemini Explanation Display",
+              "nativeQueryRef": "Gemini Explanation Display"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "24156f6d3a044da30679",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gemini_insights"
+              }
+            },
+            "Property": "Gemini Explanation Display"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

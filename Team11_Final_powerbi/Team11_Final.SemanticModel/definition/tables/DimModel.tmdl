@@ -1,0 +1,22 @@
+table DimModel
+
+	column Model
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Model Sort'
+		sourceColumn: Model
+
+	column 'Model Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Model Sort
+
+	partition DimModel = m
+		mode: import
+		source =
+				let
+					Source = #table(type table [Model = text, #"Model Sort" = Int64.Type], {{"Logistic Regression", 1}, {"Random Forest", 2}, {"XGBoost", 3}})
+				in
+					Source

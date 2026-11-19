@@ -1,0 +1,272 @@
+/// Grain: one row per passenger record (surrogate Passenger ID). Not an ML feature.
+table FactPassenger
+
+	column 'Passenger ID'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Passenger ID
+
+	column TravelKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: TravelKey
+
+	column ProfileKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: ProfileKey
+
+	column SatisfactionKey
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: SatisfactionKey
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column Gender
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Gender
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column 'Customer Type'
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Customer Type
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column Class
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Class
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column 'Type of Travel'
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Type of Travel
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column 'Age Band'
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Age Band
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column Satisfaction
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Satisfaction
+
+	/// Duplicate of the dimension attribute - use the Dim table in visuals.
+	column 'Satisfaction Tier'
+		dataType: string
+		isHidden
+		summarizeBy: none
+		sourceColumn: Satisfaction Tier
+
+	column 'Age Band Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Age Band Sort
+
+	column 'Tier Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Tier Sort
+
+	column 'Distance Band Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Distance Band Sort
+
+	column 'Delay Bucket Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Delay Bucket Sort
+
+	column Age
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: Age
+
+	column 'Flight Distance'
+		dataType: int64
+		formatString: #,0
+		summarizeBy: none
+		sourceColumn: Flight Distance
+
+	column 'Distance Band'
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Distance Band Sort'
+		sourceColumn: Distance Band
+
+	column 'Departure Delay in Minutes'
+		dataType: double
+		formatString: #,0.0
+		summarizeBy: none
+		sourceColumn: Departure Delay in Minutes
+
+	column 'Arrival Delay in Minutes'
+		dataType: double
+		formatString: #,0.0
+		summarizeBy: none
+		sourceColumn: Arrival Delay in Minutes
+
+	column 'Delay Bucket'
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Delay Bucket Sort'
+		sourceColumn: Delay Bucket
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Departure and Arrival Time Convenience'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Departure and Arrival Time Convenience
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Ease of Online Booking'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Ease of Online Booking
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Check-in Service'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Check-in Service
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Online Boarding'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Online Boarding
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Gate Location'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Gate Location
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'On-board Service'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: On-board Service
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Seat Comfort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Seat Comfort
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Leg Room Service'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Leg Room Service
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column Cleanliness
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Cleanliness
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Food and Drink'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Food and Drink
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'In-flight Service'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: In-flight Service
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'In-flight Wifi Service'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: In-flight Wifi Service
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'In-flight Entertainment'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: In-flight Entertainment
+
+	/// Raw 1-5 rating, 0 = not applicable. Use FactServiceRating in visuals.
+	column 'Baggage Handling'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Baggage Handling
+
+	partition FactPassenger = m
+		mode: import
+		source =
+				let
+					Source = stgPassenger,
+					// LOAD: surrogate keys via Merge (Left Outer) against the dimensions
+					JoinTravel = Table.NestedJoin(Source, {"Class", "Type of Travel"}, DimTravel, {"Class", "Type of Travel"}, "dt", JoinKind.LeftOuter),
+					ExpTravel = Table.ExpandTableColumn(JoinTravel, "dt", {"TravelKey"}, {"TravelKey"}),
+					JoinProfile = Table.NestedJoin(ExpTravel, {"Gender", "Customer Type", "Age Band"}, DimPassengerProfile, {"Gender", "Customer Type", "Age Band"}, "dp", JoinKind.LeftOuter),
+					ExpProfile = Table.ExpandTableColumn(JoinProfile, "dp", {"ProfileKey"}, {"ProfileKey"}),
+					JoinSat = Table.NestedJoin(ExpProfile, {"Satisfaction", "Satisfaction Tier"}, DimSatisfaction, {"Satisfaction", "Satisfaction Tier"}, "ds", JoinKind.LeftOuter),
+					ExpSat = Table.ExpandTableColumn(JoinSat, "ds", {"SatisfactionKey"}, {"SatisfactionKey"}),
+					Typed = Table.TransformColumnTypes(ExpSat, {{"TravelKey", Int64.Type}, {"ProfileKey", Int64.Type}, {"SatisfactionKey", Int64.Type}}),
+					Result = Table.SelectColumns(Typed, {"Passenger ID", "TravelKey", "ProfileKey", "SatisfactionKey", "Gender", "Customer Type", "Class", "Type of Travel", "Age Band", "Age Band Sort", "Satisfaction", "Satisfaction Tier", "Tier Sort", "Age", "Flight Distance", "Distance Band", "Distance Band Sort", "Departure Delay in Minutes", "Arrival Delay in Minutes", "Delay Bucket", "Delay Bucket Sort", "Departure and Arrival Time Convenience", "Ease of Online Booking", "Check-in Service", "Online Boarding", "Gate Location", "On-board Service", "Seat Comfort", "Leg Room Service", "Cleanliness", "Food and Drink", "In-flight Service", "In-flight Wifi Service", "In-flight Entertainment", "Baggage Handling"})
+				in
+					Result

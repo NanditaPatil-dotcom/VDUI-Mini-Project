@@ -1,0 +1,28 @@
+/// Service attribute lookup with a logical grouping.
+table DimServiceAttribute
+
+	column 'Service Attribute'
+		dataType: string
+		summarizeBy: none
+		sortByColumn: 'Attribute Order'
+		sourceColumn: Service Attribute
+
+	column 'Service Group'
+		dataType: string
+		summarizeBy: none
+		sourceColumn: Service Group
+
+	column 'Attribute Order'
+		dataType: int64
+		formatString: 0
+		isHidden
+		summarizeBy: none
+		sourceColumn: Attribute Order
+
+	partition DimServiceAttribute = m
+		mode: import
+		source =
+				let
+					Source = #table(type table [#"Service Attribute" = text, #"Service Group" = text, #"Attribute Order" = Int64.Type], {{"Ease of Online Booking", "Pre-Flight", 1}, {"Check-in Service", "Pre-Flight", 2}, {"Online Boarding", "Pre-Flight", 3}, {"Gate Location", "Pre-Flight", 4}, {"Departure and Arrival Time Convenience", "Pre-Flight", 5}, {"Seat Comfort", "Cabin Comfort", 6}, {"Leg Room Service", "Cabin Comfort", 7}, {"Cleanliness", "Cabin Comfort", 8}, {"Food and Drink", "In-flight Service", 9}, {"In-flight Entertainment", "In-flight Service", 10}, {"In-flight Wifi Service", "In-flight Service", 11}, {"In-flight Service", "In-flight Service", 12}, {"On-board Service", "In-flight Service", 13}, {"Baggage Handling", "Ground & Arrival", 14}})
+				in
+					Source

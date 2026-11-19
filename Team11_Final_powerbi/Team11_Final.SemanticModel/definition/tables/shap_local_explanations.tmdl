@@ -1,0 +1,70 @@
+table shap_local_explanations
+
+	column row_index
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: row_index
+
+	column actual_class
+		dataType: string
+		summarizeBy: none
+		sourceColumn: actual_class
+
+	column predicted_class
+		dataType: string
+		summarizeBy: none
+		sourceColumn: predicted_class
+
+	column predicted_class_probability
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: predicted_class_probability
+
+	column probability_satisfied
+		dataType: double
+		formatString: 0.0%
+		summarizeBy: none
+		sourceColumn: probability_satisfied
+
+	column correct_prediction
+		dataType: boolean
+		summarizeBy: none
+		sourceColumn: correct_prediction
+
+	column feature
+		dataType: string
+		summarizeBy: none
+		sourceColumn: feature
+
+	column feature_value
+		dataType: string
+		summarizeBy: none
+		sourceColumn: feature_value
+
+	column shap_value
+		dataType: double
+		summarizeBy: none
+		sourceColumn: shap_value
+
+	column direction
+		dataType: string
+		summarizeBy: none
+		sourceColumn: direction
+
+	column rank_by_absolute_contribution
+		dataType: int64
+		formatString: 0
+		summarizeBy: none
+		sourceColumn: rank_by_absolute_contribution
+
+	partition shap_local_explanations = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents(Root & "explainability\shap_local_explanations.csv"),[Delimiter=",", Columns=11, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"row_index", Int64.Type}, {"actual_class", type text}, {"predicted_class", type text}, {"predicted_class_probability", type number}, {"probability_satisfied", type number}, {"correct_prediction", type logical}, {"feature", type text}, {"feature_value", type text}, {"shap_value", type number}, {"direction", type text}, {"rank_by_absolute_contribution", Int64.Type}})
+				in
+					#"Changed Type"
